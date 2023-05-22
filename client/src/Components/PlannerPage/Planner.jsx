@@ -1,8 +1,7 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useState } from "react";
 import {
   AddPlanButton,
   AddressDeleteButton,
-  // GoogleMap,
   PlannerContainer,
   PlannerDiary,
   PlannerLogo,
@@ -13,96 +12,39 @@ import {
 import { GoogleMap, Polyline } from "@react-google-maps/api";
 import Select from "react-select";
 
+const COLORS = ["#FF0000", "#00FF00", "#0000FF", "#FFFF00", "#FF00FF"];
+
+const MapComponent = React.memo(
+  ({ clickPositions, handleMapClick, center }) => (
+    <GoogleMap
+      mapContainerStyle={{
+        borderRadius: "20px",
+        height: "680px",
+        margin: "10px",
+      }}
+      center={center}
+      zoom={7}
+      onClick={(event) => handleMapClick(event)}
+      apiKey=""
+    >
+      {clickPositions.map((positions, index) => (
+        <Polyline
+          key={index}
+          path={positions}
+          options={{ strokeColor: COLORS[index % COLORS.length] }}
+        />
+      ))}
+    </GoogleMap>
+  )
+);
 const Planner = () => {
-  const mapRef = useRef(null);
-  const [hoveredCity, setHoveredCity] = useState("");
   const [selectedAddress, setSelectedAddress] = useState("");
   const [savedAddresses, setSavedAddresses] = useState([]);
   const [polylines, setPolylines] = useState([]);
   const [clickPositions, setClickPositions] = useState([]);
-  const [time, setTIme] = useState([]);
-  const [clickTIme, setClickTime] = useState("");
+  const [center, setCenter] = useState({ lat: 37.5665, lng: 126.978 });
+  const [time, setTime] = useState([]);
   const [selectedDay, setSelectedDay] = useState(1);
-
-  // useEffect(() => {
-  //   const initMap = () => {
-  //     const mapOptions = {
-  //       center: { lat: 37.5665, lng: 126.978 },
-  //       zoom: 7,
-  //     };
-
-  //     const map = new window.google.maps.Map(mapRef.current, mapOptions);
-
-  //     map.addListener("click", (event) => {
-  //       const geocoder = new window.google.maps.Geocoder();
-
-  //       geocoder.geocode({ location: event.latLng }, (results, status) => {
-  //         if (status === "OK") {
-  //           if (results.length > 0) {
-  //             const addressComponents = results[0].address_components;
-  //             const city = addressComponents.find((component) =>
-  //               component.types.includes("administrative_area_level_1")
-  //             );
-  //             const local = addressComponents.find((component) =>
-  //               component.types.includes("locality")
-  //             );
-  //             const sublocality = addressComponents.find((component) =>
-  //               component.types.includes("sublocality")
-  //             );
-  //             const neighborhood = addressComponents.find((component) =>
-  //               component.types.includes("neighborhood")
-  //             );
-
-  //             let selectedAddress = "";
-
-  //             if (city) {
-  //               selectedAddress += city.long_name + "/ ";
-  //             }
-  //             if (local) {
-  //               selectedAddress += local.long_name + "/ ";
-  //             }
-  //             if (sublocality) {
-  //               selectedAddress += sublocality.long_name + "/ ";
-  //             }
-  //             if (neighborhood) {
-  //               selectedAddress += neighborhood.long_name + "/ ";
-  //             }
-
-  //             setSelectedAddress(selectedAddress);
-  //           }
-  //         } else {
-  //           console.error("Geocoder failed due to:", status);
-  //         }
-  //       });
-  //     });
-  //   };
-
-  //   const loadGoogleMapScript = () => {
-  //     if (
-  //       typeof window.google === "undefined" ||
-  //       typeof window.google.maps === "undefined"
-  //     ) {
-  //       const script = document.createElement("script");
-  //       script.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyA7-2aC-Xhui7haVAdH0p0yFLcO3QwRP-M&v=3&libraries=places`;
-  //       script.async = true;
-  //       script.defer = true;
-  //       script.addEventListener("load", initMap);
-  //       document.body.appendChild(script);
-  //     } else {
-  //       initMap();
-  //     }
-  //   };
-
-  //   loadGoogleMapScript();
-  // }, []);
-
-  // const handleAddPlan = () => {
-  // if (selectedAddress.trim() !== "") {
-  //   const newAddresses = [selectedAddress, ...savedAddresses];
-  //   setSavedAddresses(newAddresses);
-  //   setSelectedAddress("");
-  // }
-  // };
 
   const handleMapClick = (event) => {
     const { latLng } = event;
@@ -144,20 +86,23 @@ const Planner = () => {
 
           setSelectedAddress(selectedAddress);
           setPolylines((prevPositions) => [...prevPositions, position]);
+          setCenter({ lat, lng });
         }
       } else {
         console.error("Geocoder failed due to:", status);
       }
     });
-    // const location = `Latitude: ${lat}, Longitude: ${lng}`;
-
-    // setSelectedAddress(location);
   };
 
   const handleAddPlan = () => {
     if (selectedAddress.trim() !== "") {
-      const newAddresses = [selectedAddress, ...savedAddresses];
-      setSavedAddresses(newAddresses);
+      const addresses = savedAddresses[selectedDay] || [];
+      const newAddresses = [selectedAddress, ...addresses];
+
+      setSavedAddresses((prevAddresses) => ({
+        ...prevAddresses,
+        [selectedDay]: newAddresses,
+      }));
       setSelectedAddress("");
 
       if (polylines.length > 0) {
@@ -173,21 +118,32 @@ const Planner = () => {
   };
 
   const handleDeleteAddress = (address, index) => {
-    setSavedAddresses((prevAddresses) =>
-      prevAddresses.filter((savedAddress) => savedAddress !== address)
+    const addresses = savedAddresses[selectedDay] || [];
+    const newAddresses = addresses.filter(
+      (savedAddress) => savedAddress !== address
     );
-    console.log(index);
+
+    setSavedAddresses((prevAddresses) => ({
+      ...prevAddresses,
+      [selectedDay]: newAddresses,
+    }));
+
     setPolylines((prevPolylines) =>
       prevPolylines.filter((_, idx) => idx !== index)
     );
+
     setClickPositions((prevPositions) =>
       prevPositions.filter((_, idx) => idx !== index)
     );
   };
 
+  const handleSelectDay = (selected) => {
+    setSelectedDay(selected.value);
+  };
+
   const Complete = () => {
     setSelectedDay(selectedDay + 1);
-    setTIme([
+    setTime([
       ...time,
       { value: selectedDay + "일차", label: selectedDay + "일차" },
     ]);
@@ -196,41 +152,18 @@ const Planner = () => {
   return (
     <PlannerContainer>
       <PlannerLogo>Planner</PlannerLogo>
-      {/* <PlannerMaps>
-        <GoogleMap ref={mapRef} id="map" />
-        {hoveredCity && <div className="hovered-city">{hoveredCity}</div>}
-      </PlannerMaps> */}
       <PlannerMaps>
-        <GoogleMap
-          mapContainerStyle={{
-            borderRadius: "20px",
-            height: "680px",
-            margin: "10px",
-          }}
-          center={{ lat: 37.5665, lng: 126.978 }}
-          zoom={7}
-          onClick={(event) => handleMapClick(event)}
-          apiKey="AIzaSyA7-2aC-Xhui7haVAdH0p0yFLcO3QwRP-M"
-        >
-          <div>
-            <Polyline
-              path={clickPositions}
-              options={{ strokeColor: "#FF0000" }} // Polyline 스타일을 지정할 수 있습니다
-            />
-          </div>
-        </GoogleMap>
+        <MapComponent
+          clickPositions={clickPositions}
+          handleMapClick={handleMapClick}
+          center={center}
+        />
       </PlannerMaps>
       <PlannerDiary>
-        <Select
-          onChange={(e) => setClickTime({ ...clickTIme, value: e.value })}
-          options={time}
-        />
-
+        <Select onChange={handleSelectDay} options={time} />
         <SelectAddress>{selectedAddress}</SelectAddress>
-        {savedAddresses
-          .slice(0)
-          .reverse()
-          .map((address, index) => (
+        {savedAddresses[selectedDay] &&
+          savedAddresses[selectedDay].map((address, index) => (
             <div key={address}>
               <SelectAddressMap>{address}</SelectAddressMap>
               <AddressDeleteButton

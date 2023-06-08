@@ -1,11 +1,15 @@
 import { styled } from "styled-components";
 
-export const MainPageContainer = styled.div``;
+export const MainPageContainer = styled.div`
+  justify-content: center;
+  width: 100%;
+`;
 
 export const MainPageHeader = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  overflow-x: scroll;
   padding: 20px;
   background-color: #fff;
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);

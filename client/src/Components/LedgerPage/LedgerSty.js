@@ -46,6 +46,7 @@ export const LedgerInputButton = styled.button`
   background-color: lightgray;
   &:hover {
     background-color: gray;
+    color: white;
   }
 `;
 

@@ -3,6 +3,7 @@ import GoogleIcon from "./Images/free-icon-google-300221.png";
 import KakaoIcon from "./Images/kakaotalk_sharing_btn_medium_ov.png";
 import NaverIcon from "./Images/btnW_아이콘사각.png";
 import Logo from "./Images/Logo.png";
+import { useHistory } from "react-router-dom";
 
 import {
   GoogleLogin,
@@ -18,16 +19,6 @@ import {
 import axios from "axios";
 
 const Login = () => {
-  const handleSubmit = async () => {
-    try {
-      const response = await axios
-        .get("http://localhost:5500/naverlogin")
-        .then((response) => {});
-      console.log(response);
-    } catch (error) {
-      console.log(error);
-    }
-  };
   return (
     <MainLoginContainer>
       <LoginContainer>
@@ -56,15 +47,15 @@ const Login = () => {
             <img src={GoogleIcon} alt="" />
             <div style={{ margin: "auto" }}>구글로 로그인</div>
           </GoogleLogin>
-          <KakaoLogin>
-            <img src={KakaoIcon} alt="" />
-            <div style={{ margin: "auto" }}>카카오로 로그인</div>
-          </KakaoLogin>
+          <a href="https://kauth.kakao.com/oauth/authorize?client_id=c6acf344a39dd6fa0033f505215fd2a3&redirect_uri=http://localhost:3000/kakao-callback&response_type=code">
+            <KakaoLogin>
+              <img src={KakaoIcon} alt="" />
+              <span style={{ margin: "auto" }}>카카오로 로그인</span>
+            </KakaoLogin>
+          </a>
           <NaverLogin>
             <img src={NaverIcon} alt="" />
-            <div style={{ margin: "auto" }} onClick={handleSubmit}>
-              네이버로 로그인
-            </div>
+            <div style={{ margin: "auto" }}>네이버로 로그인</div>
           </NaverLogin>
         </div>
       </LoginContainer>

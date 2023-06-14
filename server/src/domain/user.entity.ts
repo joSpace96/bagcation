@@ -3,7 +3,7 @@ import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 @Entity()
 export class User {
   @PrimaryGeneratedColumn()
-  idx: number;
+  idx: bigint;
 
   @Column()
   email: string;
@@ -14,7 +14,7 @@ export class User {
   @Column()
   nick: string;
 
-  @Column()
+  @Column({ nullable: true })
   profile: string;
 
   @Column({ nullable: true }) // 카카오 유저 아이디는 필수가 아닐 수 있으므로 nullable: true로 설정

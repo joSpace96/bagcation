@@ -12,21 +12,28 @@ export const PlannerDiary = styled.div`
   border-radius: 5px;
   position: absolute;
   right: 0px;
-  top: 60px;
+  top: 60.5px;
   width: 20%;
-  height: 90vh;
+  height: 858px;
   background-color: whitesmoke;
   padding-bottom: 10px;
   button {
     border-radius: 10px;
-    width: 100px;
+    width: 150px;
+    height: 40px;
     position: absolute;
     bottom: 0;
     right: -20%;
     left: 0;
     margin: auto;
     cursor: pointer;
-    background-color: #0055ff;
+    background-color: #7bc0f9;
+    color: gray;
+    font-weight: bold;
+    &:hover {
+      background-color: #0055ff;
+      color: white;
+    }
   }
 `;
 export const PlannerHeader = styled.div`
@@ -78,7 +85,7 @@ export const PlannerDistance = styled.div`
   height: 50px;
   margin-top: -10px;
   margin-bottom: -10px;
-  margin-left: 30%;
+  margin-left: 20%;
   background-color: transparent;
   color: #333;
   font-family: "Segoe UI", sans-serif;
@@ -94,8 +101,7 @@ export const ContinentButton = styled.div`
   display: flex;
   width: 80px;
   flex-direction: column;
-  top: 70px;
-  height: 84vh;
+  height: 814px;
   border-radius: 5px;
   background-color: #0055ff;
   z-index: -1;
@@ -107,22 +113,23 @@ export const AsiaButton = styled.div`
   height: 80px;
   cursor: pointer;
   background-image: url(${asia});
-  background-color: #f7f7f7;
+  background-color: #0055ff;
   background-size: cover;
   font-weight: bold;
+  color: white;
   &:hover {
     background-image: url(${asiaHover}) !important;
-    background-color: #0055ff;
-    color: white;
+    background-color: #7bc0f9;
+    color: gray;
     div {
-      background-color: #0055ff;
+      background-color: #7bc0f9;
     }
   }
   div {
     text-align: center;
     font-size: 15px;
     margin-top: 80px;
-    background-color: #f7f7f7;
+    background-color: #0055ff;
   }
 `;
 
@@ -132,22 +139,23 @@ export const EuropeButton = styled.div`
   cursor: pointer;
   font-weight: bold;
   background-image: url(${europe});
-  background-color: #f7f7f7;
+  background-color: #0055ff;
   background-size: cover;
   margin-top: 20px;
+  color: white;
   &:hover {
     background-image: url(${europeHover}) !important;
-    color: white;
-    background-color: #0055ff;
+    background-color: #7bc0f9;
+    color: gray;
     div {
-      background-color: #0055ff;
+      background-color: #7bc0f9;
     }
   }
   div {
     text-align: center;
     font-size: 15px;
     margin-top: 80px;
-    background-color: #f7f7f7;
+    background-color: #0055ff;
   }
 `;
 
@@ -157,22 +165,23 @@ export const AmericaButton = styled.div`
   cursor: pointer;
   font-weight: bold;
   background-image: url(${america});
-  background-color: #f7f7f7;
+  background-color: #0055ff;
   background-size: cover;
   margin-top: 20px;
+  color: white;
   &:hover {
     background-image: url(${americaHover}) !important;
-    color: white;
-    background-color: #0055ff;
+    background-color: #7bc0f9;
+    color: gray;
     div {
-      background-color: #0055ff;
+      background-color: #7bc0f9;
     }
   }
   div {
     text-align: center;
     font-size: 15px;
     margin-top: 80px;
-    background-color: #f7f7f7;
+    background-color: #0055ff;
   }
 `;
 export const OceaniaButton = styled.div`
@@ -180,22 +189,23 @@ export const OceaniaButton = styled.div`
   height: 80px;
   cursor: pointer;
   font-weight: bold;
+  color: white;
   background-image: url(${oceania});
-  background-color: #f7f7f7;
+  background-color: #0055ff;
   background-size: cover;
   margin-top: 20px;
   &:hover {
     background-image: url(${oceaniaHover}) !important;
-    color: white;
-    background-color: #0055ff;
+    color: gray;
+    background-color: #7bc0f9;
     div {
-      background-color: #0055ff;
+      background-color: #7bc0f9;
     }
   }
   div {
     text-align: center;
     font-size: 15px;
     margin-top: 80px;
-    background-color: #f7f7f7;
+    background-color: #0055ff;
   }
 `;

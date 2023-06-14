@@ -36,6 +36,7 @@ export const LoginButton = styled.button`
   height: 30px;
   margin-top: 10px;
   margin: 10px auto;
+  margin-bottom: 0;
 `;
 
 export const GoogleLogin = styled.button`

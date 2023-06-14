@@ -13,6 +13,7 @@ import Asia from "./Components/MainPage/ImageGrid/InfoPage/Asia/Asia";
 import Europe from "./Components/MainPage/ImageGrid/InfoPage/Europe/Europe";
 import PlannerBoard from "./Components/PlannerPage/PlannerBoard";
 import RedirectPage from "./Components/LoginPage/RedirectPage";
+import Register from "./Components/LoginPage/RegisterPage/Register";
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
           <Route path="/planner" element={<PlannerBoard />} />
           <Route path="/guide" element={<GuidePage />} />
           <Route path="/gallery/detail" element={<Post />} />
+          <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
           <Route path="/kakao-callback" element={<RedirectPage />} />
           <Route path="/info/africa" element={<Africa />} />

@@ -16,6 +16,7 @@ import {
   MainLoginContainer,
   NaverLogin,
 } from "./LoginSty";
+import { Link } from "react-router-dom";
 
 const handleKakaoLogin = () => {
   // 카카오 인가 코드 요청
@@ -45,6 +46,9 @@ const Login = () => {
           <InputID type="text" placeholder="ID" />
           <InputPW type="password" placeholder="Password" />
           <LoginButton onClick={handleLogin}>로그인</LoginButton>
+          <Link style={{ margin: "auto" }} to="/register">
+            <LoginButton>회원가입</LoginButton>
+          </Link>
         </div>
 
         <div

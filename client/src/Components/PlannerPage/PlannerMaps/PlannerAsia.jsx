@@ -547,7 +547,7 @@ const PlannerAsia = () => {
 
   return (
     <>
-      <div id="map" style={{ height: "91.5vh", width: "90%" }}></div>
+      <div id="map" style={{ height: "868px", width: "90%" }}></div>
       <PlannerDiary>
         <PlannerHeader>
           <span
@@ -615,7 +615,7 @@ const PlannerAsia = () => {
             ))}
           </div>
         </div>
-        <button>확인</button>
+        <button>세부일정 짜기</button>
       </PlannerDiary>
     </>
   );

@@ -1,12 +1,12 @@
 export declare class Nation {
-    idx: number;
+    idx: bigint;
     continent: string;
     nation: string;
     lat: number;
     lng: number;
 }
 export declare class City {
-    idx: number;
+    idx: bigint;
     nation: string;
     city: string;
     lat: number;

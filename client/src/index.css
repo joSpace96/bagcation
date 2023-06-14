@@ -13,3 +13,16 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+.markwithlabel {
+  /* 스타일을 적용할 속성들을 여기에 작성하세요 */
+  /* 예시로 일부 스타일을 추가해보겠습니다 */
+  background-color: white;
+  opacity: 0.8;
+  border: 1px solid black;
+  color: #ffffff;
+  font-weight: bold;
+  padding: 1px;
+  border-radius: 5px;
+  position: absolute;
+  top: 40px;
+}

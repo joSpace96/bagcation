@@ -1,16 +1,29 @@
 import { styled } from "styled-components";
+import europe from "../images/europe.png";
+import europeHover from "../images/europehover.png";
+import asia from "../images/asia.png";
+import asiaHover from "../images/asiahover.png";
 
 export const PlannerDiary = styled.div`
   border-radius: 5px;
   position: absolute;
-  right: 100px;
-  top: 70px;
-  width: 15%;
+  right: 0px;
+  top: 60px;
+  width: 20%;
   height: 90vh;
-  overflow-y: scroll;
-  overflow-x: hidden;
   background-color: whitesmoke;
   padding-bottom: 10px;
+  button {
+    border-radius: 10px;
+    width: 100px;
+    position: absolute;
+    bottom: 0;
+    right: -20%;
+    left: 0;
+    margin: auto;
+    cursor: pointer;
+    background-color: #0055ff;
+  }
 `;
 export const PlannerHeader = styled.div`
   display: flex;
@@ -35,10 +48,9 @@ export const PlannerHeader = styled.div`
 
 export const PlannerInput = styled.div`
   border: 1px solid #ccc;
-  width: 80%;
+  width: 70%;
   height: 20px;
   margin: auto;
-  padding-left: 20px;
   margin-bottom: 0px;
   border-radius: 20px;
   cursor: pointer;
@@ -62,7 +74,7 @@ export const PlannerDistance = styled.div`
   height: 50px;
   margin-top: -10px;
   margin-bottom: -10px;
-  margin-left: 40px;
+  margin-left: 30%;
   background-color: transparent;
   color: #333;
   font-family: "Segoe UI", sans-serif;
@@ -70,4 +82,57 @@ export const PlannerDistance = styled.div`
   display: flex;
   justify-content: left;
   align-items: center;
+`;
+
+export const ContinentButton = styled.div`
+  border: none;
+  float: left;
+  display: flex;
+  width: 80px;
+  flex-direction: column;
+  top: 70px;
+  height: 84vh;
+  border-radius: 5px;
+  background-color: #0055ff;
+  z-index: -1;
+`;
+
+export const AsiaButton = styled.div`
+  margin-top: -10px;
+  width: 80px;
+  height: 80px;
+  cursor: pointer;
+  background-image: url(${asia});
+  background-color: #f7f7f7;
+  background-size: cover;
+  font-weight: bold;
+  &:hover {
+    background-image: url(${asiaHover}) !important;
+    background-color: #0055ff;
+    color: white;
+  }
+  div {
+    margin-top: 12px;
+    padding: 15px;
+  }
+`;
+
+export const EuropeButton = styled.div`
+  width: 80px;
+  height: 80px;
+  cursor: pointer;
+  font-weight: bold;
+  background-image: url(${europe});
+  background-color: #f7f7f7;
+  background-size: cover;
+  &:hover {
+    background-image: url(${europeHover}) !important;
+    color: white;
+    background-color: #0055ff;
+  }
+  div {
+    padding: 20px;
+    margin-top: 14px;
+    margin-left: 5px;
+  }
 `;

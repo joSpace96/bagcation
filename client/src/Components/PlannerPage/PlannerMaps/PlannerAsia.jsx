@@ -3,6 +3,7 @@ import flag from "../images/free-icon-location-marker-nonclick.png";
 import clickflag from "../images/free-icon-location-marker-click.png";
 import nation from "../images/free-icon-map-777528.png";
 import {
+  AmericaButton,
   AsiaButton,
   ContinentButton,
   EuropeButton,
@@ -564,9 +565,9 @@ const PlannerAsia = () => {
             <EuropeButton onClick={handleEurope}>
               <div>유럽</div>
             </EuropeButton>
-            <EuropeButton onClick={handleAmerica}>
+            <AmericaButton onClick={handleAmerica}>
               <div>아메리카</div>
-            </EuropeButton>
+            </AmericaButton>
             <EuropeButton onClick={handleOceania}>
               <div>오세아니아</div>
             </EuropeButton>

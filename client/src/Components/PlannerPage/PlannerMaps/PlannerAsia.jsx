@@ -7,6 +7,7 @@ import {
   AsiaButton,
   ContinentButton,
   EuropeButton,
+  OceaniaButton,
   PlannerDiary,
   PlannerDistance,
   PlannerHeader,
@@ -562,15 +563,18 @@ const PlannerAsia = () => {
             <AsiaButton onClick={handleAsia}>
               <div>아시아</div>
             </AsiaButton>
+
             <EuropeButton onClick={handleEurope}>
               <div>유럽</div>
             </EuropeButton>
+
             <AmericaButton onClick={handleAmerica}>
               <div>아메리카</div>
             </AmericaButton>
-            <EuropeButton onClick={handleOceania}>
-              <div>오세아니아</div>
-            </EuropeButton>
+
+            <OceaniaButton onClick={handleOceania}>
+              <div>남태평양</div>
+            </OceaniaButton>
           </ContinentButton>
           <div
             style={{ overflowX: "hidden", overflowY: "scroll", height: "80vh" }}

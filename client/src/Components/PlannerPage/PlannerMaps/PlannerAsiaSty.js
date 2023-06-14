@@ -3,7 +3,10 @@ import europe from "../images/europe.png";
 import europeHover from "../images/europehover.png";
 import asia from "../images/asia.png";
 import asiaHover from "../images/asiahover.png";
-import america from "../images/america.png";
+import america from "../images/north-america.png";
+import americaHover from "../images/north-america_hover.png";
+import oceaniaHover from "../images/australia.png";
+import oceania from "../images/australia_hover.png";
 
 export const PlannerDiary = styled.div`
   border-radius: 5px;
@@ -111,10 +114,15 @@ export const AsiaButton = styled.div`
     background-image: url(${asiaHover}) !important;
     background-color: #0055ff;
     color: white;
+    div {
+      background-color: #0055ff;
+    }
   }
   div {
-    margin-top: 12px;
-    padding: 15px;
+    text-align: center;
+    font-size: 15px;
+    margin-top: 80px;
+    background-color: #f7f7f7;
   }
 `;
 
@@ -126,15 +134,20 @@ export const EuropeButton = styled.div`
   background-image: url(${europe});
   background-color: #f7f7f7;
   background-size: cover;
+  margin-top: 20px;
   &:hover {
     background-image: url(${europeHover}) !important;
     color: white;
     background-color: #0055ff;
+    div {
+      background-color: #0055ff;
+    }
   }
   div {
-    padding: 20px;
-    margin-top: 14px;
-    margin-left: 5px;
+    text-align: center;
+    font-size: 15px;
+    margin-top: 80px;
+    background-color: #f7f7f7;
   }
 `;
 
@@ -146,14 +159,43 @@ export const AmericaButton = styled.div`
   background-image: url(${america});
   background-color: #f7f7f7;
   background-size: cover;
+  margin-top: 20px;
   &:hover {
-    background-image: url(${america}) !important;
+    background-image: url(${americaHover}) !important;
     color: white;
     background-color: #0055ff;
+    div {
+      background-color: #0055ff;
+    }
   }
   div {
-    padding: 20px;
-    margin-top: 14px;
-    margin-left: 5px;
+    text-align: center;
+    font-size: 15px;
+    margin-top: 80px;
+    background-color: #f7f7f7;
+  }
+`;
+export const OceaniaButton = styled.div`
+  width: 80px;
+  height: 80px;
+  cursor: pointer;
+  font-weight: bold;
+  background-image: url(${oceania});
+  background-color: #f7f7f7;
+  background-size: cover;
+  margin-top: 20px;
+  &:hover {
+    background-image: url(${oceaniaHover}) !important;
+    color: white;
+    background-color: #0055ff;
+    div {
+      background-color: #0055ff;
+    }
+  }
+  div {
+    text-align: center;
+    font-size: 15px;
+    margin-top: 80px;
+    background-color: #f7f7f7;
   }
 `;

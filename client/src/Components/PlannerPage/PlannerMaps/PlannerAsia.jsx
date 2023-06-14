@@ -30,8 +30,8 @@ const PlannerAsia = () => {
   const [nationMarkers, setNationMarkers] = useState([]);
   const [center, setCenter] = useState({ lat: 20, lng: 90 });
   const [zoom, setZoom] = useState(4);
+  let newMarkers = [];
 
-  console.log(PlanMarkers);
   const defaultIcon = {
     url: flag,
     scaledSize: new window.google.maps.Size(35, 35),
@@ -150,7 +150,6 @@ const PlannerAsia = () => {
     label: city.city,
     nation: city.nation,
   }));
-  console.log(cityMarker);
 
   // 대륙변경버튼 함수
   const handleAsia = () => {
@@ -174,6 +173,7 @@ const PlannerAsia = () => {
     setCenter({ lat: -10, lng: 160 });
     setZoom(3.5);
   };
+
   // 폴리라인 방향에 따라 화살표를 그리는 함수
   const drawArrowsOnPolyline = (polyline) => {
     removeArrowHeads(); // 기존의 화살표를 제거
@@ -307,11 +307,16 @@ const PlannerAsia = () => {
 
   const handleMarkerClick = (marker, map) => {
     const clickedLabel = marker?.getLabel().text;
+    const newMarkers = citiesMarkers
+      .filter((city) => city.nation === clickedLabel)
+      .map((city) => ({
+        position: { lat: city.lat, lng: city.lng },
+        label: city.city,
+      }));
     const path = PlanMarkers.map((planMarker) => planMarker.position);
 
-    // const newclickedmarker = new window.google.maps.Marker
     if (lines) {
-      lines.setMap(null); // 이전 폴리라인을 지도에서 제거
+      lines.setMap(null);
     }
     const newLine = new window.google.maps.Polyline({
       path: path,
@@ -320,119 +325,104 @@ const PlannerAsia = () => {
       strokeWeight: 1,
     });
 
-    if (citiesMarkers) {
-      let newMarkers = [];
-      if (citiesMarkers) {
-        newMarkers = citiesMarkers
-          .filter((city) => city.nation === clickedLabel)
-          .map((city) => ({
-            position: { lat: city.lat, lng: city.lng },
-            label: city.city,
-          }));
-      }
-      const newGoogleMarkers = newMarkers.map((markerData) => {
-        const isClicked = PlanMarkers.some(
-          (planMarker) =>
-            planMarker.position.lat === markerData.position.lat &&
-            planMarker.position.lng === markerData.position.lng
-        );
-        const newMarker = new window.google.maps.Marker({
-          position: markerData.position,
-          map: map,
-          label: {
-            text: markerData.label,
-            color: isClicked ? "black" : "gray",
-            className: "markwithlabel",
-          },
-          icon: isClicked ? clickedIcon : defaultIcon,
-          isClicked: isClicked,
-        });
-
-        newMarker.addListener("click", () => {
-          if (!newMarker.isClicked) {
-            newMarker.setIcon(clickedIcon);
-            newMarker.getLabel().color = "black";
-            setPlanMarkers((prevMarkers) => [
-              ...prevMarkers,
-              {
-                position: {
-                  lat: newMarker.getPosition().lat(),
-                  lng: newMarker.getPosition().lng(),
-                },
-                label: newMarker.getLabel().text,
-              },
-            ]);
-          }
-
-          if (newMarker.isClicked) {
-            newMarker.setIcon(defaultIcon);
-            newMarker.getLabel().color = "gray";
-            setPlanMarkers((prevMarkers) =>
-              prevMarkers.filter(
-                (markerData) =>
-                  markerData.position.lat !== newMarker.getPosition().lat() ||
-                  markerData.position.lng !== newMarker.getPosition().lng()
-              )
-            );
-          }
-
-          console.log("고른마커", clickedLabel);
-          console.log("가려질마크", clickedMarkers);
-          newMarker.isClicked = !newMarker.isClicked;
-          handleMarkerClick(newMarker, map);
-        });
-        return newMarker;
+    const newGoogleMarkers = newMarkers.map((markerData) => {
+      const isClicked = PlanMarkers.some(
+        (planMarker) =>
+          planMarker.position.lat === markerData.position.lat &&
+          planMarker.position.lng === markerData.position.lng
+      );
+      const labelColor = isClicked ? "black" : "gray";
+      const markerPosition = markerData.position;
+      const newMarker = new window.google.maps.Marker({
+        position: markerPosition,
+        map: map,
+        label: {
+          text: markerData.label,
+          color: labelColor,
+          className: "markwithlabel",
+        },
+        icon: isClicked ? clickedIcon : defaultIcon,
+        isClicked: isClicked,
       });
 
-      if (clickedLabel === "러시아" || clickedLabel === "미국") {
-        map.setZoom(3);
-      } else if (
-        clickedLabel === "오스트레일리아" ||
-        clickedLabel === "아르헨티나" ||
-        clickedLabel === "칠레" ||
-        clickedLabel === "캐나다"
-      ) {
-        map.setZoom(4);
-      } else if (
-        clickedLabel === "중국" ||
-        clickedLabel === "멕시코" ||
-        clickedLabel === "핀란드" ||
-        clickedLabel === "노르웨이" ||
-        clickedLabel === "스웨덴" ||
-        clickedLabel === "브라질" ||
-        clickedLabel === "인도" ||
-        clickedLabel === "일본"
-      ) {
-        map.setZoom(5);
-      } else if (
-        clickedLabel === "인도네시아" ||
-        clickedLabel === "포르투갈" ||
-        clickedLabel === "스페인" ||
-        clickedLabel === "프랑스" ||
-        clickedLabel === "이탈리아" ||
-        clickedLabel === "영국" ||
-        clickedLabel === "뉴질랜드" ||
-        clickedLabel === "페루" ||
-        clickedLabel === "콜롬비아" ||
-        clickedLabel === "태국" ||
-        clickedLabel === "베트남" ||
-        clickedLabel === "미얀마" ||
-        clickedLabel === "필리핀"
-      ) {
-        map.setZoom(6);
-      } else {
-        map.setZoom(7);
-      }
-      newGoogleMarkers.forEach((marker) => {
-        marker.setMap(map);
+      newMarker.addListener("click", () => {
+        if (!newMarker.isClicked) {
+          newMarker.setIcon(clickedIcon);
+          newMarker.getLabel().color = "black";
+          setPlanMarkers((prevMarkers) => [
+            ...prevMarkers,
+            {
+              position: markerPosition,
+              label: newMarker.getLabel().text,
+            },
+          ]);
+        } else {
+          newMarker.setIcon(defaultIcon);
+          newMarker.getLabel().color = "gray";
+          setPlanMarkers((prevMarkers) =>
+            prevMarkers.filter(
+              (markerData) =>
+                markerData.position.lat !== markerPosition.lat ||
+                markerData.position.lng !== markerPosition.lng
+            )
+          );
+        }
+
+        newMarker.isClicked = !newMarker.isClicked;
+        handleMarkerClick(newMarker, map);
       });
-      map.setCenter(marker.getPosition());
+
+      return newMarker;
+    });
+
+    if (clickedLabel === "러시아" || clickedLabel === "미국") {
+      map.setZoom(3);
+    } else if (
+      clickedLabel === "오스트레일리아" ||
+      clickedLabel === "아르헨티나" ||
+      clickedLabel === "칠레" ||
+      clickedLabel === "캐나다"
+    ) {
+      map.setZoom(4);
+    } else if (
+      clickedLabel === "중국" ||
+      clickedLabel === "멕시코" ||
+      clickedLabel === "핀란드" ||
+      clickedLabel === "노르웨이" ||
+      clickedLabel === "스웨덴" ||
+      clickedLabel === "브라질" ||
+      clickedLabel === "인도" ||
+      clickedLabel === "일본"
+    ) {
+      map.setZoom(5);
+    } else if (
+      clickedLabel === "인도네시아" ||
+      clickedLabel === "포르투갈" ||
+      clickedLabel === "스페인" ||
+      clickedLabel === "프랑스" ||
+      clickedLabel === "이탈리아" ||
+      clickedLabel === "영국" ||
+      clickedLabel === "뉴질랜드" ||
+      clickedLabel === "페루" ||
+      clickedLabel === "콜롬비아" ||
+      clickedLabel === "태국" ||
+      clickedLabel === "베트남" ||
+      clickedLabel === "미얀마" ||
+      clickedLabel === "필리핀"
+    ) {
+      map.setZoom(6);
     } else {
-      // Handle other cases
+      map.setZoom(7);
     }
+
+    newGoogleMarkers.forEach((marker) => {
+      marker.setMap(map);
+    });
+    map.setCenter(marker.getPosition());
 
     setNewMap(map);
     setLines(newLine);
+    console.log("고른마커", clickedLabel);
   };
 
   const handleBack = () => {
@@ -525,6 +515,7 @@ const PlannerAsia = () => {
     });
     setNewMap(map);
   };
+
   // 드래그 앤 드롭 시작
   const handleDragStart = (e, index) => {
     e.dataTransfer.setData("text/plain", index.toString());
@@ -591,7 +582,7 @@ const PlannerAsia = () => {
                   style={{ justifyContent: "center" }}
                 >
                   <div>
-                    {/* <button onClick={() => handleDelete(index)}>Delete</button> */}
+                    {/* <button onClick={handleDelete(item)}>Delete</button> */}
                     {item.label}
                   </div>
                 </PlannerInput>

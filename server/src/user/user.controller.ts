@@ -128,6 +128,11 @@ export class LoginController {
 
         { expiresIn: '1h' },
       );
+      // 토큰을 클라이언트에게 전송
+      res.cookie('localToken', localToken, {
+        httpOnly: true,
+        expires: expiresAt,
+      });
 
       res.json({ user, localToken, accessToken, refreshToken });
     } catch (error) {

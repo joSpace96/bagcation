@@ -6,23 +6,20 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.AppModule = void 0;
+exports.MapModule = void 0;
 const common_1 = require("@nestjs/common");
-const user_module_1 = require("./user/user.module");
+const map_service_1 = require("./map.service");
+const map_controller_1 = require("./map.controller");
 const typeorm_1 = require("@nestjs/typeorm");
-const orm_config_1 = require("./orm.config");
-const map_module_1 = require("./map/map.module");
-let AppModule = exports.AppModule = class AppModule {
+const map_entity_1 = require("../domain/map.entity");
+const typeorm_2 = require("typeorm");
+let MapModule = exports.MapModule = class MapModule {
 };
-exports.AppModule = AppModule = __decorate([
+exports.MapModule = MapModule = __decorate([
     (0, common_1.Module)({
-        imports: [
-            typeorm_1.TypeOrmModule.forRootAsync({ useFactory: orm_config_1.ormConfig }),
-            user_module_1.UserModule,
-            map_module_1.MapModule,
-        ],
-        controllers: [],
-        providers: [],
+        imports: [typeorm_1.TypeOrmModule.forFeature([map_entity_1.Nation, map_entity_1.City])],
+        controllers: [map_controller_1.MapController],
+        providers: [map_service_1.MapService, typeorm_2.Repository, map_service_1.MapService2],
     })
-], AppModule);
-//# sourceMappingURL=app.module.js.map
+], MapModule);
+//# sourceMappingURL=map.module.js.map

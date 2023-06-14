@@ -32,7 +32,3 @@ export interface TokenResponse {
   token_type: string;
   // 추가 필드가 있다면 여기에 정의
 }
-export interface JwtPayload {
-  userId: number; // 사용자 식별자 정보
-  // 다른 필드가 필요한 경우 여기에 추가
-}

@@ -13,6 +13,3 @@ export interface TokenResponse {
     expires_in: number;
     token_type: string;
 }
-export interface JwtPayload {
-    userId: number;
-}

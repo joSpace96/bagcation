@@ -1,6 +1,6 @@
-import { Injectable, Request, Response } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, Entity } from 'typeorm';
+import { Repository } from 'typeorm';
 import { User } from '../domain/user.entity';
 import { CreateUserDto, TokenResponse } from './dto/create-user.dto';
 import { AxiosResponse } from 'axios';

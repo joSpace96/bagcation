@@ -118,7 +118,11 @@ let LoginController = exports.LoginController = class LoginController {
                 expires: expiresAt,
             });
             const localToken = (0, jsonwebtoken_1.sign)({ kakaoUserId }, '0BpAH3VnLFgTiyt9zmUuz5b2j3jfyCDN', { expiresIn: '1h' });
-            res.json({ user, localToken, accessToken, refreshToken, expiresAt });
+            res.cookie('localToken', localToken, {
+                httpOnly: true,
+                expires: expiresAt,
+            });
+            res.json({ user, localToken, accessToken, refreshToken });
         }
         catch (error) {
             console.error(error);

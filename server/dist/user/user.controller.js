@@ -20,17 +20,45 @@ const swagger_1 = require("@nestjs/swagger");
 const axios_1 = require("axios");
 const jsonwebtoken_1 = require("jsonwebtoken");
 const config_1 = require("@nestjs/config");
+const aws_sdk_1 = require("aws-sdk");
+const uuid_1 = require("uuid");
+const fs = require("fs");
 let UserController = exports.UserController = class UserController {
     constructor(userService) {
         this.userService = userService;
+        this.s3 = new aws_sdk_1.S3();
     }
     async signUp(createUserDto) {
+        const uploadedImage = await this.uploadImageToS3(createUserDto.profile);
+        createUserDto.profile = uploadedImage;
         const createdUser = await this.userService.create(createUserDto);
         const response = {
             message: '회원가입이 완료되었습니다.',
             user: createdUser,
         };
         return response;
+    }
+    async uploadImageToS3(filePath) {
+        const bucketName = 'your-s3-bucket-name';
+        const fileKey = `profile/${(0, uuid_1.v4)()}-profile.jpg`;
+        const fileBuffer = fs.readFileSync(filePath);
+        const params = {
+            Bucket: bucketName,
+            Key: fileKey,
+            Body: fileBuffer,
+            ACL: 'public-read',
+            ContentType: 'image/jpeg',
+        };
+        await this.s3.putObject(params).promise();
+        const imageUrl = `https://${bucketName}.s3.amazonaws.com/${fileKey}`;
+        return imageUrl;
+    }
+    async login(email, password) {
+        const user = await this.userService.findByEmailAndPassword(email, password);
+        if (!user) {
+            return { message: "유저를 찾을 수 없습니다." };
+        }
+        return { message: "로그인 성공", user };
     }
     async findByKakaoId(kakaoUserId) {
         const user = await this.userService.findByKakaoUserId(kakaoUserId);
@@ -50,6 +78,15 @@ __decorate([
     __metadata("design:paramtypes", [create_user_dto_1.CreateUserDto]),
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "signUp", null);
+__decorate([
+    (0, common_1.Get)('/login'),
+    (0, swagger_1.ApiTags)('User'),
+    __param(0, (0, common_1.Query)('email')),
+    __param(1, (0, common_1.Query)('password')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, String]),
+    __metadata("design:returntype", Promise)
+], UserController.prototype, "login", null);
 __decorate([
     (0, common_1.Get)('find-by-kakao-id'),
     (0, swagger_1.ApiTags)('User'),
@@ -122,7 +159,7 @@ let LoginController = exports.LoginController = class LoginController {
                 httpOnly: true,
                 expires: expiresAt,
             });
-            res.json({ user, localToken, accessToken, refreshToken });
+            res.json({ user, localToken });
         }
         catch (error) {
             console.error(error);

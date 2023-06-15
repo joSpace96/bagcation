@@ -14,6 +14,7 @@ import Europe from "./Components/MainPage/ImageGrid/InfoPage/Europe/Europe";
 import PlannerBoard from "./Components/PlannerPage/PlannerBoard";
 import RedirectPage from "./Components/LoginPage/RedirectPage";
 import Register from "./Components/LoginPage/RegisterPage/Register";
+import PlannerDetail from "./Components/PlannerPage/PlannerDetail/PlannerDetail";
 
 function App() {
   return (
@@ -22,7 +23,8 @@ function App() {
         <NavBar />
         <Routes>
           <Route path="/ledger" element={<Ledger />} />
-          <Route path="/planner/detail" element={<Planner />} />
+          <Route path="/planner/map/detail" element={<PlannerDetail />} />
+          <Route path="/planner/map" element={<Planner />} />
           <Route path="/planner" element={<PlannerBoard />} />
           <Route path="/guide" element={<GuidePage />} />
           <Route path="/gallery/detail" element={<Post />} />

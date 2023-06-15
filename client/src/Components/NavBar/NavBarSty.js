@@ -35,6 +35,7 @@ export const NavItem = styled.div`
 
 export const Brand = styled.img`
   width: 100px;
+  margin-left: 50px;
 `;
 
 export const Search = styled.input`

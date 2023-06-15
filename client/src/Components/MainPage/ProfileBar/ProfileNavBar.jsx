@@ -14,10 +14,19 @@ import NonProfile from "./images/free-icon-profile-4675250.png";
 import { Link } from "react-router-dom";
 
 const ProfileNavBar = () => {
+  const email = localStorage.getItem("email");
+  const nick = localStorage.getItem("nick");
+  const kakaonick = localStorage.getItem("kakaonick");
+  const kakaoprofile = localStorage.getItem("kakaoprofile");
+  const profileImage = localStorage.getItem("kakaoprofile") || NonProfile;
+
+  if (!email && !kakaonick) {
+    return null; // 이메일 정보가 없으면 아무것도 렌더링하지 않음
+  }
   return (
     <ProfileBarContainer>
-      <ProfilePicture src={NonProfile} />
-      <UserName>최태성</UserName>
+      <ProfilePicture src={profileImage} />
+      <UserName>{nick || kakaonick} </UserName>
       <BagContents>
         <div style={{ display: "inline-block" }}>
           <ContentsName>클립보드</ContentsName>

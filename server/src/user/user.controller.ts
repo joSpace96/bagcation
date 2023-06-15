@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Get, Query, Res } from '@nestjs/common';
+import { Controller, Post, Body, Get, Query, Res, UseInterceptors, UploadedFile } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { ApiTags } from '@nestjs/swagger';
@@ -6,18 +6,24 @@ import axios from 'axios';
 import { Response } from 'express';
 import { sign } from 'jsonwebtoken';
 import { ConfigService } from '@nestjs/config';
+import { S3 } from 'aws-sdk';
+import { v4 as uuid } from 'uuid';
+import * as fs from 'fs';
 
 @Controller('user')
 export class UserController {
+  private s3 = new S3(); // AWS SDK의 S3 객체 생성
+
   constructor(private readonly userService: UserService) {}
 
-  // 회원가입 API 엔드포인트
   @Post('signup')
-  @ApiTags('User') // 'User' 태그를 추가합니다.
+  @ApiTags('User')
   async signUp(@Body() createUserDto: CreateUserDto) {
-    // 클라이언트에서 전달된 회원가입 정보가 userData에 담깁니다.
+    // 이미지 업로드 처리
+    const uploadedImage = await this.uploadImageToS3(createUserDto.profile);
 
-    // UserService를 사용하여 회원가입 로직을 처리합니다.
+    // createUserDto와 업로드된 이미지 URL을 사용하여 회원가입 처리
+    createUserDto.profile = uploadedImage;
     const createdUser = await this.userService.create(createUserDto);
 
     // 회원가입이 완료된 후, 반환할 응답 데이터를 구성합니다.
@@ -28,6 +34,36 @@ export class UserController {
 
     // 응답 데이터를 클라이언트에 전송합니다.
     return response;
+  }
+
+  private async uploadImageToS3(filePath: string): Promise<string> {
+    const bucketName = 'your-s3-bucket-name';
+    const fileKey = `profile/${uuid()}-profile.jpg`;
+
+    const fileBuffer = fs.readFileSync(filePath);
+
+    const params: S3.PutObjectRequest = {
+      Bucket: bucketName,
+      Key: fileKey,
+      Body: fileBuffer,
+      ACL: 'public-read', // 이미지에 대한 공개 읽기 권한 설정
+      ContentType: 'image/jpeg', // 이미지 파일의 Content-Type 지정
+    };
+
+    await this.s3.putObject(params).promise();
+
+    const imageUrl = `https://${bucketName}.s3.amazonaws.com/${fileKey}`;
+    return imageUrl;
+  }
+  // 로그인
+  @Get('/login')
+  @ApiTags('User')
+  async login(@Query('email') email: string, @Query('password') password: string) {
+    const user = await this.userService.findByEmailAndPassword(email,password);
+    if(!user) {
+      return {message : "유저를 찾을 수 없습니다."}
+    }
+    return {message : "로그인 성공", user}
   }
 
   // kakao Id로 회원정보 조회
@@ -134,7 +170,7 @@ export class LoginController {
         expires: expiresAt,
       });
 
-      res.json({ user, localToken, accessToken, refreshToken });
+      res.json({ user, localToken});
     } catch (error) {
       console.error(error);
       throw new Error('카카오 코드를 액세스 토큰으로 교환하는데 실패했습니다.');

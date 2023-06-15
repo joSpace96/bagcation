@@ -6,6 +6,9 @@ import {
   AmericaButton,
   AsiaButton,
   ContinentButton,
+  DateButton,
+  DatePickerWrapper,
+  DetailButton,
   EuropeButton,
   OceaniaButton,
   PlannerDiary,
@@ -15,6 +18,9 @@ import {
 } from "./PlannerAsiaSty";
 import axios from "axios";
 import apiServer from "../../../api/api";
+import { Link, useNavigate } from "react-router-dom";
+import "react-datepicker/dist/react-datepicker.css";
+import ReactDatePicker from "react-datepicker";
 
 const PlannerAsia = () => {
   const [PlanMarkers, setPlanMarkers] = useState([]);
@@ -30,7 +36,17 @@ const PlannerAsia = () => {
   const [nationMarkers, setNationMarkers] = useState([]);
   const [center, setCenter] = useState({ lat: 20, lng: 90 });
   const [zoom, setZoom] = useState(4);
-  let newMarkers = [];
+  const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
+  const [startDate, setStartDate] = useState(null);
+  const [durations, setDurations] = useState([]);
+  const currentDate = new Date();
+  const navigate = useNavigate();
+  console.log(PlanMarkers);
+
+  const handleDateChange = (date) => {
+    setStartDate(date);
+    setIsDatePickerOpen(false);
+  };
 
   const defaultIcon = {
     url: flag,
@@ -41,7 +57,9 @@ const PlannerAsia = () => {
     scaledSize: new window.google.maps.Size(40, 40),
   };
   const arrowHeads = []; // 화살표를 저장할 배열을 생성
-
+  useEffect(() => {
+    setDurations(Array(PlanMarkers.length).fill(1));
+  }, [PlanMarkers]);
   useEffect(() => {
     try {
       axios.get(`${apiServer}/map/getNation`).then((response) => {
@@ -280,29 +298,6 @@ const PlannerAsia = () => {
     }
   }, [PlanMarkers]);
 
-  // const handleDelete = (index) => {
-  //   const deletedMarker = PlanMarkers[index];
-  //   const updatedPlanMarkers = [...PlanMarkers];
-  //   updatedPlanMarkers.splice(index, 1);
-  //   setPlanMarkers(updatedPlanMarkers);
-  //   const updatedClickedMarkers = PlanMarkers.map((markerData) => {
-  //     return new window.google.maps.Marker({
-  //       position: markerData.position,
-  //       map: newMap,
-  //       label: {
-  //         text: markerData.label,
-  //         color: "black",
-  //         fontSize: "14px",
-  //         fontWeight: "bold",
-  //       },
-  //       icon: clickedIcon,
-  //       isClicked: true,
-  //     });
-  //   });
-  //   setClickedMarkers(updatedClickedMarkers);
-  //   setNewMap(newMap);
-  // };
-
   // 마커클릭이벤트 함수
 
   const handleMarkerClick = (marker, map) => {
@@ -312,6 +307,7 @@ const PlannerAsia = () => {
       .map((city) => ({
         position: { lat: city.lat, lng: city.lng },
         label: city.city,
+        nation: city.nation,
       }));
     const path = PlanMarkers.map((planMarker) => planMarker.position);
 
@@ -333,6 +329,7 @@ const PlannerAsia = () => {
       );
       const labelColor = isClicked ? "black" : "gray";
       const markerPosition = markerData.position;
+      const markerNation = markerData.nation;
       const newMarker = new window.google.maps.Marker({
         position: markerPosition,
         map: map,
@@ -354,6 +351,7 @@ const PlannerAsia = () => {
             {
               position: markerPosition,
               label: newMarker.getLabel().text,
+              nation: markerNation,
             },
           ]);
         } else {
@@ -371,7 +369,7 @@ const PlannerAsia = () => {
         newMarker.isClicked = !newMarker.isClicked;
         handleMarkerClick(newMarker, map);
       });
-
+      console.log(newMarkers);
       return newMarker;
     });
 
@@ -535,6 +533,32 @@ const PlannerAsia = () => {
 
     setPlanMarkers(updatedMarkers);
   };
+  const handleDetailClick = () => {
+    navigate("/planner/map/detail", {
+      state: {
+        markers: PlanMarkers,
+        startDate: startDate,
+        durations: durations,
+      },
+    });
+  };
+  const handleIncreaseDuration = (index) => {
+    setDurations((prevDurations) => {
+      const newDurations = [...prevDurations];
+      newDurations[index] = newDurations[index] + 1;
+      return newDurations;
+    });
+  };
+
+  const handleDecreaseDuration = (index) => {
+    setDurations((prevDurations) => {
+      const newDurations = [...prevDurations];
+      if (newDurations[index] > 1) {
+        newDurations[index] = newDurations[index] - 1;
+      }
+      return newDurations;
+    });
+  };
 
   return (
     <>
@@ -542,12 +566,61 @@ const PlannerAsia = () => {
       <PlannerDiary>
         <PlannerHeader>
           <span
-            class="material-symbols-outlined"
             onClick={() => handleBack(PlanMarkers)}
+            style={{
+              marginLeft: "20px",
+              position: "relative",
+              top: "10px",
+              cursor: "pointer",
+              zIndex: 2,
+            }}
+            class="material-symbols-outlined"
           >
             undo
           </span>
-          <div>여행도시</div>
+          <div style={{ marginLeft: "20%", fontSize: "14px" }}>여행도시</div>
+          <div>
+            <ReactDatePicker
+              selected={startDate}
+              onChange={handleDateChange}
+              onFocus={() => setIsDatePickerOpen(true)}
+              onClickOutside={() => setIsDatePickerOpen(false)}
+              minDate={currentDate}
+              customInput={
+                <div
+                  style={{
+                    fontSize: "14px",
+                    display: "flex",
+                    flexDirection: "row",
+                  }}
+                >
+                  {startDate ? (
+                    <p
+                      style={{ cursor: "pointer" }}
+                      onClick={() => setIsDatePickerOpen(true)}
+                    >
+                      {startDate.toLocaleDateString()}
+                    </p>
+                  ) : (
+                    <p
+                      style={{ cursor: "pointer" }}
+                      onClick={() => setIsDatePickerOpen(true)}
+                    >
+                      출발일
+                    </p>
+                  )}
+                  <span
+                    style={{ position: "relative", top: "10px", left: "5px" }}
+                    class="material-symbols-outlined"
+                    onClick={() => setIsDatePickerOpen(true)}
+                  >
+                    calendar_month
+                  </span>
+                </div>
+              }
+              open={isDatePickerOpen}
+            />
+          </div>
         </PlannerHeader>
         <div>
           <ContinentButton>
@@ -582,8 +655,14 @@ const PlannerAsia = () => {
                   style={{ justifyContent: "center" }}
                 >
                   <div>
-                    {/* <button onClick={handleDelete(item)}>Delete</button> */}
                     {item.label}
+                    <button onClick={() => handleDecreaseDuration(index)}>
+                      -
+                    </button>
+                    <span>{durations[index]}일</span>
+                    <button onClick={() => handleIncreaseDuration(index)}>
+                      +
+                    </button>
                   </div>
                 </PlannerInput>
                 {index < markerDistances.length && (
@@ -606,7 +685,7 @@ const PlannerAsia = () => {
             ))}
           </div>
         </div>
-        <button>세부일정 짜기</button>
+        <DetailButton onClick={handleDetailClick}>세부일정 짜기</DetailButton>
       </PlannerDiary>
     </>
   );

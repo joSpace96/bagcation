@@ -7,7 +7,7 @@ import america from "../images/north-america.png";
 import americaHover from "../images/north-america_hover.png";
 import oceaniaHover from "../images/australia.png";
 import oceania from "../images/australia_hover.png";
-
+import DatePicker from "react-datepicker";
 export const PlannerDiary = styled.div`
   border-radius: 5px;
   position: absolute;
@@ -17,7 +17,7 @@ export const PlannerDiary = styled.div`
   height: 858px;
   background-color: whitesmoke;
   padding-bottom: 10px;
-  button {
+  /* button {
     border-radius: 10px;
     width: 150px;
     height: 40px;
@@ -33,8 +33,8 @@ export const PlannerDiary = styled.div`
     &:hover {
       background-color: #0055ff;
       color: white;
-    }
-  }
+    } */
+  /* } */
 `;
 export const PlannerHeader = styled.div`
   display: flex;
@@ -48,12 +48,11 @@ export const PlannerHeader = styled.div`
   div {
     margin: auto;
   }
+  button {
+    z-index: 1000;
+  }
   span {
     cursor: pointer;
-    z-index: 1;
-    &:hover {
-      color: aquamarine;
-    }
   }
 `;
 
@@ -101,7 +100,7 @@ export const ContinentButton = styled.div`
   display: flex;
   width: 80px;
   flex-direction: column;
-  height: 814px;
+  height: 785px;
   border-radius: 5px;
   background-color: #0055ff;
   z-index: -1;
@@ -207,5 +206,35 @@ export const OceaniaButton = styled.div`
     font-size: 15px;
     margin-top: 80px;
     background-color: #0055ff;
+  }
+`;
+export const DateButton = styled.div``;
+
+export const DetailButton = styled.button`
+  border-radius: 10px;
+  width: 150px;
+  height: 40px;
+  position: absolute;
+  bottom: 0;
+  right: -20%;
+  left: 0;
+  margin: auto;
+  cursor: pointer;
+  background-color: #7bc0f9;
+  color: gray;
+  font-weight: bold;
+  &:hover {
+    background-color: #0055ff;
+    color: white;
+  }
+`;
+export const DatePickerWrapper = styled(DatePicker)`
+  /* 다른 스타일 추가 */
+  /* .react-datepicker-wrapper 스타일 제거 */
+  .react-datepicker-wrapper {
+    height: 1000px;
+  }
+  input {
+    display: none;
   }
 `;

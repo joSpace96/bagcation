@@ -24,7 +24,7 @@ const PlannerBoard = () => {
             <img src={BannerImg} alt="" />
           </span>
           <div style={{ marginTop: "20px", justifyContent: "space-between" }}>
-            <BannerLink to="/planner/detail">
+            <BannerLink to="/planner/map">
               <InBannerButtonL>
                 <span
                   style={{ position: "relative", top: "5px", left: "-5px" }}

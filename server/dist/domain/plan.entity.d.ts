@@ -6,9 +6,10 @@ export declare class Plan {
     period: string;
     theme: string;
     season: string;
-    date: Date;
+    startdate: Date;
     views: string;
     likecount: number;
+    save: boolean;
 }
 export declare class Days {
     idx: number;

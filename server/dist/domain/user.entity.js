@@ -15,7 +15,7 @@ let User = exports.User = class User {
 };
 __decorate([
     (0, typeorm_1.PrimaryGeneratedColumn)(),
-    __metadata("design:type", typeof BigInt === "function" ? BigInt : Object)
+    __metadata("design:type", Number)
 ], User.prototype, "idx", void 0);
 __decorate([
     (0, typeorm_1.Column)(),

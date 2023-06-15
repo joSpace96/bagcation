@@ -25,11 +25,13 @@ export class Plan {
   @Column()
   season: string;
   @Column()
-  date: Date;
+  startdate: Date;
   @Column('bigint') // Updated to string column type
   views: string;
   @Column()
   likecount: number;
+  @Column()
+  save: boolean;
 }
 
 @Entity()

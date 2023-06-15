@@ -4,10 +4,19 @@ import { Response } from 'express';
 import { ConfigService } from '@nestjs/config';
 export declare class UserController {
     private readonly userService;
+    private s3;
     constructor(userService: UserService);
     signUp(createUserDto: CreateUserDto): Promise<{
         message: string;
         user: CreateUserDto & import("../domain/user.entity").User;
+    }>;
+    private uploadImageToS3;
+    login(email: string, password: string): Promise<{
+        message: string;
+        user?: undefined;
+    } | {
+        message: string;
+        user: import("../domain/user.entity").User;
     }>;
     findByKakaoId(kakaoUserId: string): Promise<boolean>;
 }

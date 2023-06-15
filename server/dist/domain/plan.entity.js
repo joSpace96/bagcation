@@ -47,7 +47,7 @@ __decorate([
 __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", Date)
-], Plan.prototype, "date", void 0);
+], Plan.prototype, "startdate", void 0);
 __decorate([
     (0, typeorm_1.Column)('bigint'),
     __metadata("design:type", String)
@@ -56,6 +56,10 @@ __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", Number)
 ], Plan.prototype, "likecount", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", Boolean)
+], Plan.prototype, "save", void 0);
 exports.Plan = Plan = __decorate([
     (0, typeorm_1.Entity)()
 ], Plan);

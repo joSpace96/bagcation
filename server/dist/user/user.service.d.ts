@@ -6,7 +6,8 @@ import { ConfigService } from '@nestjs/config';
 export declare class UserService {
     private userRepository;
     constructor(userRepository: Repository<User>);
-    findById(idx: bigint): Promise<User>;
+    findById(idx: number): Promise<User>;
+    findByEmailAndPassword(email: string, password: string): Promise<User>;
     findByKakaoUserId(kakaoUserId: string): Promise<User>;
     create(createUserDto: CreateUserDto): Promise<CreateUserDto & User>;
     kakaoSignUp(kakaoSignUpDto: CreateUserDto): Promise<User>;

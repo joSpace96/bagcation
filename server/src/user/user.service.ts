@@ -13,8 +13,11 @@ export class UserService {
     @InjectRepository(User) // User 엔티티를 주입받을 수 있도록 설정
     private userRepository: Repository<User>, // UserRepository를 주입
   ) {}
-  async findById(idx: bigint): Promise<User> {
+  async findById(idx: number): Promise<User> {
     return this.userRepository.findOne({ where: { idx } });
+  }
+  async findByEmailAndPassword(email: string, password:string): Promise<User> {
+    return this.userRepository.findOne({where: {email,password}});
   }
 
   async findByKakaoUserId(kakaoUserId: string): Promise<User> {

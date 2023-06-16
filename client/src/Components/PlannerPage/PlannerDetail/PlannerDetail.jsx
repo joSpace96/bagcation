@@ -26,8 +26,6 @@ const PlannerDetail = () => {
   const [memoList, setMemoList] = useState([]);
   const [memoInput, setMemoInput] = useState("");
 
-  let routemarkers = [];
-
   useEffect(() => {
     const initMap = () => {
       const map = new window.google.maps.Map(document.getElementById("map"), {
@@ -40,6 +38,8 @@ const PlannerDetail = () => {
         map: map,
       });
 
+      const routemarkers = [];
+
       const addMarker = (location) => {
         const marker = new window.google.maps.Marker({
           position: location,
@@ -51,25 +51,34 @@ const PlannerDetail = () => {
             lat: marker.getPosition().lat(),
             lng: marker.getPosition().lng(),
           },
-        }); // 마커의 위치 정보를 배열에 추가
-        console.log(routemarkers);
+        });
 
         const waypoints = routemarkers.map((marker) => ({
           location: marker.position,
         }));
 
-        const request = {
-          origin: waypoints[0].location,
-          destination: waypoints[waypoints.length - 1].location,
-          waypoints: waypoints.slice(1, waypoints.length - 1),
-          travelMode: window.google.maps.TravelMode.WALKING,
-        };
+        if (waypoints.length >= 2) {
+          const request = {
+            origin: waypoints[0].location,
+            destination: waypoints[waypoints.length - 1].location,
+            waypoints: waypoints.slice(1, waypoints.length - 1),
+            travelMode: window.google.maps.TravelMode.WALKING,
+          };
 
-        directionsService.route(request, function (result, status) {
-          if (status === window.google.maps.DirectionsStatus.OK) {
-            directionsRenderer.setDirections(result);
-          }
-        });
+          directionsService.route(request, function (result, status) {
+            if (status === window.google.maps.DirectionsStatus.OK) {
+              directionsRenderer.setDirections(result);
+            } else if (
+              status === window.google.maps.DirectionsStatus.ZERO_RESULTS
+            ) {
+              console.warn("No route found for the given locations.");
+              directionsRenderer.setDirections({ routes: [] }); // 빈 경로로 초기화합니다.
+            } else {
+              console.error("Directions request failed:", status);
+            }
+          });
+        }
+
         marker.addListener("click", function () {
           alert("마커가 클릭되었습니다!");
         });

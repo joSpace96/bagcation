@@ -1,6 +1,8 @@
 import React, { useEffect, useRef } from "react";
 import { useState } from "react";
 import {
+  StartDate,
+  TodoBrand,
   TodoContainer,
   TodoHeader,
   TodoList,
@@ -18,14 +20,69 @@ const PlannerDetail = () => {
   const [startY, setStartY] = useState(0);
   const [startScrollTop, setStartScrollTop] = useState(0);
   const [selectedTaskIndex, setSelectedTaskIndex] = useState(null);
-  const [center, setCenter] = useState("");
-  console.log("건네받은 데이터: ", location.state);
+  const data = location.state.markers;
+  const [center, setCenter] = useState(data[0].position);
+  const [map, setMap] = useState(null);
+  const [memoList, setMemoList] = useState([]);
+  const [memoInput, setMemoInput] = useState("");
+  const [selectedTask, setSelectedTask] = useState(null);
+
+  let routemarkers = [];
+
   useEffect(() => {
-    const map = new window.google.maps.Map(document.getElementById("map"), {
-      zoom: 4,
-      center: center,
-    });
-  }, []);
+    const initMap = () => {
+      const map = new window.google.maps.Map(document.getElementById("map"), {
+        zoom: 15,
+        center: center,
+      });
+
+      const directionsService = new window.google.maps.DirectionsService();
+      const directionsRenderer = new window.google.maps.DirectionsRenderer({
+        map: map,
+      });
+
+      const addMarker = (location) => {
+        const marker = new window.google.maps.Marker({
+          position: location,
+          map: map,
+        });
+
+        routemarkers.push({
+          position: {
+            lat: marker.getPosition().lat(),
+            lng: marker.getPosition().lng(),
+          },
+        }); // 마커의 위치 정보를 배열에 추가
+        console.log(routemarkers);
+
+        const waypoints = routemarkers.map((marker) => ({
+          location: marker.position,
+        }));
+
+        const request = {
+          origin: waypoints[0].location,
+          destination: waypoints[waypoints.length - 1].location,
+          waypoints: waypoints.slice(1, waypoints.length - 1),
+          travelMode: window.google.maps.TravelMode.WALKING,
+        };
+
+        directionsService.route(request, function (result, status) {
+          if (status === window.google.maps.DirectionsStatus.OK) {
+            directionsRenderer.setDirections(result);
+          }
+        });
+        marker.addListener("click", function () {
+          alert("마커가 클릭되었습니다!");
+        });
+      };
+
+      map.addListener("click", function (event) {
+        addMarker(event.latLng);
+      });
+    };
+
+    initMap();
+  }, [center]);
 
   // 플랜마커와 날짜를 기반으로 투두리스트 생성
   useEffect(() => {
@@ -46,6 +103,8 @@ const PlannerDetail = () => {
           date,
           location: marker.label,
           nation: marker.nation,
+          lng: marker.position.lng,
+          lat: marker.position.lat,
           completed: false,
         }));
       });
@@ -55,6 +114,7 @@ const PlannerDetail = () => {
 
     generateTodoList();
   }, [markers]);
+
   const handleMouseDown = (event) => {
     setIsDragging(true);
     setStartY(event.clientY);
@@ -64,8 +124,7 @@ const PlannerDetail = () => {
   const handleMouseMove = (event) => {
     if (!isDragging) return;
 
-    event.preventDefault(); // 드래그 동작 시에는 기본 텍스트 선택 동작을 막음
-
+    event.preventDefault();
     const deltaY = event.clientY - startY;
     scrollContainerRef.current.scrollTop = startScrollTop - deltaY;
   };
@@ -73,17 +132,51 @@ const PlannerDetail = () => {
   const handleMouseUp = () => {
     setIsDragging(false);
   };
+
   const handleTaskClick = (index, task) => {
     setSelectedTaskIndex(index);
-    setCenter(index.positon);
+    setCenter({ lat: task.lat, lng: task.lng });
+    setSelectedTask(task);
   };
+  const handleAddMemo = () => {
+    // Add a new memo item to the list
+    const newMemoItem = {
+      id: Date.now(),
+      text: memoInput,
+      date: new Date().toLocaleDateString(), // Use current date
+    };
 
+    setMemoList((prevMemoList) => [...prevMemoList, newMemoItem]);
+    setMemoInput(""); // Clear the memo input field
+  };
+  const handleDeleteMemo = (id) => {
+    // Remove the memo item with the specified id
+    setMemoList((prevMemoList) =>
+      prevMemoList.filter((memo) => memo.id !== id)
+    );
+  };
+  const handleUpdateMemo = (memoId, updatedMemoText) => {
+    // Find the memo in the memoList array
+    const updatedMemoList = memoList.map((memo) => {
+      if (memo.id === memoId) {
+        // Update the memo text
+        return {
+          ...memo,
+          text: updatedMemoText,
+        };
+      }
+      return memo;
+    });
+
+    // Update the memoList state with the updated memo list
+    setMemoList(updatedMemoList);
+  };
   return (
     <div style={{ display: "flex", flexDirection: "row" }}>
       <TodoContainer>
         <TodoHeader>
-          <h2>여행 투두리스트</h2>
-          <p>출발일: {startDate.toLocaleDateString()}</p>
+          <TodoBrand>여행 투두리스트</TodoBrand>
+          <StartDate>출발일: {startDate.toLocaleDateString()}</StartDate>
         </TodoHeader>
         <TodoList
           className="scroll-content"
@@ -101,6 +194,7 @@ const PlannerDetail = () => {
               onClick={() => handleTaskClick(index, task)}
             >
               <div className="task-info">
+                <div>day{index + 1}</div>
                 <p className="date">{task.date}</p>
                 <p className="location">
                   {task.location} - {task.nation}
@@ -110,9 +204,47 @@ const PlannerDetail = () => {
           ))}
         </TodoList>
       </TodoContainer>
-      <TodoMemoContainer>dd</TodoMemoContainer>
-      <div id="map" style={{ height: "868px", width: "90%" }}></div>
+      <div
+        id="map"
+        style={{
+          height: "868px",
+          width: "70%",
+          position: "absolute",
+          right: "0",
+        }}
+      ></div>
+      <TodoMemoContainer show={selectedTask !== null}>
+        <div className="memo-header">
+          <h2>Todo Memo</h2>
+        </div>
+        <div className="memo-form">
+          <textarea
+            placeholder="Write a memo..."
+            value={memoInput}
+            onChange={(e) => setMemoInput(e.target.value)}
+          />
+          <button className="add-button" onClick={handleAddMemo}>
+            Add
+          </button>
+        </div>
+        <div className="memo-list">
+          {selectedTask && (
+            <div className="memo-card">
+              <textarea
+                placeholder="Write a memo..."
+                value={selectedTask.memo}
+                onChange={(e) =>
+                  handleUpdateMemo(selectedTask.id, e.target.value)
+                }
+              />
+              <p className="memo-date">{selectedTask.date}</p>
+              <button>삭제</button>
+            </div>
+          )}
+        </div>
+      </TodoMemoContainer>
     </div>
   );
 };
+
 export default PlannerDetail;

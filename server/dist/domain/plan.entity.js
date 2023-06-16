@@ -49,7 +49,7 @@ __decorate([
     __metadata("design:type", Date)
 ], Plan.prototype, "startdate", void 0);
 __decorate([
-    (0, typeorm_1.Column)('bigint'),
+    (0, typeorm_1.Column)(),
     __metadata("design:type", String)
 ], Plan.prototype, "views", void 0);
 __decorate([

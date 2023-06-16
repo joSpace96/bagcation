@@ -26,7 +26,7 @@ export class Plan {
   season: string;
   @Column()
   startdate: Date;
-  @Column('bigint') // Updated to string column type
+  @Column() // Updated to string column type
   views: string;
   @Column()
   likecount: number;

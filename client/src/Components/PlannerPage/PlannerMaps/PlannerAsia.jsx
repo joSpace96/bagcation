@@ -39,14 +39,12 @@ const PlannerAsia = () => {
   const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
   const [startDate, setStartDate] = useState(null);
   const [durations, setDurations] = useState([]);
+  const [DateOk, setDateOk] = useState(false);
   const currentDate = new Date();
   const navigate = useNavigate();
   console.log(PlanMarkers);
 
-  const handleDateChange = (date) => {
-    setStartDate(date);
-    setIsDatePickerOpen(false);
-  };
+  // 출발일 선택 이벤트 처리
 
   const defaultIcon = {
     url: flag,
@@ -533,14 +531,28 @@ const PlannerAsia = () => {
 
     setPlanMarkers(updatedMarkers);
   };
+
+  const handleDateChange = (date) => {
+    setStartDate(date);
+    setIsDatePickerOpen(false);
+    setDateOk(true);
+  };
+
+  // 세부 일정 짜기로 진행하는 함수
   const handleDetailClick = () => {
-    navigate("/planner/map/detail", {
-      state: {
-        markers: PlanMarkers,
-        startDate: startDate,
-        durations: durations,
-      },
-    });
+    if (DateOk) {
+      // 출발일이 설정되었으면 세부 일정 짜기로 진행
+      navigate("/planner/map/detail", {
+        state: {
+          markers: PlanMarkers,
+          startDate: startDate,
+          durations: durations,
+        },
+      });
+    } else {
+      // 출발일이 설정되지 않았으면 경고 메시지 출력 또는 다른 작업 수행
+      alert("출발일을 설정해야 세부 일정 짜기로 진행할 수 있습니다.");
+    }
   };
   const handleIncreaseDuration = (index) => {
     setDurations((prevDurations) => {

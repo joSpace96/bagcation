@@ -25,7 +25,6 @@ const PlannerDetail = () => {
   const [map, setMap] = useState(null);
   const [memoList, setMemoList] = useState([]);
   const [memoInput, setMemoInput] = useState("");
-  const [selectedTask, setSelectedTask] = useState(null);
 
   let routemarkers = [];
 
@@ -136,7 +135,6 @@ const PlannerDetail = () => {
   const handleTaskClick = (index, task) => {
     setSelectedTaskIndex(index);
     setCenter({ lat: task.lat, lng: task.lng });
-    setSelectedTask(task);
   };
   const handleAddMemo = () => {
     // Add a new memo item to the list
@@ -154,22 +152,6 @@ const PlannerDetail = () => {
     setMemoList((prevMemoList) =>
       prevMemoList.filter((memo) => memo.id !== id)
     );
-  };
-  const handleUpdateMemo = (memoId, updatedMemoText) => {
-    // Find the memo in the memoList array
-    const updatedMemoList = memoList.map((memo) => {
-      if (memo.id === memoId) {
-        // Update the memo text
-        return {
-          ...memo,
-          text: updatedMemoText,
-        };
-      }
-      return memo;
-    });
-
-    // Update the memoList state with the updated memo list
-    setMemoList(updatedMemoList);
   };
   return (
     <div style={{ display: "flex", flexDirection: "row" }}>
@@ -213,7 +195,7 @@ const PlannerDetail = () => {
           right: "0",
         }}
       ></div>
-      <TodoMemoContainer show={selectedTask !== null}>
+      <TodoMemoContainer>
         <div className="memo-header">
           <h2>Todo Memo</h2>
         </div>
@@ -228,19 +210,13 @@ const PlannerDetail = () => {
           </button>
         </div>
         <div className="memo-list">
-          {selectedTask && (
-            <div className="memo-card">
-              <textarea
-                placeholder="Write a memo..."
-                value={selectedTask.memo}
-                onChange={(e) =>
-                  handleUpdateMemo(selectedTask.id, e.target.value)
-                }
-              />
-              <p className="memo-date">{selectedTask.date}</p>
-              <button>삭제</button>
+          {memoList.map((memo) => (
+            <div className="memo-card" key={memo.id}>
+              <p className="memo-text">{memo.text}</p>
+              <p className="memo-date">{memo.date}</p>
+              <button onClick={() => handleDeleteMemo(memo.id)}>삭제</button>
             </div>
-          )}
+          ))}
         </div>
       </TodoMemoContainer>
     </div>

@@ -13,7 +13,8 @@
     width: 0; /* 스크롤바 너비 */
   }
   .task.selected {
-    background-color: gray;
+    background-color: #0055ff;
     color: white;
     font-weight: bold;
   }
+ 

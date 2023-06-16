@@ -574,10 +574,10 @@ const PlannerAsia = () => {
 
   return (
     <>
-      <div id="map" style={{ height: "868px", width: "90%" }}></div>
+      <div id="map" style={{ height: "92vh", width: "90%" }}></div>
       <PlannerDiary>
         <PlannerHeader>
-          <span
+          {/* <span
             onClick={() => handleBack(PlanMarkers)}
             style={{
               marginLeft: "20px",
@@ -589,7 +589,7 @@ const PlannerAsia = () => {
             class="material-symbols-outlined"
           >
             undo
-          </span>
+          </span> */}
           <div style={{ marginLeft: "20%", fontSize: "14px" }}>여행도시</div>
           <div>
             <ReactDatePicker
@@ -636,6 +636,20 @@ const PlannerAsia = () => {
         </PlannerHeader>
         <div>
           <ContinentButton>
+            <span
+              onClick={() => handleBack(PlanMarkers)}
+              style={{
+                margin: "23px",
+                marginLeft: "28px",
+                float: "top",
+                cursor: "pointer",
+                zIndex: 2,
+                color: "white",
+              }}
+              class="material-symbols-outlined"
+            >
+              undo
+            </span>
             <AsiaButton onClick={handleAsia}>
               <div>아시아</div>
             </AsiaButton>
@@ -653,7 +667,13 @@ const PlannerAsia = () => {
             </OceaniaButton>
           </ContinentButton>
           <div
-            style={{ overflowX: "hidden", overflowY: "scroll", height: "80vh" }}
+            style={{
+              position: "relative",
+              top: "90px",
+              overflowX: "hidden",
+              overflowY: "scroll",
+              height: "80vh",
+            }}
           >
             {PlanMarkers.map((item, index) => (
               <div

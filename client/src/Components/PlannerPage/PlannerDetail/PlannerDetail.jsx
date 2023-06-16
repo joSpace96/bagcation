@@ -6,7 +6,6 @@ import {
   TodoContainer,
   TodoHeader,
   TodoList,
-  TodoMemoContainer,
 } from "./PlannerDetailSty";
 import { useLocation } from "react-router-dom";
 import "./PlannerDetail.css";
@@ -14,6 +13,7 @@ import PlacesAutocomplete, {
   geocodeByAddress,
   getLatLng,
 } from "react-places-autocomplete";
+import PlanSchedule from "./PlanSchedule";
 
 const PlannerDetail = () => {
   const [tasks, setTasks] = useState([]);
@@ -26,11 +26,10 @@ const PlannerDetail = () => {
   const [selectedTaskIndex, setSelectedTaskIndex] = useState(null);
   const data = location.state.markers;
   const [center, setCenter] = useState(data[0].position);
-  const [map, setMap] = useState(null);
-  const [memoList, setMemoList] = useState([]);
-  const [memoInput, setMemoInput] = useState("");
   const [address, setAddress] = useState("");
   const [coordinates, setCoordinates] = useState({ lat: null, lng: null });
+  const [routeMarkers, setRouteMarkers] = useState([]);
+  const [selectedRoute, setSelectedRoute] = useState(null);
 
   useEffect(() => {
     const initMap = () => {
@@ -58,7 +57,9 @@ const PlannerDetail = () => {
             lng: marker.getPosition().lng(),
           },
         });
-
+        setRouteMarkers(routemarkers);
+        if (!routeMarkers) {
+        }
         const waypoints = routemarkers.map((marker) => ({
           location: marker.position,
         }));
@@ -71,36 +72,44 @@ const PlannerDetail = () => {
             travelMode: window.google.maps.TravelMode.WALKING,
           };
 
-          // 경로 계산 후 거리를 표시하는 함수
-          const calculateDistance = (result) => {
+          // 거리를 경로 위에 표시하는 함수
+          const displayDistanceOnRoute = (result) => {
             if (result.routes && result.routes.length > 0) {
               const route = result.routes[0];
+              const legs = route.legs;
+
               let totalDistance = 0;
+              const routeCoordinates = [];
 
-              // 경로의 각 세그먼트의 거리를 합산 및 마커 표시
-              for (let i = 0; i < route.legs.length; i++) {
-                const leg = route.legs[i];
-                const distanceInKm = (leg.distance.value / 1000).toFixed(2); // 세그먼트의 거리를 km로 변환
+              legs.forEach((leg) => {
+                const distanceInKm = (leg.distance.value / 1000).toFixed(2);
+                totalDistance += leg.distance.value;
 
-                // 세그먼트의 중간 지점에 마커를 추가하고 거리를 표시
                 const midPointIndex = Math.floor(leg.steps.length / 2);
                 const midPoint = leg.steps[midPointIndex].start_location;
+                routeCoordinates.push(midPoint);
+
+                const infowindow = new window.google.maps.InfoWindow({
+                  content: `Distance: ${distanceInKm} km`,
+                });
+
                 const marker = new window.google.maps.Marker({
                   position: midPoint,
                   map: map,
                 });
-                const infowindow = new window.google.maps.InfoWindow({
-                  content: `${distanceInKm} km`,
+
+                marker.addListener("click", () => {
+                  infowindow.open(map, marker);
                 });
-                infowindow.open(map, marker);
+              });
 
-                totalDistance += leg.distance.value;
-              }
-
-              // 전체 거리를 km로 변환하여 표시
               const totalDistanceInKm = (totalDistance / 1000).toFixed(2);
               console.log("전체 거리:", totalDistanceInKm, "km");
-              // 거리를 원하는 위치에 표시하거나 상태로 저장하여 사용할 수 있습니다.
+
+              setSelectedRoute({
+                distance: totalDistanceInKm,
+                coordinates: routeCoordinates,
+              });
             } else {
               console.warn("경로 정보가 없습니다.");
             }
@@ -110,7 +119,7 @@ const PlannerDetail = () => {
           directionsService.route(request, function (result, status) {
             if (status === window.google.maps.DirectionsStatus.OK) {
               directionsRenderer.setDirections(result);
-              calculateDistance(result); // 거리 계산 및 표시
+              displayDistanceOnRoute(result); // 거리 계산 및 표시
             } else if (
               status === window.google.maps.DirectionsStatus.ZERO_RESULTS
             ) {
@@ -151,7 +160,7 @@ const PlannerDetail = () => {
 
     initMap();
   }, [center]);
-
+  console.log(routeMarkers);
   // 플랜마커와 날짜를 기반으로 투두리스트 생성
   useEffect(() => {
     const generateTodoList = () => {
@@ -207,8 +216,8 @@ const PlannerDetail = () => {
       <div
         id="map"
         style={{
-          height: "868px",
-          width: "70%",
+          height: "90vh",
+          width: "50%",
           position: "absolute",
           right: "0",
         }}
@@ -238,24 +247,6 @@ const PlannerDetail = () => {
     setSelectedTaskIndex(index);
     setCenter({ lat: task.lat, lng: task.lng });
   };
-  const handleAddMemo = () => {
-    // Add a new memo item to the list
-    const newMemoItem = {
-      id: Date.now(),
-      text: memoInput,
-      date: new Date().toLocaleDateString(), // Use current date
-    };
-
-    setMemoList((prevMemoList) => [...prevMemoList, newMemoItem]);
-    setMemoInput(""); // Clear the memo input field
-  };
-  const handleDeleteMemo = (id) => {
-    // Remove the memo item with the specified id
-    setMemoList((prevMemoList) =>
-      prevMemoList.filter((memo) => memo.id !== id)
-    );
-  };
-
   const inputStyle = {
     width: "100%",
     padding: "8px",
@@ -263,106 +254,99 @@ const PlannerDetail = () => {
   };
 
   return (
-    <div style={{ display: "flex", flexDirection: "row" }}>
-      <TodoContainer>
-        <TodoHeader>
-          <TodoBrand>여행 투두리스트</TodoBrand>
-          <StartDate>출발일: {startDate.toLocaleDateString()}</StartDate>
-        </TodoHeader>
-        <TodoList
-          className="scroll-content"
-          ref={scrollContainerRef}
-          onMouseDown={handleMouseDown}
-          onMouseMove={handleMouseMove}
-          onMouseUp={handleMouseUp}
+    <div style={{ height: "90vh" }}>
+      <div style={{ display: "flex", flexDirection: "row" }}>
+        <TodoContainer>
+          <TodoHeader>
+            <TodoBrand>여행 투두리스트</TodoBrand>
+            <StartDate>출발일: {startDate.toLocaleDateString()}</StartDate>
+          </TodoHeader>
+          <TodoList
+            className="scroll-content"
+            ref={scrollContainerRef}
+            onMouseDown={handleMouseDown}
+            onMouseMove={handleMouseMove}
+            onMouseUp={handleMouseUp}
+          >
+            {tasks.map((task, index) => (
+              <div
+                className={`task ${
+                  selectedTaskIndex === index ? "selected" : ""
+                }`}
+                key={index}
+                onClick={() => handleTaskClick(index, task)}
+              >
+                <div className="task-info">
+                  <div>day{index + 1}</div>
+                  <p className="date">{task.date}</p>
+                  <p className="location">
+                    {task.location} - {task.nation}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </TodoList>
+        </TodoContainer>
+        <div
+          id="map"
+          style={{
+            height: "90vh",
+            width: "50%",
+            position: "absolute",
+            right: "0",
+            zIndex: "4",
+          }}
         >
-          {tasks.map((task, index) => (
+          {renderMap()}
+        </div>
+        <PlacesAutocomplete
+          value={address}
+          onChange={setAddress}
+          onSelect={handleSelect}
+        >
+          {({
+            getInputProps,
+            suggestions,
+            getSuggestionItemProps,
+            loading,
+          }) => (
             <div
-              className={`task ${
-                selectedTaskIndex === index ? "selected" : ""
-              }`}
-              key={index}
-              onClick={() => handleTaskClick(index, task)}
+              style={{
+                position: "absolute",
+                left: "60%",
+                marginTop: "10px",
+                zIndex: "5",
+              }}
             >
-              <div className="task-info">
-                <div>day{index + 1}</div>
-                <p className="date">{task.date}</p>
-                <p className="location">
-                  {task.location} - {task.nation}
-                </p>
+              <input
+                {...getInputProps({
+                  placeholder: "장소를 검색해보세요.",
+                  style: inputStyle,
+                })}
+              />
+              <div>
+                {loading ? <div>Loading...</div> : null}
+                {suggestions.map((suggestion) => {
+                  const style = {
+                    backgroundColor: suggestion.active ? "#41b6e6" : "#fff",
+                  };
+
+                  return (
+                    <div
+                      {...getSuggestionItemProps(suggestion, { style })}
+                      key={suggestion.placeId}
+                    >
+                      {suggestion.description}
+                    </div>
+                  );
+                })}
               </div>
             </div>
-          ))}
-        </TodoList>
-      </TodoContainer>
-      <div
-        id="map"
-        style={{
-          height: "868px",
-          width: "70%",
-          position: "absolute",
-          right: "0",
-        }}
-      >
-        {renderMap()}
-      </div>
-      <PlacesAutocomplete
-        value={address}
-        onChange={setAddress}
-        onSelect={handleSelect}
-      >
-        {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
-          <div style={{ position: "relative", left: "700px" }}>
-            <input
-              {...getInputProps({
-                placeholder: "Search Places",
-                style: inputStyle,
-              })}
-            />
-            <div>
-              {loading ? <div>Loading...</div> : null}
-              {suggestions.map((suggestion) => {
-                const style = {
-                  backgroundColor: suggestion.active ? "#41b6e6" : "#fff",
-                };
+          )}
+        </PlacesAutocomplete>
 
-                return (
-                  <div
-                    {...getSuggestionItemProps(suggestion, { style })}
-                    key={suggestion.placeId}
-                  >
-                    {suggestion.description}
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        )}
-      </PlacesAutocomplete>
-      <TodoMemoContainer>
-        <div className="memo-header">
-          <h2>Todo Memo</h2>
-        </div>
-        <div className="memo-form">
-          <textarea
-            placeholder="Write a memo..."
-            value={memoInput}
-            onChange={(e) => setMemoInput(e.target.value)}
-          />
-          <button className="add-button" onClick={handleAddMemo}>
-            Add
-          </button>
-        </div>
-        <div className="memo-list">
-          {memoList.map((memo) => (
-            <div className="memo-card" key={memo.id}>
-              <p className="memo-text">{memo.text}</p>
-              <p className="memo-date">{memo.date}</p>
-              <button onClick={() => handleDeleteMemo(memo.id)}>삭제</button>
-            </div>
-          ))}
-        </div>
-      </TodoMemoContainer>
+        <PlanSchedule />
+      </div>
     </div>
   );
 };

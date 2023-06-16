@@ -14,7 +14,7 @@ export const PlannerDiary = styled.div`
   right: 0px;
   top: 60.5px;
   width: 20%;
-  height: 858px;
+  height: 91vh;
   background-color: whitesmoke;
   padding-bottom: 10px;
   /* button {
@@ -43,6 +43,9 @@ export const PlannerHeader = styled.div`
   justify-content: space-between;
   margin-bottom: 10px;
   padding: 10px;
+  width: 77%;
+  position: absolute;
+  right: 0;
   font-weight: bold;
   color: wheat;
   div {
@@ -100,7 +103,7 @@ export const ContinentButton = styled.div`
   display: flex;
   width: 80px;
   flex-direction: column;
-  height: 785px;
+  height: 92.3vh;
   border-radius: 5px;
   background-color: #0055ff;
   z-index: -1;

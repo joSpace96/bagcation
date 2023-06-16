@@ -15,6 +15,7 @@ import PlannerBoard from "./Components/PlannerPage/PlannerBoard";
 import RedirectPage from "./Components/LoginPage/RedirectPage";
 import Register from "./Components/LoginPage/RegisterPage/Register";
 import PlannerDetail from "./Components/PlannerPage/PlannerDetail/PlannerDetail";
+import PlannerTest from "./Components/PlannerPage/PlannerDetail/PlannerTest";
 
 function App() {
   return (
@@ -36,6 +37,7 @@ function App() {
           <Route path="/info/america" element={<America />} />
           <Route path="/info/asia" element={<Asia />} />
           <Route path="/info/europe" element={<Europe />} />
+          <Route path="/test" element={<PlannerTest />} />
           <Route path="/" element={<MainPage />} />
         </Routes>
       </Router>

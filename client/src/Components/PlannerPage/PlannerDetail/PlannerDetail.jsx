@@ -31,7 +31,7 @@ const PlannerDetail = () => {
   useEffect(() => {
     const initMap = () => {
       const map = new window.google.maps.Map(document.getElementById("map"), {
-        zoom: 15,
+        zoom: 14,
         center: center,
       });
 

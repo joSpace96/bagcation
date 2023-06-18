@@ -23,7 +23,7 @@ import { useState } from "react";
 const handleKakaoLogin = () => {
   // 카카오 인가 코드 요청
   window.location.href =
-    "https://kauth.kakao.com/oauth/authorize?client_id=c6acf344a39dd6fa0033f505215fd2a3&redirect_uri=http://localhost:3000/kakao-callback&response_type=code";
+    "https://kauth.kakao.com/oauth/authorize?client_id=c6acf344a39dd6fa0033f505215fd2a3&redirect_uri=http://localhost:3001/kakao-callback&response_type=code";
 };
 
 const Login = () => {

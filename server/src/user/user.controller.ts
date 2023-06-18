@@ -95,7 +95,7 @@ export class LoginController {
       const params = new URLSearchParams();
       params.append('grant_type', 'authorization_code');
       params.append('client_id', 'c6acf344a39dd6fa0033f505215fd2a3'); // 여기에 카카오 앱의 클라이언트 ID를 입력
-      params.append('redirect_uri', 'http://localhost:3000/kakao-callback'); // 여기에 리다이렉트 URI를 입력
+      params.append('redirect_uri', 'http://localhost:3001/kakao-callback'); // 여기에 리다이렉트 URI를 입력
       params.append('code', code);
       params.append('client_secret', '0BpAH3VnLFgTiyt9zmUuz5b2j3jfyCDN');
       // params.append('scope', 'profile,account_email'); // 필수 동의 항목을 추가

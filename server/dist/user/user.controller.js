@@ -109,7 +109,7 @@ let LoginController = exports.LoginController = class LoginController {
             const params = new URLSearchParams();
             params.append('grant_type', 'authorization_code');
             params.append('client_id', 'c6acf344a39dd6fa0033f505215fd2a3');
-            params.append('redirect_uri', 'http://localhost:3000/kakao-callback');
+            params.append('redirect_uri', 'http://localhost:3001/kakao-callback');
             params.append('code', code);
             params.append('client_secret', '0BpAH3VnLFgTiyt9zmUuz5b2j3jfyCDN');
             const { data } = await axios_1.default.post('https://kauth.kakao.com/oauth/token', params.toString(), {

@@ -20,7 +20,7 @@ export const AddSchedulContainer = styled.div`
   background-color: #f2f2f2;
   border-radius: 5px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  z-index: 2;
+  z-index: 0;
 `;
 
 export const StyledInput = styled.input`

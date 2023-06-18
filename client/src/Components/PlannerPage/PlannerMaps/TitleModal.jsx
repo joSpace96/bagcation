@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-const TitleModal = ({ onSubmit }) => {
+const TitleModal = ({ onSubmit, onCancel, startDate }) => {
   const [title, setTitle] = useState("");
 
   const handleInputChange = (event) => {
@@ -8,7 +8,16 @@ const TitleModal = ({ onSubmit }) => {
   };
 
   const handleSubmit = () => {
+    if (!startDate) {
+      alert("출발일을 설정해주세요.");
+      return;
+    }
+
     onSubmit(title);
+  };
+
+  const handleCancel = () => {
+    onCancel();
   };
 
   return (
@@ -18,7 +27,7 @@ const TitleModal = ({ onSubmit }) => {
         bottom: "50%",
         left: "50%",
         transform: "translate(-50%, -50%)",
-        backgroundColor: "#fff",
+        backgroundColor: "whitesmoke",
         borderRadius: "8px",
         padding: "16px",
         boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
@@ -26,7 +35,9 @@ const TitleModal = ({ onSubmit }) => {
         zIndex: 9999,
       }}
     >
-      <h2 style={{ marginBottom: "16px", textAlign: "center" }}>제목 등록</h2>
+      <h2 style={{ marginBottom: "16px", textAlign: "center" }}>
+        제목을 입력해주세요.
+      </h2>
       <input
         type="text"
         value={title}
@@ -39,21 +50,38 @@ const TitleModal = ({ onSubmit }) => {
           marginBottom: "16px",
         }}
       />
-      <button
-        onClick={handleSubmit}
-        style={{
-          display: "block",
-          width: "100%",
-          padding: "8px",
-          borderRadius: "4px",
-          backgroundColor: "#3897f0",
-          color: "#fff",
-          border: "none",
-          cursor: "pointer",
-        }}
-      >
-        확인
-      </button>
+      <div style={{ display: "flex", justifyContent: "space-between" }}>
+        <button
+          onClick={handleSubmit}
+          style={{
+            display: "block",
+            width: "45%",
+            padding: "8px",
+            borderRadius: "4px",
+            backgroundColor: "#3897f0",
+            color: "#fff",
+            border: "none",
+            cursor: "pointer",
+          }}
+        >
+          확인
+        </button>
+        <button
+          onClick={handleCancel}
+          style={{
+            display: "block",
+            width: "45%",
+            padding: "8px",
+            borderRadius: "4px",
+            backgroundColor: "gray",
+            color: "#fff",
+            border: "none",
+            cursor: "pointer",
+          }}
+        >
+          취소
+        </button>
+      </div>
     </div>
   );
 };

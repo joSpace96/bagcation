@@ -33,7 +33,39 @@ const PlannerDetail = () => {
   const [selectedRoute, setSelectedRoute] = useState(null);
   const [taskdate, setTaskDate] = useState();
   const [tasklocal, setTaskLocal] = useState();
+  const [showThemeModal, setShowThemeModal] = useState(false); // 여행 테마 모달 표시 여부 상태
+  const [selectedTheme, setSelectedTheme] = useState("");
+  const [save, setSave] = useState(false);
+  const [likeCount, setLikeCount] = useState(0);
+  const [viewsCount, setViewsCount] = useState(0);
+  // console.log("보내야하는 데이터:", location.state);
+  console.log(tasks);
+  console.log("plan : ", {
+    title: location.state.title,
+    startDate: startDate,
+    theme: selectedTheme,
+    save: save,
+    period:
+      tasks.length > 0
+        ? tasks[0].date + "~" + tasks[tasks.length - 1].date
+        : "",
+    likecount: likeCount,
+    views: viewsCount,
+  });
 
+  console.log(
+    "location: ",
+    tasks.map((task) => ({ location: task.nation }))
+  );
+  console.log(
+    "local : ",
+    tasks.map((task) => ({ local: task.location }))
+  );
+  if (selectedTask && selectedTask.schedule) {
+    console.log("schedule:", selectedTask.schedule);
+  } else {
+    console.log("schedule가 존재하지 않습니다.");
+  }
   useEffect(() => {
     const initMap = () => {
       const map = new window.google.maps.Map(document.getElementById("map"), {
@@ -161,7 +193,6 @@ const PlannerDetail = () => {
 
     initMap();
   }, [center]);
-  console.log("선택된날:", selectedTask);
   // 플랜마커와 날짜를 기반으로 투두리스트 생성
   useEffect(() => {
     const generateTodoList = () => {
@@ -228,6 +259,7 @@ const PlannerDetail = () => {
     );
   };
   const nickname = localStorage.getItem("nick");
+  const kakaonick = localStorage.getItem("kakaonick");
 
   const handleMouseDown = (event) => {
     setIsDragging(true);
@@ -259,6 +291,16 @@ const PlannerDetail = () => {
     fontSize: "16px",
   };
 
+  const handleSaveAndClose = () => {
+    // 저장 및 닫기 버튼 클릭 시 호출되는 함수
+    setShowThemeModal(true); // 여행 테마 모달 표시
+  };
+
+  const handleThemeChange = (event) => {
+    // 여행 테마 선택 시 호출되는 함수
+    setSelectedTheme(event.target.value); // 선택된 여행 테마 업데이트
+  };
+
   return (
     <div
       style={{
@@ -288,7 +330,7 @@ const PlannerDetail = () => {
               <img src={Logo} style={{ width: "40px", height: "40px" }} />
             </Link>
             <h3 style={{ margin: "7px", marginLeft: "20px" }}>
-              {nickname}&nbsp;`s&nbsp;&nbsp;{location.state.title}
+              {kakaonick || nickname}&nbsp;`s&nbsp;&nbsp;{location.state.title}
             </h3>
           </TodoBrand>
         </div>
@@ -305,9 +347,66 @@ const PlannerDetail = () => {
               fontSize: "14px",
               borderRadius: "15px",
             }}
+            onClick={handleSaveAndClose}
           >
             저장&닫기
           </div>
+          {showThemeModal && (
+            <div
+              style={{
+                position: "fixed",
+                top: "50%",
+                left: "50%",
+                transform: "translate(-50%, -50%)",
+                background: "white",
+                padding: "20px",
+                borderRadius: "5px",
+                boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
+                zIndex: 10,
+                color: "#333333",
+              }}
+            >
+              {/* 모달 내용 및 선택 옵션 */}
+              <h3>여행 테마를 선택하세요</h3>
+              <select
+                style={{
+                  backgroundColor: "#EFEFEF",
+                  border: "none",
+                  borderRadius: "20px",
+                  color: "#333333",
+                  cursor: "pointer",
+                  fontSize: "14px",
+                  padding: "10px 20px",
+                  appearance: "none",
+                }}
+                value={selectedTheme}
+                onChange={handleThemeChange}
+              >
+                <option value="">여행 테마를 선택하세요</option>
+                <option value="solo">나홀로</option>
+                <option value="couple">커플</option>
+                <option value="friends">친구</option>
+                <option value="family">가족</option>
+                <option value="bussiness">비즈니스</option>
+                {/* 추가적인 여행 테마 옵션을 필요에 따라 추가할 수 있습니다 */}
+              </select>
+
+              {/* 닫기 버튼 */}
+              <button
+                style={{
+                  backgroundColor: "transparent",
+                  border: "none",
+                  color: "#333333",
+                  cursor: "pointer",
+                  fontSize: "14px",
+                  marginTop: "20px",
+                }}
+                onClick={() => setShowThemeModal(false)}
+              >
+                닫기
+              </button>
+            </div>
+          )}
           <div
             style={{
               width: "70px",
@@ -370,7 +469,7 @@ const PlannerDetail = () => {
                 right: "100px",
                 top: "60px",
                 marginTop: "10px",
-                zIndex: "5",
+                zIndex: "3",
               }}
             >
               <input
@@ -400,6 +499,7 @@ const PlannerDetail = () => {
           )}
         </PlacesAutocomplete>
         <PlanSchedule
+          style={{ zIndex: "0" }}
           taskdate={taskdate}
           tasklocal={tasklocal}
           task={tasks}
@@ -419,7 +519,7 @@ const PlannerDetail = () => {
           position: "relative",
           top: "70px",
           left: "46%",
-          zIndex: 1,
+          zIndex: 0,
         }}
       >
         {renderMap()}

@@ -18,7 +18,7 @@ const ProfileNavBar = () => {
   const nick = localStorage.getItem("nick");
   const kakaonick = localStorage.getItem("kakaonick");
   const kakaoprofile = localStorage.getItem("kakaoprofile");
-  const profileImage = localStorage.getItem("kakaoprofile") || NonProfile;
+  const profileImage = kakaoprofile || NonProfile;
 
   if (!email && !kakaonick) {
     return null; // 이메일 정보가 없으면 아무것도 렌더링하지 않음
@@ -26,7 +26,7 @@ const ProfileNavBar = () => {
   return (
     <ProfileBarContainer>
       <ProfilePicture src={profileImage} />
-      <UserName>{nick || kakaonick} </UserName>
+      <UserName>{kakaonick || nick} </UserName>
       <BagContents>
         <div style={{ display: "inline-block" }}>
           <ContentsName>클립보드</ContentsName>

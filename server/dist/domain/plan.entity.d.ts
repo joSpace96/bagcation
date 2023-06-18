@@ -1,29 +1,29 @@
 export declare class Plan {
     idx: number;
-    user_idx: number;
     title: string;
-    OD: boolean;
     period: string;
     theme: string;
-    season: string;
     startdate: Date;
+    days: Days[];
     views: string;
     likecount: number;
     save: boolean;
 }
 export declare class Days {
     idx: number;
-    plan_idx: number;
+    plan: Plan;
+    locations: Location[];
     day: number;
 }
 export declare class Location {
     idx: number;
-    days_idx: number;
+    day: Days;
+    locals: Local[];
     location: string;
 }
-export declare class local {
+export declare class Local {
     idx: number;
-    location_idx: number;
+    location: Location;
     day: number;
     lat: number;
     lng: number;

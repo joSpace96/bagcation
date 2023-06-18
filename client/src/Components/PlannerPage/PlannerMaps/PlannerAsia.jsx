@@ -535,9 +535,13 @@ const PlannerAsia = () => {
   };
 
   const handleDateChange = (date) => {
-    setStartDate(date);
-    setIsDatePickerOpen(false);
-    setDateOk(true);
+    if (date) {
+      setStartDate(date);
+      setIsDatePickerOpen(false);
+      setDateOk(true);
+    } else {
+      console.error("출발일을 선택해주세요.");
+    }
   };
 
   // 세부 일정 짜기로 진행하는 함수
@@ -545,6 +549,9 @@ const PlannerAsia = () => {
     setIsModalOpen(true);
   };
   const handleModalSubmit = (title) => {
+    if (!startDate) {
+      alert("출발일을 정해주세요.");
+    }
     setIsModalOpen(false);
     navigate("/planner/map/detail", {
       state: {
@@ -554,6 +561,11 @@ const PlannerAsia = () => {
         title: title,
       },
     });
+  };
+
+  const handleModalCancel = () => {
+    setIsModalOpen(false);
+    // 취소 처리
   };
 
   const handleIncreaseDuration = (index) => {
@@ -710,7 +722,13 @@ const PlannerAsia = () => {
           </div>
         </div>
         <DetailButton onClick={handleDetailClick}>세부일정 짜기</DetailButton>
-        {isModalOpen && <TitleModal onSubmit={handleModalSubmit} />}
+        {isModalOpen && (
+          <TitleModal
+            onSubmit={handleModalSubmit}
+            onCancel={handleModalCancel}
+            startDate={startDate}
+          />
+        )}
       </PlannerDiary>
     </>
   );

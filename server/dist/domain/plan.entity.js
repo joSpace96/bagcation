@@ -9,9 +9,8 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.local = exports.Location = exports.Days = exports.Plan = void 0;
+exports.Local = exports.Location = exports.Days = exports.Plan = void 0;
 const typeorm_1 = require("typeorm");
-const user_entity_1 = require("./user.entity");
 let Plan = exports.Plan = class Plan {
 };
 __decorate([
@@ -20,18 +19,8 @@ __decorate([
 ], Plan.prototype, "idx", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
-    (0, typeorm_1.ManyToOne)(() => user_entity_1.User),
-    (0, typeorm_1.JoinColumn)({ name: 'user_idx' }),
-    __metadata("design:type", Number)
-], Plan.prototype, "user_idx", void 0);
-__decorate([
-    (0, typeorm_1.Column)(),
     __metadata("design:type", String)
 ], Plan.prototype, "title", void 0);
-__decorate([
-    (0, typeorm_1.Column)(),
-    __metadata("design:type", Boolean)
-], Plan.prototype, "OD", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", String)
@@ -42,12 +31,12 @@ __decorate([
 ], Plan.prototype, "theme", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
-    __metadata("design:type", String)
-], Plan.prototype, "season", void 0);
-__decorate([
-    (0, typeorm_1.Column)(),
     __metadata("design:type", Date)
 ], Plan.prototype, "startdate", void 0);
+__decorate([
+    (0, typeorm_1.OneToMany)(() => Days, day => day.plan),
+    __metadata("design:type", Array)
+], Plan.prototype, "days", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", String)
@@ -70,9 +59,14 @@ __decorate([
     __metadata("design:type", Number)
 ], Days.prototype, "idx", void 0);
 __decorate([
-    (0, typeorm_1.Column)(),
-    __metadata("design:type", Number)
-], Days.prototype, "plan_idx", void 0);
+    (0, typeorm_1.ManyToOne)(() => Plan, plan => plan.days),
+    (0, typeorm_1.JoinColumn)({ name: 'plan_idx' }),
+    __metadata("design:type", Plan)
+], Days.prototype, "plan", void 0);
+__decorate([
+    (0, typeorm_1.OneToMany)(() => Location, location => location.day),
+    __metadata("design:type", Array)
+], Days.prototype, "locations", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", Number)
@@ -87,9 +81,14 @@ __decorate([
     __metadata("design:type", Number)
 ], Location.prototype, "idx", void 0);
 __decorate([
-    (0, typeorm_1.Column)(),
-    __metadata("design:type", Number)
-], Location.prototype, "days_idx", void 0);
+    (0, typeorm_1.ManyToOne)(() => Days, day => day.locations),
+    (0, typeorm_1.JoinColumn)({ name: 'days_idx' }),
+    __metadata("design:type", Days)
+], Location.prototype, "day", void 0);
+__decorate([
+    (0, typeorm_1.OneToMany)(() => Local, local => local.location),
+    __metadata("design:type", Array)
+], Location.prototype, "locals", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", String)
@@ -97,37 +96,38 @@ __decorate([
 exports.Location = Location = __decorate([
     (0, typeorm_1.Entity)()
 ], Location);
-let local = exports.local = class local {
+let Local = exports.Local = class Local {
 };
 __decorate([
     (0, typeorm_1.PrimaryGeneratedColumn)(),
     __metadata("design:type", Number)
-], local.prototype, "idx", void 0);
+], Local.prototype, "idx", void 0);
+__decorate([
+    (0, typeorm_1.ManyToOne)(() => Location, location => location.locals),
+    (0, typeorm_1.JoinColumn)({ name: 'location_idx' }),
+    __metadata("design:type", Location)
+], Local.prototype, "location", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", Number)
-], local.prototype, "location_idx", void 0);
-__decorate([
-    (0, typeorm_1.Column)(),
-    __metadata("design:type", Number)
-], local.prototype, "day", void 0);
+], Local.prototype, "day", void 0);
 __decorate([
     (0, typeorm_1.Column)('double'),
     __metadata("design:type", Number)
-], local.prototype, "lat", void 0);
+], Local.prototype, "lat", void 0);
 __decorate([
     (0, typeorm_1.Column)('double'),
     __metadata("design:type", Number)
-], local.prototype, "lng", void 0);
+], Local.prototype, "lng", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", String)
-], local.prototype, "localname", void 0);
+], Local.prototype, "localname", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", Number)
-], local.prototype, "sequence", void 0);
-exports.local = local = __decorate([
+], Local.prototype, "sequence", void 0);
+exports.Local = Local = __decorate([
     (0, typeorm_1.Entity)()
-], local);
+], Local);
 //# sourceMappingURL=plan.entity.js.map

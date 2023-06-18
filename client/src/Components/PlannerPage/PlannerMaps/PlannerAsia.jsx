@@ -21,6 +21,7 @@ import apiServer from "../../../api/api";
 import { Link, useNavigate } from "react-router-dom";
 import "react-datepicker/dist/react-datepicker.css";
 import ReactDatePicker from "react-datepicker";
+import TitleModal from "./TitleModal";
 
 const PlannerAsia = () => {
   const [PlanMarkers, setPlanMarkers] = useState([]);
@@ -40,6 +41,7 @@ const PlannerAsia = () => {
   const [startDate, setStartDate] = useState(null);
   const [durations, setDurations] = useState([]);
   const [DateOk, setDateOk] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const currentDate = new Date();
   const navigate = useNavigate();
   console.log(PlanMarkers);
@@ -540,20 +542,20 @@ const PlannerAsia = () => {
 
   // 세부 일정 짜기로 진행하는 함수
   const handleDetailClick = () => {
-    if (DateOk) {
-      // 출발일이 설정되었으면 세부 일정 짜기로 진행
-      navigate("/planner/map/detail", {
-        state: {
-          markers: PlanMarkers,
-          startDate: startDate,
-          durations: durations,
-        },
-      });
-    } else {
-      // 출발일이 설정되지 않았으면 경고 메시지 출력 또는 다른 작업 수행
-      alert("출발일을 설정해야 세부 일정 짜기로 진행할 수 있습니다.");
-    }
+    setIsModalOpen(true);
   };
+  const handleModalSubmit = (title) => {
+    setIsModalOpen(false);
+    navigate("/planner/map/detail", {
+      state: {
+        markers: PlanMarkers,
+        startDate: startDate,
+        durations: durations,
+        title: title,
+      },
+    });
+  };
+
   const handleIncreaseDuration = (index) => {
     setDurations((prevDurations) => {
       const newDurations = [...prevDurations];
@@ -577,19 +579,6 @@ const PlannerAsia = () => {
       <div id="map" style={{ height: "92vh", width: "90%" }}></div>
       <PlannerDiary>
         <PlannerHeader>
-          {/* <span
-            onClick={() => handleBack(PlanMarkers)}
-            style={{
-              marginLeft: "20px",
-              position: "relative",
-              top: "10px",
-              cursor: "pointer",
-              zIndex: 2,
-            }}
-            class="material-symbols-outlined"
-          >
-            undo
-          </span> */}
           <div style={{ marginLeft: "20%", fontSize: "14px" }}>여행도시</div>
           <div>
             <ReactDatePicker
@@ -688,7 +677,10 @@ const PlannerAsia = () => {
                 >
                   <div>
                     {item.label}
-                    <button onClick={() => handleDecreaseDuration(index)}>
+                    <button
+                      style={{ marginLeft: "15px" }}
+                      onClick={() => handleDecreaseDuration(index)}
+                    >
                       -
                     </button>
                     <span>{durations[index]}일</span>
@@ -718,6 +710,7 @@ const PlannerAsia = () => {
           </div>
         </div>
         <DetailButton onClick={handleDetailClick}>세부일정 짜기</DetailButton>
+        {isModalOpen && <TitleModal onSubmit={handleModalSubmit} />}
       </PlannerDiary>
     </>
   );

@@ -4,16 +4,16 @@ import {
   StartDate,
   TodoBrand,
   TodoContainer,
-  TodoHeader,
   TodoList,
 } from "./PlannerDetailSty";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import "./PlannerDetail.css";
 import PlacesAutocomplete, {
   geocodeByAddress,
   getLatLng,
 } from "react-places-autocomplete";
 import PlanSchedule from "./PlanSchedule";
+import Logo from "../images/logo.png";
 
 const PlannerDetail = () => {
   const [tasks, setTasks] = useState([]);
@@ -24,12 +24,15 @@ const PlannerDetail = () => {
   const [startY, setStartY] = useState(0);
   const [startScrollTop, setStartScrollTop] = useState(0);
   const [selectedTaskIndex, setSelectedTaskIndex] = useState(null);
+  const [selectedTask, setSelectedTask] = useState(null);
   const data = location.state.markers;
   const [center, setCenter] = useState(data[0].position);
   const [address, setAddress] = useState("");
   const [coordinates, setCoordinates] = useState({ lat: null, lng: null });
   const [routeMarkers, setRouteMarkers] = useState([]);
   const [selectedRoute, setSelectedRoute] = useState(null);
+  const [taskdate, setTaskDate] = useState();
+  const [tasklocal, setTaskLocal] = useState();
 
   useEffect(() => {
     const initMap = () => {
@@ -90,7 +93,7 @@ const PlannerDetail = () => {
                 routeCoordinates.push(midPoint);
 
                 const infowindow = new window.google.maps.InfoWindow({
-                  content: `Distance: ${distanceInKm} km`,
+                  content: `거리: ${distanceInKm} km`,
                 });
 
                 const marker = new window.google.maps.Marker({
@@ -98,9 +101,7 @@ const PlannerDetail = () => {
                   map: map,
                 });
 
-                marker.addListener("click", () => {
-                  infowindow.open(map, marker);
-                });
+                infowindow.open(map, marker);
               });
 
               const totalDistanceInKm = (totalDistance / 1000).toFixed(2);
@@ -160,7 +161,7 @@ const PlannerDetail = () => {
 
     initMap();
   }, [center]);
-  console.log(routeMarkers);
+  console.log("선택된날:", selectedTask);
   // 플랜마커와 날짜를 기반으로 투두리스트 생성
   useEffect(() => {
     const generateTodoList = () => {
@@ -176,21 +177,25 @@ const PlannerDetail = () => {
           todoDates.push(todoDate.toLocaleDateString());
         }
 
-        return todoDates.map((date) => ({
-          date,
-          location: marker.label,
-          nation: marker.nation,
-          lng: marker.position.lng,
-          lat: marker.position.lat,
-          completed: false,
-        }));
+        return todoDates.map((date) => {
+          const schedule = selectedTask ? selectedTask.schedule : [];
+          return {
+            date,
+            location: marker.label,
+            nation: marker.nation,
+            lng: marker.position.lng,
+            lat: marker.position.lat,
+            completed: false,
+            schedule: schedule,
+          };
+        });
       });
 
       setTasks(todoList);
     };
 
     generateTodoList();
-  }, [markers]);
+  }, [durations, markers, startDate, selectedTask]);
 
   // 경로 계산 후 거리를 표시하는 함수
 
@@ -218,12 +223,11 @@ const PlannerDetail = () => {
         style={{
           height: "90vh",
           width: "50%",
-          position: "absolute",
-          right: "0",
         }}
       ></div>
     );
   };
+  const nickname = localStorage.getItem("nick");
 
   const handleMouseDown = (event) => {
     setIsDragging(true);
@@ -244,8 +248,10 @@ const PlannerDetail = () => {
   };
 
   const handleTaskClick = (index, task) => {
-    setSelectedTaskIndex(index);
+    setSelectedTask(task);
     setCenter({ lat: task.lat, lng: task.lng });
+    setTaskDate(task.date);
+    setTaskLocal(task.location);
   };
   const inputStyle = {
     width: "100%",
@@ -254,15 +260,74 @@ const PlannerDetail = () => {
   };
 
   return (
-    <div style={{ height: "90vh" }}>
+    <div
+      style={{
+        position: "relative",
+        top: "-60px",
+        width: "99.82%",
+        height: "91.5vh",
+      }}
+    >
+      <div
+        style={{
+          position: "absolute",
+          top: "0",
+          width: "99.9%",
+          height: "60px",
+          backgroundColor: "#7bc0f9",
+          color: "white",
+          fontWeight: "bold",
+          zIndex: "1",
+          display: "flex",
+          justifyContent: "space-between",
+        }}
+      >
+        <div>
+          <TodoBrand>
+            <Link to="/">
+              <img src={Logo} style={{ width: "40px", height: "40px" }} />
+            </Link>
+            <h3 style={{ margin: "7px", marginLeft: "20px" }}>
+              {nickname}&nbsp;`s&nbsp;&nbsp;{location.state.title}
+            </h3>
+          </TodoBrand>
+        </div>
+        <div style={{ display: "flex", margin: "10px" }}>
+          <div
+            style={{
+              width: "70px",
+              textAlign: "center",
+              marginRight: "20px",
+              backgroundColor: "gray",
+              height: "max-content",
+              padding: "10px",
+              cursor: "pointer",
+              fontSize: "14px",
+              borderRadius: "15px",
+            }}
+          >
+            저장&닫기
+          </div>
+          <div
+            style={{
+              width: "70px",
+              textAlign: "center",
+              height: "max-content",
+              backgroundColor: "orange",
+              padding: "10px",
+              cursor: "pointer",
+              fontSize: "14px",
+              borderRadius: "15px",
+            }}
+          >
+            완료
+          </div>
+        </div>
+      </div>
       <div style={{ display: "flex", flexDirection: "row" }}>
-        <TodoContainer>
-          <TodoHeader>
-            <TodoBrand>여행 투두리스트</TodoBrand>
-            <StartDate>출발일: {startDate.toLocaleDateString()}</StartDate>
-          </TodoHeader>
+        <TodoContainer className="scroll-content">
+          <StartDate>출발일: {startDate.toLocaleDateString()}</StartDate>
           <TodoList
-            className="scroll-content"
             ref={scrollContainerRef}
             onMouseDown={handleMouseDown}
             onMouseMove={handleMouseMove}
@@ -278,27 +343,15 @@ const PlannerDetail = () => {
               >
                 <div className="task-info">
                   <div>day{index + 1}</div>
-                  <p className="date">{task.date}</p>
-                  <p className="location">
+                  <div className="date">{task.date}</div>
+                  <div className="location">
                     {task.location} - {task.nation}
-                  </p>
+                  </div>
                 </div>
               </div>
             ))}
           </TodoList>
         </TodoContainer>
-        <div
-          id="map"
-          style={{
-            height: "90vh",
-            width: "50%",
-            position: "absolute",
-            right: "0",
-            zIndex: "4",
-          }}
-        >
-          {renderMap()}
-        </div>
         <PlacesAutocomplete
           value={address}
           onChange={setAddress}
@@ -313,7 +366,9 @@ const PlannerDetail = () => {
             <div
               style={{
                 position: "absolute",
-                left: "60%",
+                width: "220px",
+                right: "100px",
+                top: "60px",
                 marginTop: "10px",
                 zIndex: "5",
               }}
@@ -344,8 +399,30 @@ const PlannerDetail = () => {
             </div>
           )}
         </PlacesAutocomplete>
-
-        <PlanSchedule />
+        <PlanSchedule
+          taskdate={taskdate}
+          tasklocal={tasklocal}
+          task={tasks}
+          isDragging={isDragging}
+          selectedTask={selectedTask}
+          setSelectedTask={setSelectedTask}
+          selectedTaskIndex={selectedTaskIndex}
+          setSelectedTaskIndex={setSelectedTaskIndex}
+        />
+      </div>
+      <div
+        id="map"
+        style={{
+          display: "flex",
+          width: "54%",
+          height: "88.5vh",
+          position: "relative",
+          top: "70px",
+          left: "46%",
+          zIndex: 1,
+        }}
+      >
+        {renderMap()}
       </div>
     </div>
   );

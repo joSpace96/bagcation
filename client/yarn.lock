@@ -8269,10 +8269,10 @@ react-bootstrap@^2.7.4:
     uncontrollable "^7.2.1"
     warning "^4.0.3"
 
-react-datepicker@^4.13.0:
-  version "4.13.0"
-  resolved "https://registry.npmjs.org/react-datepicker/-/react-datepicker-4.13.0.tgz"
-  integrity sha512-1S8yAqzcHE+LjCjMrTXJfUkTVijTPogxUYrmQmSpmRJ23fdC2w8cg04jzaEAyesTzyUa06JzayZJKk85QHbvcw==
+react-datepicker@^4.14.0:
+  version "4.14.0"
+  resolved "https://registry.npmjs.org/react-datepicker/-/react-datepicker-4.14.0.tgz"
+  integrity sha512-MLky2SF8hVTPgFRseauoOprjz6/rUMWq8MHadWYwExJvojUyCZOWDMWq9bRqoliQqqPhcViYjyxAxvFQpD9aDA==
   dependencies:
     "@popperjs/core" "^2.9.2"
     classnames "^2.2.6"

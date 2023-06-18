@@ -1,13 +1,15 @@
 import { styled } from "styled-components";
 
 export const TodoContainer = styled.div`
-  width: 400px;
-  padding: 20px;
-`;
-export const TodoHeader = styled.div`
-  font-size: 24px;
-  font-weight: bold;
-  margin-bottom: 10px;
+  width: 110px;
+  padding: 10px;
+  margin-left: 10px;
+  position: absolute;
+  top: 72px;
+  z-index: 5;
+  background-color: white;
+  height: 86vh;
+  overflow: hidden;
 `;
 export const TodoInput = styled.div`
   display: flex;
@@ -19,9 +21,9 @@ export const TodoInput = styled.div`
   }
 `;
 export const TodoList = styled.div`
-  max-width: 200px;
-  overflow: auto;
-  max-height: 77vh;
+  max-width: 130px;
+  font-size: 14px;
+  overflow: hidden;
   cursor: pointer;
 `;
 export const TodoItem = styled.div`
@@ -33,6 +35,18 @@ export const TodoText = styled.div`
   flex: 1;
 `;
 
-export const TodoBrand = styled.div``;
+export const TodoBrand = styled.div`
+  margin: 10px 10px 10px 20px;
+  display: flex;
+`;
 
-export const StartDate = styled.div``;
+export const StartDate = styled.div`
+  width: 110px;
+  font-size: 12px;
+  text-align: center;
+  margin: -10px -10px 10px -10px;
+  padding: 10px;
+  background-color: #7bc0f9;
+  color: white;
+  font-weight: bold;
+`;

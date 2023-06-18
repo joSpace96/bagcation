@@ -81,6 +81,15 @@ export const PlannerInput = styled.div`
     background-color: #ebebeb;
     color: black;
   }
+  button {
+    border: none;
+    cursor: pointer;
+    background-color: transparent;
+    font-size: 15px;
+    &:hover {
+      color: orange;
+    }
+  }
 `;
 export const PlannerDistance = styled.div`
   width: 200px;
@@ -103,14 +112,14 @@ export const ContinentButton = styled.div`
   display: flex;
   width: 80px;
   flex-direction: column;
-  height: 92.3vh;
+  height: 91vh;
   border-radius: 5px;
   background-color: #0055ff;
   z-index: -1;
 `;
 
 export const AsiaButton = styled.div`
-  margin-top: -10px;
+  margin-top: -3px;
   width: 80px;
   height: 80px;
   cursor: pointer;

@@ -6,8 +6,6 @@ import {
   AmericaButton,
   AsiaButton,
   ContinentButton,
-  DateButton,
-  DatePickerWrapper,
   DetailButton,
   EuropeButton,
   OceaniaButton,
@@ -18,7 +16,7 @@ import {
 } from "./PlannerAsiaSty";
 import axios from "axios";
 import apiServer from "../../../api/api";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "react-datepicker/dist/react-datepicker.css";
 import ReactDatePicker from "react-datepicker";
 import TitleModal from "./TitleModal";

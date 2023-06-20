@@ -75,15 +75,6 @@ const PlannerSearch = () => {
                   <TableBody>15일 이상</TableBody>
                 </TableBodyWrapper>
               </TableHeaderWrapper>
-              <TableHeaderWrapper style={{ borderBottom: "none" }}>
-                <TableHeader>여행시기</TableHeader>
-                <TableBodyWrapper>
-                  <TableBody>봄</TableBody>
-                  <TableBody>여름</TableBody>
-                  <TableBody>가을</TableBody>
-                  <TableBody>겨울</TableBody>
-                </TableBodyWrapper>
-              </TableHeaderWrapper>
               <TableHeaderWrapper>
                 <TableHeader>여행테마</TableHeader>
                 <TableBodyWrapper>

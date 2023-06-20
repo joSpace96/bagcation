@@ -6,7 +6,7 @@ import {
   TodoContainer,
   TodoList,
 } from "./PlannerDetailSty";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import "./PlannerDetail.css";
 import PlacesAutocomplete, {
   geocodeByAddress,
@@ -14,12 +14,15 @@ import PlacesAutocomplete, {
 } from "react-places-autocomplete";
 import PlanSchedule from "./PlanSchedule";
 import Logo from "../images/logo.png";
+import axios from "axios";
+import apiServer from "../../../api/api";
 
 const PlannerDetail = () => {
   const [tasks, setTasks] = useState([]);
   const location = useLocation();
   const { markers, startDate, durations } = location.state || {};
   const scrollContainerRef = useRef(null);
+  const navigate = useNavigate();
   const [isDragging, setIsDragging] = useState(false);
   const [startY, setStartY] = useState(0);
   const [startScrollTop, setStartScrollTop] = useState(0);
@@ -38,34 +41,9 @@ const PlannerDetail = () => {
   const [save, setSave] = useState(false);
   const [likeCount, setLikeCount] = useState(0);
   const [viewsCount, setViewsCount] = useState(0);
-  // console.log("보내야하는 데이터:", location.state);
-  console.log(tasks);
-  console.log("plan : ", {
-    title: location.state.title,
-    startDate: startDate,
-    theme: selectedTheme,
-    save: save,
-    period:
-      tasks.length > 0
-        ? tasks[0].date + "~" + tasks[tasks.length - 1].date
-        : "",
-    likecount: likeCount,
-    views: viewsCount,
-  });
 
-  console.log(
-    "location: ",
-    tasks.map((task) => ({ location: task.nation }))
-  );
-  console.log(
-    "local : ",
-    tasks.map((task) => ({ local: task.location }))
-  );
-  if (selectedTask && selectedTask.schedule) {
-    console.log("schedule:", selectedTask.schedule);
-  } else {
-    console.log("schedule가 존재하지 않습니다.");
-  }
+  const user_idx = localStorage.getItem("idx");
+
   useEffect(() => {
     const initMap = () => {
       const map = new window.google.maps.Map(document.getElementById("map"), {
@@ -293,12 +271,96 @@ const PlannerDetail = () => {
 
   const handleSaveAndClose = () => {
     // 저장 및 닫기 버튼 클릭 시 호출되는 함수
+    setSave(true);
+    setShowThemeModal(true); // 여행 테마 모달 표시
+  };
+  const handleOk = () => {
+    // 저장 및 닫기 버튼 클릭 시 호출되는 함수
+    setSave(false);
     setShowThemeModal(true); // 여행 테마 모달 표시
   };
 
   const handleThemeChange = (event) => {
     // 여행 테마 선택 시 호출되는 함수
     setSelectedTheme(event.target.value); // 선택된 여행 테마 업데이트
+  };
+
+  if (selectedTask && selectedTask.schedule) {
+    // console.log(PlanData, TravelNationData, ScheduleData);
+  } else {
+    console.log("schedule가 존재하지 않습니다.");
+  }
+
+  const travelNations =
+    tasks && tasks.length > 0
+      ? tasks.map((task) => ({
+          nation: task.nation,
+          city: task.location,
+          lat: task.lat,
+          lng: task.lng,
+        }))
+      : [];
+
+  const planSchedules =
+    selectedTask && selectedTask.schedule && selectedTask.schedule.length > 0
+      ? selectedTask.schedule.map((schedule) => ({
+          city: schedule.location,
+          datetime: schedule.datetime,
+          time: schedule.time,
+          content: schedule.content,
+        }))
+      : [];
+
+  const createPlanDto = {
+    title: location.state.title,
+    user_idx: localStorage.getItem("idx"),
+    theme: selectedTheme,
+    period:
+      tasks.length > 0
+        ? tasks[0].date + "~" + tasks[tasks.length - 1].date
+        : "",
+    startdate: startDate,
+    views: viewsCount,
+    likecount: likeCount,
+    save: save,
+    travelNations: travelNations,
+    planSchedules: planSchedules,
+  };
+  const handleSubmit = () => {
+    axios
+      .post(`${apiServer}/plans/add_plan`, {
+        title:
+          `${kakaonick || nickname}` +
+          "  " +
+          "'s" +
+          "  " +
+          location.state.title,
+        user_idx: Number(user_idx),
+        theme: selectedTheme,
+        period:
+          tasks.length > 0
+            ? tasks[0].date + "~" + tasks[tasks.length - 1].date
+            : "",
+        startdate: startDate,
+        views: viewsCount,
+        likecount: likeCount,
+        save: save,
+        travelNations: travelNations,
+        planSchedules: planSchedules,
+      })
+      .then((response) => {
+        console.log("POST 요청 성공:", response.data);
+        if (createPlanDto.save === false) {
+          alert("일정 등록 성공");
+        } else {
+          alert("일정을 저장 하였습니다.");
+        }
+        navigate(`/planner/post/${response.data}`);
+      })
+      .catch((error) => {
+        console.error("POST 요청 실패:", error);
+        console.log(createPlanDto);
+      });
   };
 
   return (
@@ -366,7 +428,6 @@ const PlannerDetail = () => {
                 color: "#333333",
               }}
             >
-              {/* 모달 내용 및 선택 옵션 */}
               <h3>여행 테마를 선택하세요</h3>
               <select
                 style={{
@@ -383,25 +444,50 @@ const PlannerDetail = () => {
                 onChange={handleThemeChange}
               >
                 <option value="">여행 테마를 선택하세요</option>
-                <option value="solo">나홀로</option>
-                <option value="couple">커플</option>
-                <option value="friends">친구</option>
-                <option value="family">가족</option>
-                <option value="bussiness">비즈니스</option>
-                {/* 추가적인 여행 테마 옵션을 필요에 따라 추가할 수 있습니다 */}
+                <option value="나홀로여행">나홀로여행</option>
+                <option value="커플여행">커플여행</option>
+                <option value="친구와함께">친구와함께</option>
+                <option value="가족여행">가족여행</option>
+                <option value="비즈니스여행">비즈니스여행</option>
               </select>
 
-              {/* 닫기 버튼 */}
+              {/* 버튼 */}
               <button
                 style={{
-                  backgroundColor: "transparent",
                   border: "none",
-                  color: "#333333",
+                  borderRadius: "5px",
+                  color: "whitesmoke",
                   cursor: "pointer",
                   fontSize: "14px",
                   marginTop: "20px",
+                  marginRight: "5px",
+                  marginLeft: "5px",
+                  backgroundColor: "orange",
+                  padding: "7px 10px",
+                  fontWeight: "bold",
                 }}
-                onClick={() => setShowThemeModal(false)}
+                onClick={() => {
+                  setShowThemeModal(false);
+                  handleSubmit();
+                }}
+              >
+                완료
+              </button>
+              <button
+                style={{
+                  backgroundColor: "gray",
+                  borderRadius: "5px",
+                  border: "none",
+                  color: "whitesmoke",
+                  cursor: "pointer",
+                  fontSize: "14px",
+                  marginTop: "20px",
+                  padding: "7px 10px",
+                  fontWeight: "bold",
+                }}
+                onClick={() => {
+                  setShowThemeModal(false);
+                }}
               >
                 닫기
               </button>
@@ -418,6 +504,7 @@ const PlannerDetail = () => {
               fontSize: "14px",
               borderRadius: "15px",
             }}
+            onClick={handleOk}
           >
             완료
           </div>

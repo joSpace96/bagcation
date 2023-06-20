@@ -8,7 +8,7 @@ export const PopularContainer = styled.div`
   height: max-content;
   margin: auto;
   justify-content: center;
-  span {
+  /* span {
     font-family: "nanum_b";
     font-weight: bold;
     font-size: 18px;
@@ -16,7 +16,7 @@ export const PopularContainer = styled.div`
     &:hover {
       color: #7bc0f9;
     }
-  }
+  } */
 `;
 export const PopularList = styled.div`
   padding: 1rem;

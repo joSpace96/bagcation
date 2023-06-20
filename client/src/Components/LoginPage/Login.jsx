@@ -42,6 +42,7 @@ const Login = () => {
         });
         const userData = response.data;
         alert("로그인 성공");
+        localStorage.setItem("idx", userData.user.idx);
         localStorage.setItem("email", userData.user.email);
         localStorage.setItem("nick", userData.user.nick);
 

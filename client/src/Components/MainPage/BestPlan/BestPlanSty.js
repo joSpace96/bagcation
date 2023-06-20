@@ -75,6 +75,8 @@ export const PostDescription = styled.p`
   margin: 0;
   margin-top: 3px;
   font-size: 14px;
+  text-overflow: ellipsis;
+  overflow-x: hidden;
 `;
 
 export const DateLike = styled.div`

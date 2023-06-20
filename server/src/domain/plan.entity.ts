@@ -1,88 +1,82 @@
 import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinColumn, OneToMany } from 'typeorm';
 
+
 @Entity()
 export class Plan {
   @PrimaryGeneratedColumn()
   idx: number;
 
   @Column()
-  title: string;
+  user_idx: number;
 
   @Column()
-  period: string;
+  title: string;
 
   @Column()
   theme: string;
 
   @Column()
+  period: string;
+
+  @Column()
   startdate: Date;
 
-  @OneToMany(() => Days, day => day.plan)
-  days: Days[];
-
-  @Column() // Updated to string column type
-  views: string;
+  @Column()
+  views: number;
 
   @Column()
   likecount: number;
 
   @Column()
   save: boolean;
+
+  @OneToMany(() => Travel_Nation, travelNation => travelNation.plan)
+  travelNations: Travel_Nation[];
+
+  @OneToMany(() => Plan_Schedule, planSchedule => planSchedule.plan)
+  planSchedules: Plan_Schedule[];
 }
 
 @Entity()
-export class Days {
+export class Travel_Nation {
   @PrimaryGeneratedColumn()
   idx: number;
 
-  @ManyToOne(() => Plan, plan => plan.days)
-  @JoinColumn({ name: 'plan_idx' }) // 외래 키 컬럼명
+  @ManyToOne(() => Plan, plan => plan.travelNations)
+  @JoinColumn({ name: 'plan_idx' })
   plan: Plan;
 
-  @OneToMany(() => Location, location => location.day)
-  locations: Location[];
+  @Column()
+  nation: string;
 
   @Column()
-  day: number;
-}
-
-@Entity()
-export class Location {
-  @PrimaryGeneratedColumn()
-  idx: number;
-
-  @ManyToOne(() => Days, day => day.locations)
-  @JoinColumn({ name: 'days_idx' }) // 외래 키 컬럼명
-  day: Days;
-
-  @OneToMany(() => Local, local => local.location)
-  locals: Local[];
-
-  @Column()
-  location: string;
-}
-
-@Entity()
-export class Local {
-  @PrimaryGeneratedColumn()
-  idx: number;
-
-  @ManyToOne(() => Location, location => location.locals)
-  @JoinColumn({ name: 'location_idx' }) // 외래 키 컬럼명
-  location: Location;
-
-  @Column()
-  day: number;
+  city: string;
 
   @Column('double')
   lat: number;
 
   @Column('double')
   lng: number;
+}
+
+@Entity()
+export class Plan_Schedule {
+  @PrimaryGeneratedColumn()
+  idx: number;
+
+  @ManyToOne(() => Plan, plan => plan.planSchedules)
+  @JoinColumn({ name: 'plan_idx' })
+  plan: Plan;
 
   @Column()
-  localname: string;
+  city: string;
 
   @Column()
-  sequence: number;
+  datetime: string;
+
+  @Column()
+  time: string;
+
+  @Column()
+  content: string;
 }

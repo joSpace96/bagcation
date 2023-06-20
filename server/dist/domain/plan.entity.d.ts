@@ -1,32 +1,29 @@
 export declare class Plan {
     idx: number;
+    user_idx: number;
     title: string;
-    period: string;
     theme: string;
+    period: string;
     startdate: Date;
-    days: Days[];
-    views: string;
+    views: number;
     likecount: number;
     save: boolean;
+    travelNations: Travel_Nation[];
+    planSchedules: Plan_Schedule[];
 }
-export declare class Days {
+export declare class Travel_Nation {
     idx: number;
     plan: Plan;
-    locations: Location[];
-    day: number;
-}
-export declare class Location {
-    idx: number;
-    day: Days;
-    locals: Local[];
-    location: string;
-}
-export declare class Local {
-    idx: number;
-    location: Location;
-    day: number;
+    nation: string;
+    city: string;
     lat: number;
     lng: number;
-    localname: string;
-    sequence: number;
+}
+export declare class Plan_Schedule {
+    idx: number;
+    plan: Plan;
+    city: string;
+    datetime: string;
+    time: string;
+    content: string;
 }

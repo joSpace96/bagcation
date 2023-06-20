@@ -16,6 +16,7 @@ import RedirectPage from "./Components/LoginPage/RedirectPage";
 import Register from "./Components/LoginPage/RegisterPage/Register";
 import PlannerDetail from "./Components/PlannerPage/PlannerDetail/PlannerDetail";
 import PlannerTest from "./Components/PlannerPage/PlannerDetail/PlannerTest";
+import PlannerPost from "./Components/PlannerPage/PlannerPost/PlannerPost";
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
           <Route path="/ledger" element={<Ledger />} />
           <Route path="/planner/map/detail" element={<PlannerDetail />} />
           <Route path="/planner/map" element={<Planner />} />
+          <Route path="/planner/post/:idx" element={<PlannerPost />} />
           <Route path="/planner" element={<PlannerBoard />} />
           <Route path="/guide" element={<GuidePage />} />
           <Route path="/gallery/detail" element={<Post />} />

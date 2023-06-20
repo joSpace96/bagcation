@@ -11,6 +11,7 @@ export const Header = styled.div`
   justify-content: space-between;
   height: 40px;
   align-items: center;
+  margin-bottom: 60px;
 `;
 
 export const Title = styled.div`
@@ -18,6 +19,8 @@ export const Title = styled.div`
   text-align: center;
   font-size: 30px;
   font-weight: bold;
+  color: #333333;
+  letter-spacing: -1px;
   div {
     color: gray;
     font-size: 20px;
@@ -39,7 +42,9 @@ export const Post = styled.div`
   margin: auto;
   margin-top: 10px;
   margin-bottom: 10px;
-  margin-left: -10px;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
   &:hover {
     transform: scale(1.05);
     transition: transform 0.5s;
@@ -50,43 +55,36 @@ export const PostImage = styled.img`
   width: 100%;
   height: 200px;
   border: none;
-  margin-bottom: 1px;
-  border-radius: 10px;
   box-shadow: 0px 1px 1px 0.5px gray;
 `;
 
 export const PostContent = styled.div`
-  width: 91%;
+  width: 100%;
   height: 78px;
-  border: 1px solid #dbdbdb;
-  margin-top: 5px;
-  border-radius: 10px;
   background-color: white;
-  padding: 1rem;
+  padding: 8px 0;
   box-shadow: 0px 1px 1px 0.5px gray;
 `;
 
 export const PostTitle = styled.h3`
-  margin: 0;
+  margin: 0 15px;
   font-size: 18px;
+  color: #242424;
 `;
 
 export const PostDescription = styled.p`
-  margin: 0;
-  margin-top: 3px;
+  margin: 3px 15px;
   font-size: 14px;
   text-overflow: ellipsis;
   overflow-x: hidden;
-`;
-
-export const DateLike = styled.div`
-  width: 100%;
-  display: flex;
+  color: #242424;
 `;
 
 export const PostDate = styled.p`
-  margin: 0;
-  margin-top: 12px;
+  display: flex;
+  justify-content: space-between;
+  text-align: center;
+  margin: 12px 15px;
   font-size: 12px;
   color: #8e8e8e;
 `;

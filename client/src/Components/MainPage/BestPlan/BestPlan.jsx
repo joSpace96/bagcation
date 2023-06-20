@@ -267,9 +267,12 @@ const BestPlan = () => {
                 </PostDescription>
                 <PostDate>
                   기간 : {data.period}
-                  <span style={{ float: "right" }}>
+                  <span>
                     <span
-                      style={{ color: "red" }}
+                      style={{
+                        color: "red",
+                        fontSize: "19px",
+                      }}
                       class="material-symbols-outlined"
                     >
                       favorite
@@ -278,7 +281,8 @@ const BestPlan = () => {
                       style={{
                         position: "relative",
                         top: "-5px",
-                        left: "5px",
+                        left: "3px",
+                        fontSize: "14px",
                       }}
                     >
                       {data.likecount}

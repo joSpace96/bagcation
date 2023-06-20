@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { PopularContainer, PopularList } from "./PopularPostSty";
 import Asia from "../../MainPage/ImageGrid/images/Asia.jpg";
 import {
@@ -85,215 +85,290 @@ import New_Caledonia from "../../MainPage/BestPlan/PostMainImages/oceania/New_ca
 import Newzealand from "../../MainPage/BestPlan/PostMainImages/oceania/Newzealand.jpg";
 import Polynesia from "../../MainPage/BestPlan/PostMainImages/oceania/Polynesia.jpg";
 import saipan from "../../MainPage/BestPlan/PostMainImages/oceania/Saipan.jpg";
+
 import Paging from "./../Paging/Paging";
 
-const PopularPost = () => {
+const PopularPost = ({
+  selectedDestination,
+  selectedDuration,
+  selectedTheme,
+}) => {
   const [planPost, setPlanPost] = useState([]);
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(6);
   const offset = (page - 1) * limit;
+  const [sortBy, setSortBy] = useState("인기");
+  const [showAllPosts, setShowAllPosts] = useState(false);
+  console.log(planPost);
+
+  const filteredPlanPost = useMemo(() => {
+    let filteredPosts = [...planPost];
+    if (selectedDestination) {
+      filteredPosts = filteredPosts.filter(
+        (data) => data.travelNations[0].nation === selectedDestination
+      );
+    }
+    if (selectedTheme) {
+      filteredPosts = filteredPosts.filter(
+        (data) => data.theme === selectedTheme
+      );
+    }
+    return filteredPosts;
+  }, [planPost, selectedDestination, selectedTheme]);
+
+  const sortedPlanPost = useMemo(() => {
+    let sortedPosts = [...filteredPlanPost];
+    if (sortBy === "신규") {
+      sortedPosts.sort((a, b) => b.idx - a.idx); // Sort by data.idx in descending order
+    } else if (sortBy === "인기") {
+      sortedPosts.sort((a, b) => a.likecount - b.likecount); // Sort by data.likecount in ascending order
+    }
+    return sortedPosts;
+  }, [filteredPlanPost, sortBy]);
+
+  const handleShowAllPosts = () => {
+    setShowAllPosts(true);
+  };
+
+  useEffect(() => {
+    console.log("선택된 여행지 : ", selectedDestination);
+    selectedTheme = null;
+    setPage(1);
+  }, [selectedDestination]);
+  useEffect(() => {
+    console.log(selectedDuration);
+  }, [selectedDuration]);
+  useEffect(() => {
+    console.log(selectedTheme);
+    setPage(1);
+  }, [selectedTheme]);
 
   useEffect(() => {
     axios.get(`${apiServer}/plans/get_all_plan`).then((response) => {
       const data = response.data.All_post;
+      // console.log(data);
       setPlanPost(data);
     });
   }, []);
   return (
     <PopularContainer>
       <div style={{ marginLeft: "70px" }}>
-        <span style={{ borderRight: "3px solid gray", paddingRight: "1rem" }}>
+        <span
+          style={{
+            borderRight: "3px solid gray",
+            paddingRight: "1rem",
+            cursor: "pointer",
+            fontWeight: sortBy === "인기" ? "bold" : "normal",
+          }}
+          onClick={() => setSortBy("인기")}
+        >
           인기
         </span>
-        <span style={{ paddingLeft: "1rem" }}>신규</span>
+        <span
+          style={{
+            paddingLeft: "1rem",
+            cursor: "pointer",
+            fontWeight: sortBy === "신규" ? "bold" : "normal",
+          }}
+          onClick={() => setSortBy("신규")}
+        >
+          신규
+        </span>
+        {!showAllPosts && (
+          <span
+            style={{
+              paddingLeft: "1rem",
+              cursor: "pointer",
+              fontWeight: "bold",
+              textDecoration: "underline",
+            }}
+            onClick={handleShowAllPosts}
+          >
+            전체보기
+          </span>
+        )}
       </div>
       <PopularList>
         <BestPlanContainer>
           <PostContainer>
-            {planPost
-              // .sort((a, b) => b.likecount - a.likecount)
-              // .slice(0, 6)
-              .slice(offset, offset + limit)
-              .map((data) => (
-                <Post key={data.idx}>
-                  <Link to={`/planner/post/${data.idx}`}>
-                    <PostImage
-                      src={
-                        // 아시아
-                        data.travelNations[0].nation === "일본"
-                          ? Japan
-                          : data.travelNations[0].nation === "대한민국"
-                          ? Korea
-                          : data.travelNations[0].nation === "중국"
-                          ? China
-                          : data.travelNations[0].nation === "대만"
-                          ? Taiwan
-                          : data.travelNations[0].nation === "필리핀"
-                          ? Phillipine
-                          : data.travelNations[0].nation === "라오스"
-                          ? Laos
-                          : data.travelNations[0].nation === "베트남"
-                          ? Vietnam
-                          : data.travelNations[0].nation === "캄보디아"
-                          ? Cambodia
-                          : data.travelNations[0].nation === "태국"
-                          ? Thailand
-                          : data.travelNations[0].nation === "미얀마"
-                          ? Myanmar
-                          : data.travelNations[0].nation === "말레이시아"
-                          ? Malaysia
-                          : data.travelNations[0].nation === "인도네시아"
-                          ? Indonesia
-                          : data.travelNations[0].nation === "네팔"
-                          ? Nepal
-                          : data.travelNations[0].nation === "인도"
-                          ? India
-                          : data.travelNations[0].nation === "아랍에미리트"
-                          ? UAE
-                          : // 유럽
-                          data.travelNations[0].nation === "독일"
-                          ? Germany
-                          : data.travelNations[0].nation === "덴마크"
-                          ? Denmark
-                          : data.travelNations[0].nation === "아이슬란드"
-                          ? Iceland
-                          : data.travelNations[0].nation === "아일랜드"
-                          ? Ireland
-                          : data.travelNations[0].nation === "영국"
-                          ? England
-                          : data.travelNations[0].nation === "포르투갈"
-                          ? Portugal
-                          : data.travelNations[0].nation === "스페인"
-                          ? Spain
-                          : data.travelNations[0].nation === "프랑스"
-                          ? France
-                          : data.travelNations[0].nation === "네덜란드"
-                          ? Netherlands
-                          : data.travelNations[0].nation === "벨기에"
-                          ? Belgium
-                          : data.travelNations[0].nation === "스위스"
-                          ? Swiss
-                          : data.travelNations[0].nation === "이탈리아"
-                          ? Italy
-                          : data.travelNations[0].nation === "노르웨이"
-                          ? Norway
-                          : data.travelNations[0].nation === "스웨덴"
-                          ? Sweden
-                          : data.travelNations[0].nation === "폴란드"
-                          ? Poland
-                          : data.travelNations[0].nation === "체코"
-                          ? Czech
-                          : data.travelNations[0].nation === "오스트리아"
-                          ? Asutria
-                          : data.travelNations[0].nation === "슬로베니아"
-                          ? Slovenian
-                          : data.travelNations[0].nation === "크로아티아"
-                          ? Croatia
-                          : data.travelNations[0].nation ===
-                            "보스니아 헤르체고비나"
-                          ? Bosnia
-                          : data.travelNations[0].nation === "그리스"
-                          ? Greece
-                          : data.travelNations[0].nation === "불가리아"
-                          ? Bulgaria
-                          : data.travelNations[0].nation === "터키"
-                          ? Turkey
-                          : data.travelNations[0].nation === "루마니아"
-                          ? Romania
-                          : data.travelNations[0].nation === "헝가리"
-                          ? Hungary
-                          : data.travelNations[0].nation === "핀란드"
-                          ? Finland
-                          : data.travelNations[0].nation === "러시아"
-                          ? Russia
-                          : // 아메리카
-                          data.travelNations[0].nation === "캐나다"
-                          ? Canada
-                          : data.travelNations[0].nation === "미국"
-                          ? USA
-                          : data.travelNations[0].nation === "멕시코"
-                          ? Mexico
-                          : data.travelNations[0].nation === "쿠바"
-                          ? Cuba
-                          : data.travelNations[0].nation === "바하마"
-                          ? Bahamas
-                          : data.travelNations[0].nation === "자메이카"
-                          ? Jmaica
-                          : data.travelNations[0].nation === "콜롬비아"
-                          ? Colombia
-                          : data.travelNations[0].nation === "에콰도르"
-                          ? Ecuador
-                          : data.travelNations[0].nation === "페루"
-                          ? Peru
-                          : data.travelNations[0].nation === "칠레"
-                          ? Chile
-                          : data.travelNations[0].nation === "볼리비아"
-                          ? Bolivia
-                          : data.travelNations[0].nation === "브라질"
-                          ? Brazil
-                          : data.travelNations[0].nation === "아르헨티나"
-                          ? Argentina
-                          : // 남태평양
-                          data.travelNations[0].nation === "괌"
-                          ? Guam
-                          : data.travelNations[0].nation === "사이판"
-                          ? saipan
-                          : data.travelNations[0].nation === "오스트레일리아"
-                          ? Austrailia
-                          : data.travelNations[0].nation === "뉴칼레도니아"
-                          ? New_Caledonia
-                          : data.travelNations[0].nation === "피지"
-                          ? Fiji
-                          : data.travelNations[0].nation === "뉴질랜드"
-                          ? Newzealand
-                          : data.travelNations[0].nation === "프렌치폴리네시아"
-                          ? Polynesia
-                          : Null
+            {sortedPlanPost.slice(offset, offset + limit).map((data) => (
+              <Post key={data.idx}>
+                <Link to={`/planner/post/${data.idx}`}>
+                  <PostImage
+                    src={
+                      // 아시아
+                      data.travelNations[0].nation === "일본"
+                        ? Japan
+                        : data.travelNations[0].nation === "대한민국"
+                        ? Korea
+                        : data.travelNations[0].nation === "중국"
+                        ? China
+                        : data.travelNations[0].nation === "대만"
+                        ? Taiwan
+                        : data.travelNations[0].nation === "필리핀"
+                        ? Phillipine
+                        : data.travelNations[0].nation === "라오스"
+                        ? Laos
+                        : data.travelNations[0].nation === "베트남"
+                        ? Vietnam
+                        : data.travelNations[0].nation === "캄보디아"
+                        ? Cambodia
+                        : data.travelNations[0].nation === "태국"
+                        ? Thailand
+                        : data.travelNations[0].nation === "미얀마"
+                        ? Myanmar
+                        : data.travelNations[0].nation === "말레이시아"
+                        ? Malaysia
+                        : data.travelNations[0].nation === "인도네시아"
+                        ? Indonesia
+                        : data.travelNations[0].nation === "네팔"
+                        ? Nepal
+                        : data.travelNations[0].nation === "인도"
+                        ? India
+                        : data.travelNations[0].nation === "아랍에미리트"
+                        ? UAE
+                        : // 유럽
+                        data.travelNations[0].nation === "독일"
+                        ? Germany
+                        : data.travelNations[0].nation === "덴마크"
+                        ? Denmark
+                        : data.travelNations[0].nation === "아이슬란드"
+                        ? Iceland
+                        : data.travelNations[0].nation === "아일랜드"
+                        ? Ireland
+                        : data.travelNations[0].nation === "영국"
+                        ? England
+                        : data.travelNations[0].nation === "포르투갈"
+                        ? Portugal
+                        : data.travelNations[0].nation === "스페인"
+                        ? Spain
+                        : data.travelNations[0].nation === "프랑스"
+                        ? France
+                        : data.travelNations[0].nation === "네덜란드"
+                        ? Netherlands
+                        : data.travelNations[0].nation === "벨기에"
+                        ? Belgium
+                        : data.travelNations[0].nation === "스위스"
+                        ? Swiss
+                        : data.travelNations[0].nation === "이탈리아"
+                        ? Italy
+                        : data.travelNations[0].nation === "노르웨이"
+                        ? Norway
+                        : data.travelNations[0].nation === "스웨덴"
+                        ? Sweden
+                        : data.travelNations[0].nation === "폴란드"
+                        ? Poland
+                        : data.travelNations[0].nation === "체코"
+                        ? Czech
+                        : data.travelNations[0].nation === "오스트리아"
+                        ? Asutria
+                        : data.travelNations[0].nation === "슬로베니아"
+                        ? Slovenian
+                        : data.travelNations[0].nation === "크로아티아"
+                        ? Croatia
+                        : data.travelNations[0].nation ===
+                          "보스니아 헤르체고비나"
+                        ? Bosnia
+                        : data.travelNations[0].nation === "그리스"
+                        ? Greece
+                        : data.travelNations[0].nation === "불가리아"
+                        ? Bulgaria
+                        : data.travelNations[0].nation === "터키"
+                        ? Turkey
+                        : data.travelNations[0].nation === "루마니아"
+                        ? Romania
+                        : data.travelNations[0].nation === "헝가리"
+                        ? Hungary
+                        : data.travelNations[0].nation === "핀란드"
+                        ? Finland
+                        : data.travelNations[0].nation === "러시아"
+                        ? Russia
+                        : // 아메리카
+                        data.travelNations[0].nation === "캐나다"
+                        ? Canada
+                        : data.travelNations[0].nation === "미국"
+                        ? USA
+                        : data.travelNations[0].nation === "멕시코"
+                        ? Mexico
+                        : data.travelNations[0].nation === "쿠바"
+                        ? Cuba
+                        : data.travelNations[0].nation === "바하마"
+                        ? Bahamas
+                        : data.travelNations[0].nation === "자메이카"
+                        ? Jmaica
+                        : data.travelNations[0].nation === "콜롬비아"
+                        ? Colombia
+                        : data.travelNations[0].nation === "에콰도르"
+                        ? Ecuador
+                        : data.travelNations[0].nation === "페루"
+                        ? Peru
+                        : data.travelNations[0].nation === "칠레"
+                        ? Chile
+                        : data.travelNations[0].nation === "볼리비아"
+                        ? Bolivia
+                        : data.travelNations[0].nation === "브라질"
+                        ? Brazil
+                        : data.travelNations[0].nation === "아르헨티나"
+                        ? Argentina
+                        : // 남태평양
+                        data.travelNations[0].nation === "괌"
+                        ? Guam
+                        : data.travelNations[0].nation === "사이판"
+                        ? saipan
+                        : data.travelNations[0].nation === "오스트레일리아"
+                        ? Austrailia
+                        : data.travelNations[0].nation === "뉴칼레도니아"
+                        ? New_Caledonia
+                        : data.travelNations[0].nation === "피지"
+                        ? Fiji
+                        : data.travelNations[0].nation === "뉴질랜드"
+                        ? Newzealand
+                        : data.travelNations[0].nation === "프렌치폴리네시아"
+                        ? Polynesia
+                        : Null
+                    }
+                  />
+                </Link>
+                <PostContent style={{ padding: "0.5rem", width: "365px" }}>
+                  <PostTitle>{data.title}</PostTitle>
+                  <PostDescription>
+                    {data.travelNations.map((nation, index) => {
+                      const isDuplicate = data.travelNations
+                        .slice(0, index)
+                        .some((prevNation) => prevNation.city === nation.city);
+                      if (isDuplicate) {
+                        return "";
                       }
-                    />
-                  </Link>
-                  <PostContent style={{ padding: "0.5rem", width: "365px" }}>
-                    <PostTitle>{data.title}</PostTitle>
-                    <PostDescription>
-                      {data.travelNations.map((nation, index) => {
-                        const isDuplicate = data.travelNations
-                          .slice(0, index)
-                          .some(
-                            (prevNation) => prevNation.city === nation.city
-                          );
-                        if (isDuplicate) {
-                          return "";
-                        }
-                        return (
-                          <span style={{ fontSize: "12px" }} key={nation.city}>
-                            {nation.city},
-                          </span>
-                        );
-                      })}
-                    </PostDescription>
-                    <PostDate>
-                      기간 : {data.period}
-                      <span style={{ float: "right", marginRight: "10px" }}>
-                        <span
-                          style={{ color: "red" }}
-                          class="material-symbols-outlined"
-                        >
-                          favorite
+                      return (
+                        <span style={{ fontSize: "12px" }} key={nation.city}>
+                          {nation.city},
                         </span>
-                        <span
-                          style={{
-                            position: "relative",
-                            top: "-8px",
-                            left: "0px",
-                          }}
-                        >
-                          {data.likecount}
-                        </span>
+                      );
+                    })}
+                  </PostDescription>
+                  <PostDate>
+                    기간 : {data.period}
+                    <span style={{ float: "right", marginRight: "10px" }}>
+                      <span
+                        style={{ color: "red" }}
+                        class="material-symbols-outlined"
+                      >
+                        favorite
                       </span>
-                    </PostDate>
-                  </PostContent>
-                </Post>
-              ))}
+                      <span
+                        style={{
+                          position: "relative",
+                          top: "-8px",
+                          left: "0px",
+                        }}
+                      >
+                        {data.likecount}
+                      </span>
+                    </span>
+                  </PostDate>
+                </PostContent>
+              </Post>
+            ))}
           </PostContainer>
         </BestPlanContainer>
       </PopularList>

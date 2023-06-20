@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   BannerImgBox,
   BannerLink,
@@ -13,6 +13,25 @@ import PlannerSearch from "./PlannerSearch/PlannerSearch";
 import PopularPost from "./PlannerPost/PopularPost";
 
 const PlannerBoard = () => {
+  const [selectedDestination, setSelectedDestination] = useState("");
+  const [selectedDuration, setSelectedDuration] = useState("");
+  const [selectedTheme, setSelectedTheme] = useState("");
+
+  const handleDestinationChange = (destination) => {
+    setSelectedDestination(destination);
+  };
+
+  const handleDurationChange = (duration) => {
+    setSelectedDuration(duration);
+  };
+
+  const handleThemeChange = (theme) => {
+    setSelectedTheme(theme);
+  };
+
+  const handleExpandToggle = (expand) => {
+    // 확장 상태에 따른 처리
+  };
   return (
     <PlanBaordContainer>
       <PlannerBanner>
@@ -40,15 +59,28 @@ const PlannerBoard = () => {
                 style={{ position: "relative", top: "5px", left: "-5px" }}
                 className="material-symbols-outlined"
               >
-                search{" "}
+                search
               </span>
               나의 일정 보기
             </InBannerButtonR>
           </div>
         </BannerImgBox>
       </PlannerBanner>
-      <PlannerSearch />
-      <PopularPost />
+      <PlannerSearch
+        selectedDestination={selectedDestination}
+        selectedDuration={selectedDuration}
+        selectedTheme={selectedTheme}
+        setSelectedDestination={setSelectedDestination}
+        onDestinationChange={handleDestinationChange} // Pass the function as a prop
+        onDurationChange={handleDurationChange}
+        onThemeChange={handleThemeChange}
+        onExpandToggle={handleExpandToggle}
+      />
+      <PopularPost
+        selectedDestination={selectedDestination}
+        selectedDuration={selectedDuration}
+        selectedTheme={selectedTheme}
+      />
     </PlanBaordContainer>
   );
 };

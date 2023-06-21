@@ -92,6 +92,10 @@ const PopularPost = ({
   selectedDestination,
   selectedDuration,
   selectedTheme,
+  handleShowAllPosts,
+  handleDestinationChange,
+  handleDurationChange,
+  handleThemeChange,
 }) => {
   const [planPost, setPlanPost] = useState([]);
   const [page, setPage] = useState(1);
@@ -99,57 +103,75 @@ const PopularPost = ({
   const offset = (page - 1) * limit;
   const [sortBy, setSortBy] = useState("인기");
   const [showAllPosts, setShowAllPosts] = useState(false);
-  console.log(planPost);
+  const [filteredPost, setFilteredPost] = useState([]);
+  const [sortedPost, setSortedPost] = useState([]);
+  useEffect(() => {
+    axios.get(`${apiServer}/plans/get_all_plan`).then((response) => {
+      const data = response.data.All_post;
+      setPlanPost(data);
+    });
+  }, []);
 
-  const filteredPlanPost = useMemo(() => {
+  useEffect(() => {
+    handleDestinationChange(selectedDestination);
+    setPage(1);
+  }, [selectedDestination]);
+  useEffect(() => {
+    handleThemeChange(selectedTheme);
+    setPage(1);
+  }, [selectedTheme]);
+  useEffect(() => {
+    handleDurationChange(selectedDuration);
+    setPage(1);
+  }, [selectedDuration]);
+
+  useEffect(() => {
     let filteredPosts = [...planPost];
+
     if (selectedDestination) {
       filteredPosts = filteredPosts.filter(
         (data) => data.travelNations[0].nation === selectedDestination
       );
     }
+
     if (selectedTheme) {
       filteredPosts = filteredPosts.filter(
         (data) => data.theme === selectedTheme
       );
     }
-    return filteredPosts;
-  }, [planPost, selectedDestination, selectedTheme]);
+    if (selectedDuration) {
+      if (Number(selectedDuration) < 15) {
+        filteredPosts = filteredPosts.filter(
+          (data) =>
+            data.travelNations.length > Number(selectedDuration) - 1 &&
+            data.travelNations.length < Number(selectedDuration) + 3
+        );
+      } else {
+        filteredPosts = filteredPosts.filter(
+          (data) => data.travelNations.length > Number(selectedDuration) - 1
+        );
+      }
+    }
+    setFilteredPost(filteredPosts);
+  }, [planPost, selectedDestination, selectedTheme, selectedDuration]);
 
-  const sortedPlanPost = useMemo(() => {
-    let sortedPosts = [...filteredPlanPost];
+  useEffect(() => {
+    let sortedPosts = [...filteredPost];
+
     if (sortBy === "신규") {
       sortedPosts.sort((a, b) => b.idx - a.idx); // Sort by data.idx in descending order
     } else if (sortBy === "인기") {
       sortedPosts.sort((a, b) => a.likecount - b.likecount); // Sort by data.likecount in ascending order
     }
-    return sortedPosts;
-  }, [filteredPlanPost, sortBy]);
 
-  const handleShowAllPosts = () => {
-    setShowAllPosts(true);
+    setSortedPost(sortedPosts);
+  }, [filteredPost, sortBy]);
+
+  const handleShowAll = () => {
+    setFilteredPost(planPost);
+    handleShowAllPosts();
   };
 
-  useEffect(() => {
-    console.log("선택된 여행지 : ", selectedDestination);
-    selectedTheme = null;
-    setPage(1);
-  }, [selectedDestination]);
-  useEffect(() => {
-    console.log(selectedDuration);
-  }, [selectedDuration]);
-  useEffect(() => {
-    console.log(selectedTheme);
-    setPage(1);
-  }, [selectedTheme]);
-
-  useEffect(() => {
-    axios.get(`${apiServer}/plans/get_all_plan`).then((response) => {
-      const data = response.data.All_post;
-      // console.log(data);
-      setPlanPost(data);
-    });
-  }, []);
   return (
     <PopularContainer>
       <div style={{ marginLeft: "70px" }}>
@@ -182,7 +204,7 @@ const PopularPost = ({
               fontWeight: "bold",
               textDecoration: "underline",
             }}
-            onClick={handleShowAllPosts}
+            onClick={handleShowAll}
           >
             전체보기
           </span>
@@ -191,7 +213,7 @@ const PopularPost = ({
       <PopularList>
         <BestPlanContainer>
           <PostContainer>
-            {sortedPlanPost.slice(offset, offset + limit).map((data) => (
+            {sortedPost.slice(offset, offset + limit).map((data) => (
               <Post key={data.idx}>
                 <Link to={`/planner/post/${data.idx}`}>
                   <PostImage
@@ -373,7 +395,7 @@ const PopularPost = ({
         </BestPlanContainer>
       </PopularList>
       <Paging
-        total={planPost.length}
+        total={sortedPost.length}
         limit={limit}
         page={page}
         setPage={setPage}

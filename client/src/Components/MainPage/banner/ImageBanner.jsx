@@ -5,10 +5,9 @@ import {
   BannerLogo,
   BannerOverlay,
   BannerSearch,
-  SearchButton,
 } from "./ImageBannerSty";
 import Img from "./images/hero-slider-5.jpg";
-import Logo from "./images/Logo.png";
+import Logo from "./images/logo.png";
 
 const ImageBanner = () => {
   return (

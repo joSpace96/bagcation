@@ -61,6 +61,10 @@ let PlanService = exports.PlanService = class PlanService {
     async findById(idx) {
         return this.planRepository.findOne({ where: { idx }, relations: ['travelNations', 'planSchedules'], });
     }
+    async findByuserId(user_idx) {
+        const myplans = await this.planRepository.find({ where: { user_idx }, relations: ['travelNations', 'planSchedules'] });
+        return myplans;
+    }
     async findAll() {
         return this.planRepository.find({
             relations: ['travelNations', 'planSchedules'],

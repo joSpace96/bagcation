@@ -60,6 +60,10 @@ export class PlanService {
     return this.planRepository.findOne({ where: { idx },relations: ['travelNations', 'planSchedules'], });
 
   }
+  async findByuserId(user_idx: number): Promise<Plan[]> {
+    const myplans = await this.planRepository.find({ where: { user_idx }, relations: ['travelNations', 'planSchedules'] });
+    return myplans;
+  }
 
   async findAll(): Promise<Plan[]> {
     return this.planRepository.find({

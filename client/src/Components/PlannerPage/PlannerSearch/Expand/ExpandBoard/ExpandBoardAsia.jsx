@@ -33,7 +33,7 @@ const ExpandBoardAsia = ({ setSelectedDestination }) => {
       </span>
       <span onClick={() => handleDestinationSelection("라오스")}>라오스</span>
       <span onClick={() => handleDestinationSelection("미얀마")}>미얀마</span>
-      <spa onClick={() => handleDestinationSelection("네팔")}>네팔</spa>
+      <span onClick={() => handleDestinationSelection("네팔")}>네팔</span>
       <span onClick={() => handleDestinationSelection("몰디브")}>몰디브</span>
       <span onClick={() => handleDestinationSelection("스리랑카")}>
         스리랑카

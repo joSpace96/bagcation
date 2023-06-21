@@ -11,6 +11,13 @@ export declare class PlanController {
         message: string;
         post: import("../domain/plan.entity").Plan;
     }>;
+    getMyPlan(user_idx: number): Promise<{
+        message: string;
+        post?: undefined;
+    } | {
+        message: string;
+        post: import("../domain/plan.entity").Plan[];
+    }>;
     getAllPlan(): Promise<{
         message: string;
         All_post?: undefined;

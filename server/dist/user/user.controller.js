@@ -69,6 +69,15 @@ let UserController = exports.UserController = class UserController {
             return false;
         }
     }
+    async findById(idx) {
+        const user = await this.userService.findById(idx);
+        if (user) {
+            return user;
+        }
+        else {
+            return { message: "유저를 찾을 수 없습니다." };
+        }
+    }
 };
 __decorate([
     (0, common_1.Post)('signup'),
@@ -95,6 +104,14 @@ __decorate([
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "findByKakaoId", null);
+__decorate([
+    (0, common_1.Get)('find-by-id'),
+    (0, swagger_1.ApiTags)('User'),
+    __param(0, (0, common_1.Query)('idx')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number]),
+    __metadata("design:returntype", Promise)
+], UserController.prototype, "findById", null);
 exports.UserController = UserController = __decorate([
     (0, common_1.Controller)('user'),
     __metadata("design:paramtypes", [user_service_1.UserService])
@@ -109,7 +126,7 @@ let LoginController = exports.LoginController = class LoginController {
             const params = new URLSearchParams();
             params.append('grant_type', 'authorization_code');
             params.append('client_id', 'c6acf344a39dd6fa0033f505215fd2a3');
-            params.append('redirect_uri', 'http://localhost:3001/kakao-callback');
+            params.append('redirect_uri', 'http://192.168.0.42:3001/kakao-callback');
             params.append('code', code);
             params.append('client_secret', '0BpAH3VnLFgTiyt9zmUuz5b2j3jfyCDN');
             const { data } = await axios_1.default.post('https://kauth.kakao.com/oauth/token', params.toString(), {

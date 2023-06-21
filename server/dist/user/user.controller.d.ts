@@ -19,6 +19,9 @@ export declare class UserController {
         user: import("../domain/user.entity").User;
     }>;
     findByKakaoId(kakaoUserId: string): Promise<boolean>;
+    findById(idx: number): Promise<import("../domain/user.entity").User | {
+        message: string;
+    }>;
 }
 export declare class LoginController {
     private readonly userService;

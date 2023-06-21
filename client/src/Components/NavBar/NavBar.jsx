@@ -47,33 +47,9 @@ const NavBar = () => {
 
   const menuItems = [
     {
-      text: "클립보드",
+      text: "마이페이지",
       onClick: () => {
-        navigate("/notice");
-      },
-    },
-    {
-      text: "여행일정",
-      onClick: () => {
-        navigate("/best");
-      },
-    },
-    {
-      text: "리뷰",
-      onClick: () => {
-        navigate("/q&a");
-      },
-    },
-    {
-      text: "여행TIP",
-      onClick: () => {
-        navigate("/ai");
-      },
-    },
-    {
-      text: "Q&A",
-      onClick: () => {
-        navigate("/ai");
+        navigate(`/mypage/${localStorage.getItem("idx")}`);
       },
     },
     {
@@ -96,6 +72,9 @@ const NavBar = () => {
         <LinkButton to="/">
           <Brand src={Logo} alt="" />
         </LinkButton>
+        <LinkButton to="/review">
+          <NavItem>리뷰</NavItem>
+        </LinkButton>
         <LinkButton to="/planner">
           <NavItem>플래너</NavItem>
         </LinkButton>
@@ -110,7 +89,7 @@ const NavBar = () => {
       <NavBarWrapper>
         <div>
           <input
-            style={{ position: "relative", top: "-10px" }}
+            style={{ position: "relative", top: "-10px", maxWidth: "200px" }}
             type="text"
             placeholder="도시/장소를 찾아보세요"
           />

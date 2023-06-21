@@ -45,8 +45,8 @@ export const Search = styled.input`
 
 export const NavProfileMenu = styled.div`
   position: relative;
-  left: 120px;
-  top: -40px;
+  left: 150px;
+  top: -50px;
   background-color: white;
   border-radius: 20px;
   width: 60%;

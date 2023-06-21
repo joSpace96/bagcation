@@ -34,6 +34,15 @@ let PlanController = exports.PlanController = class PlanController {
             return { message: "게시글 불러오기 성공", post };
         }
     }
+    async getMyPlan(user_idx) {
+        const post = await this.planService.findByuserId(user_idx);
+        if (!post) {
+            return { message: "게시글을 찾을 수 없습니다." };
+        }
+        else {
+            return { message: "게시글 불러오기 성공", post };
+        }
+    }
     async getAllPlan() {
         const All_post = await this.planService.findAll();
         if (!All_post) {
@@ -60,6 +69,14 @@ __decorate([
     __metadata("design:paramtypes", [Number]),
     __metadata("design:returntype", Promise)
 ], PlanController.prototype, "getPlan", null);
+__decorate([
+    (0, common_1.Get)('get_my_plan'),
+    (0, swagger_1.ApiTags)('Plan'),
+    __param(0, (0, common_1.Query)('user_idx')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number]),
+    __metadata("design:returntype", Promise)
+], PlanController.prototype, "getMyPlan", null);
 __decorate([
     (0, common_1.Get)('get_all_plan'),
     (0, swagger_1.ApiTags)('Plan'),

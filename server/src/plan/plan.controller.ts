@@ -25,6 +25,17 @@ export class PlanController {
     }
   }
 
+  @Get('get_my_plan')
+  @ApiTags('Plan')
+  async getMyPlan(@Query('user_idx') user_idx:number){
+    const post = await this.planService.findByuserId(user_idx);
+    if(!post){
+        return {message : "게시글을 찾을 수 없습니다."}
+    }else{
+        return {message:"게시글 불러오기 성공", post}
+    }
+  }
+
   @Get('get_all_plan')
   @ApiTags('Plan')
   async getAllPlan(){

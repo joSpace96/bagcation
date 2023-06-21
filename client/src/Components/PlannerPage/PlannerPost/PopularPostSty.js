@@ -8,15 +8,6 @@ export const PopularContainer = styled.div`
   height: max-content;
   margin: auto;
   justify-content: center;
-  /* span {
-    font-family: "nanum_b";
-    font-weight: bold;
-    font-size: 18px;
-    cursor: pointer;
-    &:hover {
-      color: #7bc0f9;
-    }
-  } */
 `;
 export const PopularList = styled.div`
   padding: 1rem;
@@ -33,14 +24,13 @@ export const PostContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
   height: max-content;
-  justify-content: center;
 `;
 
 export const Post = styled.div`
   width: 380px;
   height: max-content;
-  margin: auto;
   margin-top: 10px;
+  margin: 55px;
   margin-bottom: 10px;
   &:hover {
     transform: scale(1.05);

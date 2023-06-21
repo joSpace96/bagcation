@@ -123,9 +123,7 @@ const PlannerSearch = ({
                   <TableBody onClick={() => handleDurationSelection("11~15일")}>
                     11~15일
                   </TableBody>
-                  <TableBody
-                    onClick={() => handleDurationSelection("15일 이상")}
-                  >
+                  <TableBody onClick={() => handleDurationSelection("15~")}>
                     15일 이상
                   </TableBody>
                 </TableBodyWrapper>

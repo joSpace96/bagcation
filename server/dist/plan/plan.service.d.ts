@@ -8,5 +8,6 @@ export declare class PlanService {
     constructor(planRepository: Repository<Plan>, travelNationRepository: Repository<Travel_Nation>, planScheduleRepository: Repository<Plan_Schedule>);
     createPlan(createPlanDto: CreatePlanDto): Promise<Plan>;
     findById(idx: number): Promise<Plan>;
+    findByuserId(user_idx: number): Promise<Plan[]>;
     findAll(): Promise<Plan[]>;
 }

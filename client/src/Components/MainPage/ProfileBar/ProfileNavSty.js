@@ -37,6 +37,7 @@ export const BagContents = styled.div`
   font-family: "나눔바른고딕", NanumBarunGothic, "nanum", "돋움", Dotum,
     "맑은고딕", "Malgun Gothic", "굴림", Gulim, Helvetica, sans-serif;
   font-weight: bold;
+  cursor: pointer;
 `;
 
 export const ContentsName = styled.div`

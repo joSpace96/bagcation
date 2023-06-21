@@ -88,16 +88,7 @@ import Newzealand from "./PostMainImages/oceania/Newzealand.jpg";
 import Polynesia from "./PostMainImages/oceania/Polynesia.jpg";
 import saipan from "./PostMainImages/oceania/Saipan.jpg";
 
-const BestPlan = () => {
-  const [planPost, setPlanPost] = useState([]);
-
-  useEffect(() => {
-    axios.get(`${apiServer}/plans/get_all_plan`).then((response) => {
-      const data = response.data.All_post;
-      setPlanPost(data);
-    });
-  }, []);
-  console.log("불러온 데이터", planPost);
+const BestPlan = ({ planPost }) => {
   return (
     <BestPlanContainer>
       <Header>

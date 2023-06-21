@@ -17,6 +17,9 @@ import Register from "./Components/LoginPage/RegisterPage/Register";
 import PlannerDetail from "./Components/PlannerPage/PlannerDetail/PlannerDetail";
 import PlannerTest from "./Components/PlannerPage/PlannerDetail/PlannerTest";
 import PlannerPost from "./Components/PlannerPage/PlannerPost/PlannerPost";
+import Profile from "./Components/ProfilePage/Profile";
+import Review from "./Components/ReviewPage/Review";
+import EditReview from "./Components/ReviewPage/EditReview";
 
 function App() {
   return (
@@ -29,8 +32,11 @@ function App() {
           <Route path="/planner/map" element={<Planner />} />
           <Route path="/planner/post/:idx" element={<PlannerPost />} />
           <Route path="/planner" element={<PlannerBoard />} />
+          <Route path="/mypage/:idx" element={<Profile />} />
           <Route path="/guide" element={<GuidePage />} />
-          <Route path="/gallery/detail" element={<Post />} />
+          <Route path="/reivew/detail" element={<Post />} />
+          <Route path="/review/edit" element={<EditReview />} />
+          <Route path="/review" element={<Review />} />
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
           <Route path="/kakao-callback" element={<RedirectPage />} />

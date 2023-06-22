@@ -9,7 +9,7 @@ export const TodoContainer = styled.div`
   z-index: 5;
   background-color: white;
   height: 86vh;
-  overflow: hidden;
+  overflow-y: scroll;
 `;
 export const TodoInput = styled.div`
   display: flex;

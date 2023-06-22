@@ -47,4 +47,9 @@ export class CreatePlanDto {
   planSchedules: PlanScheduleDataDto[];
 }
 
-
+export class LikeDataDto {
+  @ApiProperty()
+  userIdx: number;
+  @ApiProperty()
+  planIdx: number;
+}

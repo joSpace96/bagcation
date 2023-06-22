@@ -61,12 +61,12 @@ export const Overlay = styled.div`
 `;
 
 export const OverlayContent = styled.div`
-  position: fixed;
-  top: 50%;
+  position: absolute;
+  top: 350px;
   left: 50%;
   transform: translate(-50%, -50%);
   width: 500px;
-  height: 700px;
+  height: 600px;
   background-color: white;
   z-index: 10000;
   border: none;

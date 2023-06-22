@@ -26,6 +26,9 @@ let UserService = exports.UserService = class UserService {
     async findById(idx) {
         return this.userRepository.findOne({ where: { idx } });
     }
+    async getUserByIdx(idx) {
+        return this.userRepository.findOne({ where: { idx } });
+    }
     async findByEmailAndPassword(email, password) {
         return this.userRepository.findOne({ where: { email, password } });
     }

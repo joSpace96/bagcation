@@ -13,6 +13,7 @@ import {
   PostTravelLocations,
 } from "./PlannerPostSty";
 import "./Scroll.css";
+import { LikeButton } from "./../../BoardPage/BoardList/BoardListSty";
 
 const PlannerPost = () => {
   const [postData, setPostData] = useState();
@@ -21,17 +22,43 @@ const PlannerPost = () => {
   const [lines, setLines] = useState(null);
   const [scheduleData, setScheduleData] = useState([]);
   const [expandedIndex, setExpandedIndex] = useState(-1);
+  const [likeCount, setLikeCount] = useState("");
+
   const arrowHeads = [];
+  const url = document.location.href;
+  const splitUrl = url.split("/");
+  const location = splitUrl[splitUrl.length - 1];
 
   const clickedIcon = {
     url: clickflag,
     scaledSize: new window.google.maps.Size(40, 40),
   };
 
+  const MyId = localStorage.getItem("idx");
+  const handleLike = () => {
+    const likeData = {
+      userIdx: MyId,
+      planIdx: location,
+    };
+    axios
+      .post(`${apiServer}/plans/plan_like`, likeData)
+      .then((response) => {
+        const data = response.data;
+        console.log(data);
+        if (data.message === "Plan liked successfully") {
+          alert("좋아요가 등록되었습니다.");
+          setLikeCount((prevCount) => prevCount + 1); // 좋아요 수 증가
+        }
+        if (data.message === "Plan like removed successfully") {
+          alert("좋아요가 해제되었습니다.");
+          setLikeCount((prevCount) => prevCount - 1); // 좋아요 수 감소
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
   useEffect(() => {
-    const url = document.location.href;
-    const splitUrl = url.split("/");
-    const location = splitUrl[splitUrl.length - 1];
     try {
       axios
         .get(`${apiServer}/plans/get_plan?idx=${location}`)
@@ -47,11 +74,16 @@ const PlannerPost = () => {
               label: route.city,
             }))
           );
+
+          setLikeCount(data.likecount); // 좋아요 수 업데이트
         });
     } catch (error) {
       console.log(error);
     }
   }, []);
+  useEffect(() => {
+    console.log(likeCount, "좋아요 수가 변경되었습니다.");
+  }, [likeCount]);
 
   useEffect(() => {
     if (routes.length > 0 && window.google) {
@@ -100,10 +132,18 @@ const PlannerPost = () => {
       <PlannerPostContainer>
         {postData && (
           <PostHeader>
-            <div style={{ marginBottom: "10px" }}>
+            <div style={{ marginBottom: "2px" }}>
               {postData.title} / {postData.theme}
             </div>
             <div>{postData.period}</div>
+            <span
+              style={{ cursor: "pointer" }}
+              onClick={handleLike}
+              class="material-symbols-outlined"
+            >
+              favorite
+            </span>
+            <span>{likeCount}</span>
           </PostHeader>
         )}
         <PostTravelLocations className="scroll-content">

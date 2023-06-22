@@ -5,10 +5,10 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background: linear-gradient(90deg, #f5cee1,white, #ebe7be);
+  background: linear-gradient(90deg,#c7e8ca,#ddf7e3,whitesmoke ,white,whitesmoke,lightblue, #7bc0f9)
   
 }
-
+/* #0055ff */
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;

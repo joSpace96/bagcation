@@ -1,4 +1,5 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToMany, JoinTable, OneToMany } from 'typeorm';
+import { Plan_like } from './like.entity';
 
 @Entity()
 export class User {
@@ -25,4 +26,6 @@ export class User {
 
   @Column({ nullable: true }) // 프로필 이미지는 필수가 아닐 수 있으므로 nullable: true로 설정
   profileImage: string;
+  @OneToMany(() => Plan_like, planLike => planLike.user)
+  likes: Plan_like[];
 }

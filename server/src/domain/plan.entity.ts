@@ -1,4 +1,5 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinColumn, OneToMany } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinColumn, OneToMany, ManyToMany, JoinTable } from 'typeorm';
+import { Plan_like } from './like.entity';
 
 
 @Entity()
@@ -35,6 +36,10 @@ export class Plan {
 
   @OneToMany(() => Plan_Schedule, planSchedule => planSchedule.plan)
   planSchedules: Plan_Schedule[];
+
+  @OneToMany(() => Plan_like, planLike => planLike.plan)
+  likes: Plan_like[];
+
 }
 
 @Entity()

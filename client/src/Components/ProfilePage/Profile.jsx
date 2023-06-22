@@ -16,16 +16,23 @@ import TopReviewMenu from "./Pages/TopReviewMenu";
 import InnerPlan from "./Pages/InnerPages/InnerPlan";
 import { useNavigate } from "react-router-dom";
 import InnerReview from "./Pages/InnerPages/InnerReview";
+import InnerLikePlan from "./Pages/InnerPages/InnerLikePlan";
 
 const Profile = () => {
   const navigate = useNavigate();
   const NavigatePlanner = () => {
     navigate("/planner/map");
   };
+  const NavigateReview = () => {
+    navigate("/review/edit");
+  };
   const [topMenu, setTopMenu] = useState("여행일정");
   const myName = localStorage.getItem("nick");
   const myKakaoName = localStorage.getItem("kakaonick");
   const [myPlan, setMyPlan] = useState([]);
+  const [myLike, setMyLike] = useState([]);
+  const [changePost, setChangePost] = useState("완성");
+  console.log("현재고른 목록:", changePost);
   const [content, setContent] = useState(
     <TopPlanMenu NavigatePlanner={NavigatePlanner} />
   );
@@ -35,11 +42,21 @@ const Profile = () => {
 
   const handleChangeContent = (item) => {
     if (item === "여행일정") {
-      setContent(<TopPlanMenu NavigatePlanner={NavigatePlanner} />);
-      setInnerContent(<InnerPlan myPlan={myPlan} />);
+      setContent(
+        <TopPlanMenu
+          setChangePost={setChangePost}
+          NavigatePlanner={NavigatePlanner}
+        />
+      );
+      if (changePost === "완성") {
+        setInnerContent(<InnerPlan myPlan={myPlan} />);
+      }
+      if (changePost === "좋아요") {
+        setInnerContent(<InnerLikePlan myLike={myLike} />);
+      }
     }
     if (item === "리뷰") {
-      setContent(<TopReviewMenu NavigatePlanner={NavigatePlanner} />);
+      setContent(<TopReviewMenu NavigateReview={NavigateReview} />);
       setInnerContent(<InnerReview />);
     }
   };
@@ -60,6 +77,13 @@ const Profile = () => {
             const my_plan = response.data;
             setMyPlan(my_plan.post);
           });
+        axios
+          .get(`${apiServer}/plans/get_my_liked?userIdx=${user_idx}`)
+          .then((response) => {
+            const my_like = response.data.post;
+
+            setMyLike(my_like);
+          });
       });
   }, []);
   useEffect(() => {
@@ -68,6 +92,14 @@ const Profile = () => {
   const handleMenu = (menu) => {
     setTopMenu(menu);
   };
+  useEffect(() => {
+    if (changePost === "완성") {
+      setInnerContent(<InnerPlan myPlan={myPlan} />);
+    }
+    if (changePost === "좋아요") {
+      setInnerContent(<InnerLikePlan myLike={myLike} />);
+    }
+  }, [changePost]);
 
   return (
     <MypageContainer>

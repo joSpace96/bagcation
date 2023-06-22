@@ -11,6 +11,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Plan_Schedule = exports.Travel_Nation = exports.Plan = void 0;
 const typeorm_1 = require("typeorm");
+const like_entity_1 = require("./like.entity");
 let Plan = exports.Plan = class Plan {
 };
 __decorate([
@@ -57,6 +58,10 @@ __decorate([
     (0, typeorm_1.OneToMany)(() => Plan_Schedule, planSchedule => planSchedule.plan),
     __metadata("design:type", Array)
 ], Plan.prototype, "planSchedules", void 0);
+__decorate([
+    (0, typeorm_1.OneToMany)(() => like_entity_1.Plan_like, planLike => planLike.plan),
+    __metadata("design:type", Array)
+], Plan.prototype, "likes", void 0);
 exports.Plan = Plan = __decorate([
     (0, typeorm_1.Entity)()
 ], Plan);

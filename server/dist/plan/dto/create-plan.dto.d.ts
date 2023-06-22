@@ -22,3 +22,7 @@ export declare class CreatePlanDto {
     travelNations: TravelNationDataDto[];
     planSchedules: PlanScheduleDataDto[];
 }
+export declare class LikeDataDto {
+    userIdx: number;
+    planIdx: number;
+}

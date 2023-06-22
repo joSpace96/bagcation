@@ -1,20 +1,16 @@
-import React, { useEffect } from "react";
+import React from "react";
 import {
   Post,
   PostContainer,
   PostContent,
   PostDate,
   PostDescription,
-  PostImage,
   PostTitle,
 } from "../../../MainPage/BestPlan/BestPlanSty";
 import { useNavigate } from "react-router-dom";
 
 const InnerPlan = ({ myPlan }) => {
   const navigate = useNavigate();
-  useEffect(() => {
-    console.log("이너플랜페이지 : ", myPlan);
-  }, [myPlan]);
 
   const ClickMyPlan = (idx) => {
     navigate(`/planner/post/${idx}`);
@@ -29,7 +25,7 @@ const InnerPlan = ({ myPlan }) => {
             key={data.idx}
           >
             <PostContent>
-              <PostTitle>{data.title.split("s")[1]}</PostTitle>
+              <PostTitle>{data.title}</PostTitle>
               <PostDescription>
                 {data.travelNations.map((nation, index) => {
                   const isDuplicate = data.travelNations

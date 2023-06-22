@@ -161,7 +161,7 @@ const PopularPost = ({
     if (sortBy === "신규") {
       sortedPosts.sort((a, b) => b.idx - a.idx); // Sort by data.idx in descending order
     } else if (sortBy === "인기") {
-      sortedPosts.sort((a, b) => a.likecount - b.likecount); // Sort by data.likecount in ascending order
+      sortedPosts.sort((a, b) => b.likecount - a.likecount); // Sort by data.likecount in ascending order
     }
 
     setSortedPost(sortedPosts);

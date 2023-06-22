@@ -1,3 +1,4 @@
+import { Plan_like } from './like.entity';
 export declare class Plan {
     idx: number;
     user_idx: number;
@@ -10,6 +11,7 @@ export declare class Plan {
     save: boolean;
     travelNations: Travel_Nation[];
     planSchedules: Plan_Schedule[];
+    likes: Plan_like[];
 }
 export declare class Travel_Nation {
     idx: number;

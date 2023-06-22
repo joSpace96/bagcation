@@ -9,7 +9,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.CreatePlanDto = exports.PlanScheduleDataDto = exports.TravelNationDataDto = void 0;
+exports.LikeDataDto = exports.CreatePlanDto = exports.PlanScheduleDataDto = exports.TravelNationDataDto = void 0;
 const swagger_1 = require("@nestjs/swagger");
 class TravelNationDataDto {
 }
@@ -92,4 +92,15 @@ __decorate([
     (0, swagger_1.ApiProperty)({ type: [PlanScheduleDataDto] }),
     __metadata("design:type", Array)
 ], CreatePlanDto.prototype, "planSchedules", void 0);
+class LikeDataDto {
+}
+exports.LikeDataDto = LikeDataDto;
+__decorate([
+    (0, swagger_1.ApiProperty)(),
+    __metadata("design:type", Number)
+], LikeDataDto.prototype, "userIdx", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)(),
+    __metadata("design:type", Number)
+], LikeDataDto.prototype, "planIdx", void 0);
 //# sourceMappingURL=create-plan.dto.js.map

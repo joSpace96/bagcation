@@ -1,3 +1,4 @@
+import { Plan_like } from './like.entity';
 export declare class User {
     idx: number;
     email: string;
@@ -7,4 +8,5 @@ export declare class User {
     kakaoUserId: string;
     nickname: string;
     profileImage: string;
+    likes: Plan_like[];
 }

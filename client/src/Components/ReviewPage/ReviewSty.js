@@ -61,13 +61,11 @@ export const ReviewHeader = styled.div`
   justify-content: space-between;
 `;
 
-export const NewReview = styled.span`
-  width: max-content;
+export const NewReview = styled.img`
+  width: 50px;
   padding-left: 20px;
   padding-right: 20px;
   height: max-content;
-  font-size: 20px;
-  background-color: orange;
   color: black;
   font-weight: bold;
   cursor: pointer;

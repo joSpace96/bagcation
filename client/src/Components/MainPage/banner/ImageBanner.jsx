@@ -15,10 +15,10 @@ const ImageBanner = () => {
       <BannerImage src={Img} alt="Banner" />
       <BannerOverlay>
         <BannerLogo src={Logo}></BannerLogo>
-        <BannerSearch>
+        {/* <BannerSearch>
           <input type="text" placeholder="국가명 , 도시명으로 검색"></input>
           <button className="material-symbols-outlined">search </button>
-        </BannerSearch>
+        </BannerSearch> */}
       </BannerOverlay>
     </BannerContainer>
   );

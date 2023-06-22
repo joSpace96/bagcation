@@ -13,6 +13,7 @@ const typeorm_1 = require("@nestjs/typeorm");
 const orm_config_1 = require("./orm.config");
 const map_module_1 = require("./map/map.module");
 const plan_module_1 = require("./plan/plan.module");
+const review_module_1 = require("./review/review.module");
 let AppModule = exports.AppModule = class AppModule {
 };
 exports.AppModule = AppModule = __decorate([
@@ -21,7 +22,8 @@ exports.AppModule = AppModule = __decorate([
             typeorm_1.TypeOrmModule.forRootAsync({ useFactory: orm_config_1.ormConfig }),
             user_module_1.UserModule,
             map_module_1.MapModule,
-            plan_module_1.PlanModule
+            plan_module_1.PlanModule,
+            review_module_1.ReviewModule,
         ],
         controllers: [],
         providers: [],

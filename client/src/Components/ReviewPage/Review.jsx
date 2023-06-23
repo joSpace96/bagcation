@@ -22,19 +22,27 @@ import { LedgerAddSubmit } from "../LedgerPage/LedgerDetailPage/LedgerDetailSty"
 import EditReview from "./EditReview";
 import EditReviewContent from "./EditReviewContent";
 import { useEffect } from "react";
+import ParentsEditor from "./ParentsEditor";
+import axios from "axios";
+import apiServer from "../../api/api";
+import Paging from "../PlannerPage/Paging/Paging";
 const Review = () => {
-  const ChangeEditContent = () => {
-    setEditContent(<EditReviewContent />);
-  };
-  const ExistEdit = () => {
-    setEditContent(<EditReview ChangeEditContent={ChangeEditContent} />);
-  };
-
   const [OverlayVisible, setOverlayVisible] = useState(false);
-  const [EditContent, setEditContent] = useState(
-    <EditReview ChangeEditContent={ChangeEditContent} />
-  );
+  const [reviewData, setReviewData] = useState([]);
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(6);
+  const offset = (page - 1) * limit;
 
+  useEffect(() => {
+    try {
+      axios.get(`${apiServer}/review/get_all`).then((response) => {
+        setReviewData(response.data.reviews);
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }, []);
+  console.log(reviewData);
   const showOverlay = () => {
     setOverlayVisible(true);
   };
@@ -53,7 +61,6 @@ const Review = () => {
       </ReviewHeader>
       <div
         style={{
-          border: "1px solid black",
           height: "max-content",
           width: "1200px",
           margin: "0 auto",
@@ -62,41 +69,48 @@ const Review = () => {
           flexDirection: "row",
         }}
       >
-        <ReviewContainer>
-          <UserInfo>
-            <UserImg src={user_Test} />
-            <UserName>John Doe</UserName>
-          </UserInfo>
-          <Link
-            style={{ color: "black", textDecoration: "none" }}
-            to={"/reivew/detail"}
-          >
-            <ReviewImg src={test} />
-          </Link>
-          <ReviewContent>
-            <ReviewText>Amazing trip to beautiful destinations!</ReviewText>
-            <ReviewMetadata>
-              <span>10</span>
-              <span>5</span>
-            </ReviewMetadata>
-          </ReviewContent>
-          {OverlayVisible && (
-            <Overlay>
-              <OverlayContent>
-                {EditContent}
-                <LedgerAddSubmit
-                  onClick={() => {
-                    hideOverlay();
-                    ExistEdit();
-                  }}
-                >
-                  닫기
-                </LedgerAddSubmit>
-              </OverlayContent>
-            </Overlay>
-          )}
-        </ReviewContainer>
+        {reviewData.slice(offset, offset + limit).map((review) => (
+          <ReviewContainer>
+            <Link
+              style={{ color: "black", textDecoration: "none" }}
+              to={`/reivew/detail/${review.id}`}
+            >
+              <UserInfo>
+                <UserName>{review.user_nick}</UserName>
+              </UserInfo>
+              <ReviewImg src={review.imageUrl[0]} />
+            </Link>
+            <ReviewContent>
+              <ReviewText>{review.title}</ReviewText>
+              <ReviewMetadata>
+                <span>10</span>
+                <span>5</span>
+              </ReviewMetadata>
+            </ReviewContent>
+          </ReviewContainer>
+        ))}
+        {/* </ReviewContainer> */}
+        {OverlayVisible && (
+          <Overlay>
+            <OverlayContent>
+              <ParentsEditor hideOverlay={hideOverlay} />
+              <LedgerAddSubmit
+                onClick={() => {
+                  hideOverlay();
+                }}
+              >
+                닫기
+              </LedgerAddSubmit>
+            </OverlayContent>
+          </Overlay>
+        )}
       </div>
+      <Paging
+        total={reviewData.length}
+        limit={limit}
+        page={page}
+        setPage={setPage}
+      />
     </>
   );
 };

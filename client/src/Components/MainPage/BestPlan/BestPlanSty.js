@@ -32,7 +32,7 @@ export const PostContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
   height: max-content;
-  justify-content: center;
+  justify-content: left;
   margin: 35px auto;
 `;
 
@@ -43,7 +43,9 @@ export const Post = styled.div`
   margin-top: 10px;
   margin-bottom: 10px;
   border-radius: 10px;
+  padding-bottom: 10px;
   overflow: hidden;
+  background-color: white;
   box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
   &:hover {
     transform: scale(1.05);
@@ -63,7 +65,6 @@ export const PostContent = styled.div`
   height: 78px;
   background-color: white;
   padding: 8px 0;
-  box-shadow: 0px 1px 1px 0.5px gray;
 `;
 
 export const PostTitle = styled.h3`
@@ -74,7 +75,7 @@ export const PostTitle = styled.h3`
 
 export const PostDescription = styled.p`
   margin: 3px 15px;
-  font-size: 14px;
+  font-size: 10px;
   text-overflow: ellipsis;
   overflow-x: hidden;
   color: #242424;

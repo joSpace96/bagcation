@@ -8,9 +8,14 @@ import {
   PostDescription,
   PostTitle,
 } from "../../../MainPage/BestPlan/BestPlanSty";
+import Paging from "../../../PlannerPage/Paging/Paging";
+import { useState } from "react";
 
 const InnerLikePlan = ({ myLike }) => {
   const navigate = useNavigate();
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(6);
+  const offset = (page - 1) * limit;
 
   const ClickMyPlan = (idx) => {
     navigate(`/planner/post/${idx}`);
@@ -19,7 +24,7 @@ const InnerLikePlan = ({ myLike }) => {
   return (
     <div>
       <PostContainer style={{ margin: "0 auto" }}>
-        {myLike.slice(0, 6).map((data) => (
+        {myLike.slice(offset, offset + limit).map((data) => (
           <Post
             onClick={() => ClickMyPlan(data.idx)}
             style={{ cursor: "pointer" }}
@@ -70,6 +75,12 @@ const InnerLikePlan = ({ myLike }) => {
           </Post>
         ))}
       </PostContainer>
+      <Paging
+        total={myLike.length}
+        limit={limit}
+        page={page}
+        setPage={setPage}
+      />
     </div>
   );
 };

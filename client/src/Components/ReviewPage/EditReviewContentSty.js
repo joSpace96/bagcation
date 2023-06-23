@@ -1,24 +1,25 @@
 import { styled } from "styled-components";
 
 export const EditContentContainer = styled.div`
-  border: 1px solid black;
   height: 100%;
 `;
 
 export const EditContentHeader = styled.div`
-  border: 1px solid red;
   padding: 20px 0;
   text-align: center;
+  font-weight: bold;
+  font-family: nanum;
 `;
 
 export const SelectedImgContainer = styled.div`
-  border: 1px solid green;
   height: 200px;
 `;
 export const EditMemoContainer = styled.div`
-  border: 1px solid blue;
+  position: relative;
+  top: 50px;
   height: 45%;
   justify-content: center;
+  padding: 5px;
 `;
 
 export const EditSubmitButton = styled.div`

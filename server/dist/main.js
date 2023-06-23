@@ -15,15 +15,10 @@ async function bootstrap() {
         .build();
     const document = swagger_1.SwaggerModule.createDocument(app, config);
     swagger_1.SwaggerModule.setup('/api', app, document);
-    const corsOptions = {
-        origin: '*',
-        methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-        preflightContinue: false,
-        optionsSuccessStatus: 204,
-        credentials: true,
-        allowedHeaders: 'Origin, X-Requested-With, Content-Type, Accept, Authorization',
-    };
-    app.enableCors(corsOptions);
+    app.enableCors();
+    app.useStaticAssets('upload/images', {
+        prefix: '/upload/images',
+    });
     await app.listen(4000);
 }
 bootstrap();

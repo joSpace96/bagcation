@@ -6,11 +6,17 @@ export class Review {
   id: number;
 
   @Column()
+  user_idx: number;
+
+  @Column()
   title: string;
+
+  @Column()
+  user_nick: string;
 
   @Column()
   content: string;
 
-  @Column({ type: 'text', nullable: true })
+  @Column('text', { array: true, nullable: true })
   images: string;
 }

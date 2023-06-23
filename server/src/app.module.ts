@@ -5,6 +5,8 @@ import { ormConfig } from './orm.config';
 import { MapModule } from './map/map.module';
 import { PlanModule } from './plan/plan.module';
 import { ReviewModule } from './review/review.module';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 
 @Module({
   imports: [
@@ -13,6 +15,9 @@ import { ReviewModule } from './review/review.module';
     MapModule,
     PlanModule,
     ReviewModule,
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'upload', 'images'), // 정적 파일의 루트 경로를 지정합니다
+    }),
   ],
   controllers: [],
   providers: [],

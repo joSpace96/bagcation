@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Asia from "../../MainPage/ImageGrid/images/Asia.jpg";
 import Europe from "../../MainPage/ImageGrid/images/Europe.jpg";
 import America from "../../MainPage/ImageGrid/images/America.jpg";
@@ -20,40 +20,70 @@ import {
   PostText,
   TextBox,
 } from "./PostSty";
+import axios from "axios";
+import apiServer from "../../../api/api";
 
 const Post = () => {
   let [number, setNumber] = useState(0);
-  const [postimg, setPostImg] = useState(Asia);
-  const images = [
-    { id: 1, url: Asia },
-    { id: 2, url: Europe },
-    { id: 3, url: America },
-    { id: 4, url: Oceania },
-    { id: 5, url: Africa },
-  ];
+  const [images, setImages] = useState([]);
+  const [reviewDetail, setReviewDetail] = useState();
+  const [title, setTitle] = useState();
+  const [content, setContent] = useState();
+
+  const url = document.location.href;
+  const splitUrl = url.split("/");
+  const location = splitUrl[splitUrl.length - 1];
+  useEffect(() => {
+    try {
+      axios
+        .get(`${apiServer}/review/get_review?id=${location}`)
+        .then((response) => {
+          const imageurl = response.data.review.imageUrl;
+          setImages(imageurl);
+          setReviewDetail(response.data.review);
+        });
+    } catch (error) {
+      console.log(error);
+    }
+  }, []);
+
+  useEffect(() => {
+    setPostImg(images[0]);
+    if (reviewDetail) {
+      setTitle(reviewDetail.title);
+      setContent(reviewDetail.content);
+    }
+  }, [reviewDetail]);
+  const [postimg, setPostImg] = useState();
+
+  console.log("이미지들", images[0]);
+  console.log("데이터", reviewDetail);
+  console.log(title);
+
   const Increase = () => {
     if (number >= images.length - 1) {
-      return setNumber(0), setPostImg(images[0].url);
+      return setNumber(0), setPostImg(images[0]);
     }
 
     setNumber(++number);
-    setPostImg(images[number].url);
+    setPostImg(images[number]);
   };
 
   const Decrease = () => {
     if (number <= 0) {
       return (
-        setNumber(images.length - 1), setPostImg(images[images.length - 1].url)
+        setNumber(images.length - 1), setPostImg(images[images.length - 1])
       );
     }
     setNumber(--number);
-    setPostImg(images[number].url);
+    setPostImg(images[number]);
   };
 
   return (
     <>
       <PostContainer>
         <PostContent>
+          <TextBox>{title}</TextBox>
           <img src={postimg} alt="" />
           <div className="buttonContainer">
             <Button className="decrease" onClick={Decrease}>
@@ -81,14 +111,8 @@ const Post = () => {
             <CommentIcon>💬</CommentIcon>
           </CommentButton>
         </PostFooter>
-        <PostText>
-          <TextBox>
-            # Asia , Europe , America , Oceania , Africa <br /> <br />
-            여행다녀옴
-          </TextBox>
-        </PostText>
         <CommentText>
-          <CommentBox>a : ㅎㅇ?</CommentBox>
+          <CommentBox>{content}</CommentBox>
         </CommentText>
       </PostContainer>
     </>

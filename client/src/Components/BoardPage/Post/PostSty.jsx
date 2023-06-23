@@ -25,7 +25,7 @@ export const PostContent = styled.p`
   img {
     margin-left: 25%;
     height: 550px;
-    width: 50%;
+    width: 400px;
     display: flex;
   }
   .buttonContainer {
@@ -134,6 +134,7 @@ export const TextBox = styled.div`
   justify-content: center;
   width: 400px;
   margin: 0px 200px 0px 200px;
+  text-align: center;
 `;
 
 export const CommentText = styled.div`

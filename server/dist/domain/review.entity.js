@@ -19,14 +19,22 @@ __decorate([
 ], Review.prototype, "id", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
+    __metadata("design:type", Number)
+], Review.prototype, "user_idx", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
     __metadata("design:type", String)
 ], Review.prototype, "title", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", String)
+], Review.prototype, "user_nick", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", String)
 ], Review.prototype, "content", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ type: 'text', nullable: true }),
+    (0, typeorm_1.Column)('text', { array: true, nullable: true }),
     __metadata("design:type", String)
 ], Review.prototype, "images", void 0);
 exports.Review = Review = __decorate([

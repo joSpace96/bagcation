@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Post,
   PostContainer,
@@ -8,9 +8,13 @@ import {
   PostTitle,
 } from "../../../MainPage/BestPlan/BestPlanSty";
 import { useNavigate } from "react-router-dom";
+import Paging from "../../../PlannerPage/Paging/Paging";
 
 const InnerPlan = ({ myPlan }) => {
   const navigate = useNavigate();
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(6);
+  const offset = (page - 1) * limit;
 
   const ClickMyPlan = (idx) => {
     navigate(`/planner/post/${idx}`);
@@ -18,7 +22,7 @@ const InnerPlan = ({ myPlan }) => {
   return (
     <div>
       <PostContainer style={{ margin: "0 auto" }}>
-        {myPlan.slice(0, 6).map((data) => (
+        {myPlan.slice(offset, offset + limit).map((data) => (
           <Post
             onClick={() => ClickMyPlan(data.idx)}
             style={{ cursor: "pointer" }}
@@ -69,6 +73,12 @@ const InnerPlan = ({ myPlan }) => {
           </Post>
         ))}
       </PostContainer>
+      <Paging
+        total={myPlan.length}
+        limit={limit}
+        page={page}
+        setPage={setPage}
+      />
     </div>
   );
 };

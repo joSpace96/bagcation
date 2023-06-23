@@ -34,7 +34,7 @@ function App() {
           <Route path="/planner" element={<PlannerBoard />} />
           <Route path="/mypage/:idx" element={<Profile />} />
           <Route path="/guide" element={<GuidePage />} />
-          <Route path="/reivew/detail" element={<Post />} />
+          <Route path="/reivew/detail/:idx" element={<Post />} />
           <Route path="/review/edit" element={<EditReview />} />
           <Route path="/review" element={<Review />} />
           <Route path="/register" element={<Register />} />

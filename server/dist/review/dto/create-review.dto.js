@@ -16,8 +16,16 @@ class CreateReviewDto {
 exports.CreateReviewDto = CreateReviewDto;
 __decorate([
     (0, swagger_1.ApiProperty)(),
+    __metadata("design:type", Number)
+], CreateReviewDto.prototype, "user_idx", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)(),
     __metadata("design:type", String)
 ], CreateReviewDto.prototype, "title", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)(),
+    __metadata("design:type", String)
+], CreateReviewDto.prototype, "user_nick", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)(),
     __metadata("design:type", String)

@@ -1,12 +1,13 @@
 import { styled } from "styled-components";
 
-export const ReviewContainer = styled.div`
-  max-width: 400px;
-  margin: 10px;
+export const ReviewContainer = styled.span`
+  max-width: 350px;
+  margin: 14px;
   border: 1px solid #ccc;
   border-radius: 5px;
   padding: 10px;
-  border: 1px solid green;
+  border: none;
+  background-color: white;
 `;
 
 export const UserInfo = styled.div`

@@ -17,16 +17,19 @@ export const SelectPictures = styled.div`
 `;
 
 export const AddPictures = styled.div`
-  position: relative;
-  top: 100px;
+  position: absolute;
+  bottom: 50px;
+  left: 0;
+  right: 0;
   border: none;
-  margin: 0 auto;
+  margin: auto;
   width: 150px;
   padding: 10px 0;
   border-radius: 10px;
   background-color: orange;
   font-weight: bold;
   color: white;
+  text-align: center;
   cursor: pointer;
   &:hover {
     background-color: #ff5500;

@@ -24,13 +24,15 @@ const Profile = () => {
     navigate("/planner/map");
   };
   const NavigateReview = () => {
-    navigate("/review/edit");
+    navigate("/review");
   };
   const [topMenu, setTopMenu] = useState("여행일정");
   const myName = localStorage.getItem("nick");
   const myKakaoName = localStorage.getItem("kakaonick");
   const [myPlan, setMyPlan] = useState([]);
   const [myLike, setMyLike] = useState([]);
+  const [myReview, setMyReview] = useState([]);
+  const [myReviewLike, setMyReviewLike] = useState([]);
   const [changePost, setChangePost] = useState("완성");
   console.log("현재고른 목록:", changePost);
   const [content, setContent] = useState(
@@ -57,7 +59,7 @@ const Profile = () => {
     }
     if (item === "리뷰") {
       setContent(<TopReviewMenu NavigateReview={NavigateReview} />);
-      setInnerContent(<InnerReview />);
+      setInnerContent(<InnerReview myReview={myReview} />);
     }
   };
   useEffect(() => {
@@ -83,6 +85,16 @@ const Profile = () => {
             const my_like = response.data.post;
 
             setMyLike(my_like);
+          });
+        axios
+          .get(
+            `${apiServer}/review/get_my_review?user_idx=${localStorage.getItem(
+              "idx"
+            )}`
+          )
+          .then((response) => {
+            const my_review = response.data.reviews;
+            setMyReview(my_review);
           });
       });
   }, []);

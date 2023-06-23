@@ -1,17 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
-  AddPictures,
   EditHeader,
   EditReviewContainer,
   SelectPictures,
 } from "./EditReviewSty";
 
-
-const EditReview = ({ ChangeEditContent }) => {
+const EditReview = ({ selectedPictures }) => {
   const [currentPictureIndex, setCurrentPictureIndex] = useState(0);
-  const [selectedPictures, setSelectedPictures] = useState([]);
-
-
 
   const handleNextPicture = () => {
     setCurrentPictureIndex((prevIndex) => prevIndex + 1);
@@ -21,9 +16,9 @@ const EditReview = ({ ChangeEditContent }) => {
     setCurrentPictureIndex((prevIndex) => prevIndex - 1);
   };
 
-  const handleSelectPictures = (e) => {
-    setSelectedPictures(Array.from(e.target.files));
-  };
+  useEffect(() => {
+    console.log("넘어온 데이터 : ", selectedPictures);
+  }, [selectedPictures]);
 
   return (
     <EditReviewContainer>
@@ -85,31 +80,6 @@ const EditReview = ({ ChangeEditContent }) => {
             </span>
             사진을 등록하세요.
           </div>
-        )}
-        <br />
-        {selectedPictures.length > 0 ? (
-          <AddPictures>
-            <div
-              style={{ cursor: "pointer" }}
-              onClick={() => ChangeEditContent()}
-            >
-              다음
-            </div>
-          </AddPictures>
-        ) : (
-          <AddPictures>
-            <label htmlFor="picture-upload" style={{ cursor: "pointer" }}>
-              선택하기
-            </label>
-            <input
-              id="picture-upload"
-              type="file"
-              accept="image/*"
-              multiple
-              onChange={handleSelectPictures}
-              style={{ display: "none" }}
-            />
-          </AddPictures>
         )}
       </SelectPictures>
     </EditReviewContainer>

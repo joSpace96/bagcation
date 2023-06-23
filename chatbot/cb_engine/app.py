@@ -21,7 +21,7 @@ app = FastAPI()
 # CORS 정책 설정
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://iotsam:3002"],  # 클라이언트 주소
+    allow_origins=["http://iotsam.com/:3002"],  # 클라이언트 주소
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

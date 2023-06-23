@@ -30,7 +30,7 @@ app.add_middleware(
 
 @app.get("/chat_query")
 async def chat_query(query: str):
-    start = time.time()
+    # start = time.time()
     p = Preprocessing(
         word2index_dic="C:/Users/oem/Desktop/project/chat-bot/cb_engine/train_tools/dict/chatbot_dict.bin",
         userdic="C:/Users/oem/Desktop/project/chat-bot/cb_engine/utils/user_dic.tsv",
@@ -73,8 +73,8 @@ async def chat_query(query: str):
         answer = "무슨 말인지 모르겠어요"
 
     db.close()
-    end = time.time()
-    print(f"{end - start:.5f} sec")
+    # end = time.time()
+    # print(f"{end - start:.5f} sec")
     return {
         "질문": query,
         "의도": intent_name,

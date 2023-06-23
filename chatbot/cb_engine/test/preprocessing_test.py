@@ -1,6 +1,6 @@
 from utils.preprocessing import Preprocessing
 
-p = Preprocessing(userdic="cb_engine/utils/user_dic.tsv")
+p = Preprocessing(userdic="chatbot/cb_engine/utils/user_dic.tsv")
 
 pos = p.pos(sentence="내일 오전 10시에 대한항공 비행기표 예약 할게요")
 

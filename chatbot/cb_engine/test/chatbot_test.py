@@ -6,8 +6,8 @@ from models.ner.NerModel import NerModel
 from models.intent.intentModel import IntentModel
 
 p = Preprocessing(
-    word2index_dic="cb_engine/train_tools/dict/chatbot_dict.bin",
-    userdic="cb_engine/utils/user_dic.tsv",
+    word2index_dic="chatbot/cb_engine/train_tools/dict/chatbot_dict.bin",
+    userdic="chatbot/cb_engine/utils/user_dic.tsv",
 )
 while True:
     # 데이터베이스 삭제
@@ -21,13 +21,13 @@ while True:
     # 의도 파악
 
     intent = IntentModel(
-        model_name="cb_engine/models/intent/intent_model.h5", preprocess=p
+        model_name="chatbot/cb_engine/models/intent/intent_model.h5", preprocess=p
     )
     predict = intent.predict_class(query)
     intent_name = intent.label[predict]
 
     # 개체명 인식
-    ner = NerModel(model_name="cb_engine/models/ner/ner_model.h5", preprocess=p)
+    ner = NerModel(model_name="chatbot/cb_engine/models/ner/ner_model.h5", preprocess=p)
     ner_predict = ner.predict(query)
     tag = ner.predict_tag(query)
 

@@ -46,7 +46,7 @@ def insert_data(db, xls_row):
 
 
 db = None
-train_file = "cb_engine/train_tools/qna/answer.xlsx"
+train_file = "chatbot/cb_engine/train_tools/qna/answer.xlsx"
 try:
     # DB 연결
     db = pymysql.connect(

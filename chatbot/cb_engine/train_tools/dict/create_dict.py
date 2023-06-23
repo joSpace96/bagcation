@@ -19,10 +19,10 @@ def read_corpus_data(filename):
     return data
 
 
-corpus_data = read_corpus_data("cb_engine/train_tools/dict/corpus.txt")
+corpus_data = read_corpus_data("chatbot/cb_engine/train_tools/dict/corpus.txt")
 
 # 말뭉치 데이터에서 키워드만 추출해서 사전 만들기
-p = Preprocessing(userdic="cb_engine/utils/user_dic.tsv")
+p = Preprocessing(userdic="chatbot/cb_engine/utils/user_dic.tsv")
 dict = []
 
 for c in corpus_data:

@@ -11,10 +11,9 @@ from models.intent.intentModel import IntentModel
 from models.ner.NerModel import NerModel
 from utils.FindAnswer import FindAnswer
 
-host = "192.168.0.84"
 if __name__ == "__main__":
-    # uvicorn.run("app:app", host="localhost", port=8000, reload=True)
-    uvicorn.run("app:app", host="host", port=8000, reload=True)
+    uvicorn.run("app:app", host="localhost", port=8000, reload=True)
+    
 app = FastAPI()
 
 
@@ -32,8 +31,8 @@ app.add_middleware(
 async def chat_query(query: str):
     # start = time.time()
     p = Preprocessing(
-        word2index_dic="C:/Users/oem/Desktop/project/chat-bot/cb_engine/train_tools/dict/chatbot_dict.bin",
-        userdic="C:/Users/oem/Desktop/project/chat-bot/cb_engine/utils/user_dic.tsv",
+        word2index_dic="C:/Users/oem/Desktop/bagcation/chatbot/cb_engine/train_tools/dict/chatbot_dict.bin",
+        userdic="C:/Users/oem/Desktop/bagcation/chatbot/cb_engine/utils/user_dic.tsv",
     )
 
     # 데이터베이스 삭제
@@ -44,7 +43,7 @@ async def chat_query(query: str):
 
     # 의도 파악
     intent = IntentModel(
-        model_name="C:/Users/oem/Desktop/project/chat-bot/cb_engine/models/intent/intent_model.h5",
+        model_name="C:/Users/oem/Desktop/bagcation/chatbot/cb_engine/models/intent/intent_model.h5",
         preprocess=p,
     )
     predict = intent.predict_class(query)

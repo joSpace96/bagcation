@@ -13,7 +13,7 @@ from keras.layers import (
 )
 from utils.preprocessing import Preprocessing
 
-train_file = "cb_engine/models/intent/intent_data.csv"
+train_file = "chatbot/cb_engine/models/intent/intent_data.csv"
 data = pd.read_csv(train_file, delimiter=",")
 data.to_csv("d.csv", encoding="utf8")
 query = data["query"].tolist()
@@ -21,8 +21,8 @@ intent = data["intent"].tolist()
 
 
 p = Preprocessing(
-    word2index_dic="cb_engine/train_tools/dict/chatbot_dict.bin",
-    userdic="cb_engine/utils/user_dic.tsv",
+    word2index_dic="chatbot/cb_engine/train_tools/dict/chatbot_dict.bin",
+    userdic="chatbot/cb_engine/utils/user_dic.tsv",
 )
 
 # 전처리

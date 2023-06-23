@@ -4,11 +4,11 @@ from konlpy.tag import Komoran
 
 
 p = Preprocessing(
-    word2index_dic="cb_engine/train_tools/dict/chatbot_dict.bin",
-    userdic="cb_engine/utils/user_dic.tsv",
+    word2index_dic="chatbot/cb_engine/train_tools/dict/chatbot_dict.bin",
+    userdic="chatbot/cb_engine/utils/user_dic.tsv",
 )
 
-ner = NerModel(model_name="cb_engine/models/ner/ner_model.h5", preprocess=p)
+ner = NerModel(model_name="chatbot/cb_engine/models/ner/ner_model.h5", preprocess=p)
 
 while True:
     query = input("질문:")

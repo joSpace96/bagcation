@@ -14,7 +14,7 @@ def read_file(file_name):
                 this_sent = []
             elif l[0] == "$" and lines[idx - 1][0] == ";":
                 continue
-            elif l[0] == "\n":
+            elif l[0] == "/n":
                 sent.append(this_sent)
             else:
                 this_sent.append(tuple(l.split()))
@@ -22,11 +22,11 @@ def read_file(file_name):
 
 
 p = Preprocessing(
-    word2index_dic="cb_engine/train_tools/dict/chatbot_dict.bin",
-    userdic="cb_engine/utils/user_dic.tsv",
+    word2index_dic="chatbot/cb_engine/train_tools/dict/chatbot_dict.bin",
+    userdic="chatbot/cb_engine/utils/user_dic.tsv",
 )
 
-corpus = read_file("cb_engine/models/ner/ner_train.txt")
+corpus = read_file("chatbot/cb_engine/models/ner/ner_train.txt")
 # print(corpus)
 sentence = []
 tag = []

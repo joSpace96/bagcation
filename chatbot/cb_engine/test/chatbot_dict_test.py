@@ -1,13 +1,13 @@
 import pickle
 from utils.preprocessing import Preprocessing
 
-f = open("cb_engine/train_tools/dict/chatbot_dict.bin", "rb")
+f = open("chatbot/cb_engine/train_tools/dict/chatbot_dict.bin", "rb")
 word_index = pickle.load(f)
 f.close()
 
 sentence = "내일 오전 10시에 대한항공 비행기표 예매 할게요"
 
-p = Preprocessing(userdic="cb_engine/utils/user_dic.tsv")
+p = Preprocessing(userdic="chatbot/cb_engine/utils/user_dic.tsv")
 
 pos = p.pos(sentence=sentence)
 

@@ -24,9 +24,14 @@ const swagger_1 = require("@nestjs/swagger");
 const path_1 = require("path");
 const multer_1 = require("multer");
 const fs = require("fs");
+const user_service_1 = require("../user/user.service");
+const review_service_1 = require("./review.service");
+const like_entity_1 = require("../domain/like.entity");
 let ReviewController = exports.ReviewController = class ReviewController {
-    constructor(reviewRepository) {
+    constructor(reviewRepository, userService, reviewService) {
         this.reviewRepository = reviewRepository;
+        this.userService = userService;
+        this.reviewService = reviewService;
     }
     async createReview(files, createReviewDto) {
         const review = new review_entity_1.Review();
@@ -34,6 +39,7 @@ let ReviewController = exports.ReviewController = class ReviewController {
         review.title = createReviewDto.title;
         review.content = createReviewDto.content;
         review.user_nick = createReviewDto.user_nick;
+        review.likecount = createReviewDto.likecount;
         console.log("파일", files);
         if (files && files.length > 0) {
             const imagePaths = [];
@@ -52,7 +58,7 @@ let ReviewController = exports.ReviewController = class ReviewController {
             const imagePaths = review.images.split(',');
             const imageUrls = imagePaths.map((imagePath) => {
                 const imageName = path.basename(imagePath);
-                const imageUrl = `http://192.168.0.42:4000/upload/images/${imageName}`;
+                const imageUrl = `http://192.168.35.29:4000/upload/images/${imageName}`;
                 return imageUrl;
             });
             return Object.assign(Object.assign({}, review), { imageUrl: imageUrls });
@@ -67,7 +73,7 @@ let ReviewController = exports.ReviewController = class ReviewController {
         const imagePaths = review.images.split(',');
         const imageUrls = imagePaths.map((imagePath) => {
             const imageName = path.basename(imagePath);
-            const imageUrl = `http://192.168.0.42:4000/upload/images/${imageName}`;
+            const imageUrl = `http://192.168.35.29:4000/upload/images/${imageName}`;
             return imageUrl;
         });
         const reviewWithImageUrl = Object.assign(Object.assign({}, review), { imageUrl: imageUrls });
@@ -82,12 +88,69 @@ let ReviewController = exports.ReviewController = class ReviewController {
             const imagePaths = review.images.split(',');
             const imageUrls = imagePaths.map((imagePath) => {
                 const imageName = path.basename(imagePath);
-                const imageUrl = `http://192.168.0.42:4000/upload/images/${imageName}`;
+                const imageUrl = `http://192.168.35.29:4000/upload/images/${imageName}`;
                 return imageUrl;
             });
             return Object.assign(Object.assign({}, review), { imageUrl: imageUrls });
         });
         return { message: '나의 리뷰를 성공적으로 불러왔습니다', reviews: reviewsWithImageUrl };
+    }
+    async likeReview(likeData) {
+        const { user_id, review_id } = likeData;
+        const user = await this.userService.getUserByIdx(user_id);
+        const review = await this.reviewService.getReviewByIdx(review_id);
+        const existingLike = await this.reviewService.getReviewLike(user_id, review_id);
+        if (existingLike) {
+            await this.reviewService.removeReviewLike(existingLike);
+            await this.reviewService.decrementLikeCount(review);
+            return { message: 'Review like removed successfully' };
+        }
+        const like = new like_entity_1.Review_like();
+        like.user = user;
+        like.review = review;
+        await this.reviewService.saveReviewLike(like);
+        await this.reviewService.incrementLikeCount(review);
+        return { message: 'Review liked successfully', like };
+    }
+    async createReviewComment(comments) {
+        try {
+            const savedComment = await this.reviewService.createComment(comments);
+            return { message: 'Review comment added successfully', comment: savedComment };
+        }
+        catch (error) {
+            return { error: error.message };
+        }
+    }
+    async getComment(reviewId) {
+        const Comment = await this.reviewService.getCommentsByReviewId(reviewId);
+        if (!Comment) {
+            return { message: "댓글 정보를 찾을 수 없습니다" };
+        }
+        else {
+            return { message: "댓글 불러오기 성공", Comment };
+        }
+    }
+    async DeleteComment(id) {
+        const Comment = await this.reviewService.deleteComment(id);
+        return { message: "댓글삭제 성공", Comment };
+    }
+    async getMyLiked(user_id) {
+        const reviews = await this.reviewService.getMyReviewLike(user_id);
+        const reviewsWithImageUrl = reviews.map((review) => {
+            const imagePaths = review.images.split(',');
+            const imageUrls = imagePaths.map((imagePath) => {
+                const imageName = path.basename(imagePath);
+                const imageUrl = `http://192.168.35.29:4000/upload/images/${imageName}`;
+                return imageUrl;
+            });
+            return Object.assign(Object.assign({}, review), { imageUrl: imageUrls });
+        });
+        if (!reviews) {
+            return { message: "게시글을 찾을 수 없습니다." };
+        }
+        else {
+            return { message: "게시글 불러오기 성공", reviewsWithImageUrl };
+        }
     }
 };
 __decorate([
@@ -133,9 +196,49 @@ __decorate([
     __metadata("design:paramtypes", [Number]),
     __metadata("design:returntype", Promise)
 ], ReviewController.prototype, "getReviewByuserId", null);
+__decorate([
+    (0, common_1.Post)('review_like'),
+    (0, swagger_1.ApiTags)('Review/Like'),
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [create_review_dto_1.LikeDataDto]),
+    __metadata("design:returntype", Promise)
+], ReviewController.prototype, "likeReview", null);
+__decorate([
+    (0, common_1.Post)('review_comment'),
+    (0, swagger_1.ApiTags)('Review/Comment'),
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [create_review_dto_1.CommentDataDto]),
+    __metadata("design:returntype", Promise)
+], ReviewController.prototype, "createReviewComment", null);
+__decorate([
+    (0, common_1.Get)('get_review_comment'),
+    (0, swagger_1.ApiTags)('Review/Comment'),
+    __param(0, (0, common_1.Query)('reviewID')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number]),
+    __metadata("design:returntype", Promise)
+], ReviewController.prototype, "getComment", null);
+__decorate([
+    (0, common_1.Delete)('delete_comment'),
+    (0, swagger_1.ApiTags)('Review/Comment'),
+    __param(0, (0, common_1.Query)('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number]),
+    __metadata("design:returntype", Promise)
+], ReviewController.prototype, "DeleteComment", null);
+__decorate([
+    (0, common_1.Get)('get_my_liked'),
+    (0, swagger_1.ApiTags)('Review'),
+    __param(0, (0, common_1.Query)('userIdx')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number]),
+    __metadata("design:returntype", Promise)
+], ReviewController.prototype, "getMyLiked", null);
 exports.ReviewController = ReviewController = __decorate([
     (0, common_1.Controller)('review'),
     __param(0, (0, typeorm_1.InjectRepository)(review_entity_1.Review)),
-    __metadata("design:paramtypes", [typeorm_2.Repository])
+    __metadata("design:paramtypes", [typeorm_2.Repository, user_service_1.UserService, review_service_1.ReviewService])
 ], ReviewController);
 //# sourceMappingURL=review.controller.js.map

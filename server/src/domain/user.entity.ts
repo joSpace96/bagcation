@@ -1,5 +1,6 @@
 import { Entity, Column, PrimaryGeneratedColumn, ManyToMany, JoinTable, OneToMany } from 'typeorm';
 import { Plan_like } from './like.entity';
+import { Review_comment } from './review.entity';
 
 @Entity()
 export class User {
@@ -28,4 +29,7 @@ export class User {
   profileImage: string;
   @OneToMany(() => Plan_like, planLike => planLike.user)
   likes: Plan_like[];
+
+  @OneToMany(() => Review_comment, reviewComment => reviewComment.comment)
+  comments: Review_comment[];
 }

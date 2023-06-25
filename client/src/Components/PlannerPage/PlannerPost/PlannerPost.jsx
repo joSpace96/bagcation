@@ -24,7 +24,6 @@ const PlannerPost = () => {
   const [expandedIndex, setExpandedIndex] = useState(-1);
   const [likeCount, setLikeCount] = useState("");
 
-  const arrowHeads = [];
   const url = document.location.href;
   const splitUrl = url.split("/");
   const location = splitUrl[splitUrl.length - 1];

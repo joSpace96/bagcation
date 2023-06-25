@@ -351,7 +351,7 @@ const PopularPost = ({
                     }
                   />
                 </Link>
-                <PostContent style={{ padding: "0.5rem", width: "365px" }}>
+                <PostContent style={{ padding: "0.5rem" }}>
                   <PostTitle>{data.title}</PostTitle>
                   <PostDescription>
                     {data.travelNations.map((nation, index) => {

@@ -7,20 +7,16 @@ import {
   ReviewImg,
   ReviewMetadata,
   ReviewText,
-  UserImg,
   UserInfo,
   UserName,
 } from "./ReviewSty";
 import testbtn from "./Image/KakaoTalk_20230622_142959527.png";
 
-import test from "../ProfilePage/image/rest-sunshine-atoll-bungalow-holiday.jpg";
-import user_Test from "../MainPage/BestPlan/PostMainImages/null.png";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import { Overlay, OverlayContent } from "../LedgerPage/LedgerSty";
 import { LedgerAddSubmit } from "../LedgerPage/LedgerDetailPage/LedgerDetailSty";
-import EditReview from "./EditReview";
-import EditReviewContent from "./EditReviewContent";
+
 import { useEffect } from "react";
 import ParentsEditor from "./ParentsEditor";
 import axios from "axios";
@@ -83,8 +79,7 @@ const Review = () => {
             <ReviewContent>
               <ReviewText>{review.title}</ReviewText>
               <ReviewMetadata>
-                <span>10</span>
-                <span>5</span>
+                <span>{review.likecount}&nbsp;명이 좋아합니다.</span>
               </ReviewMetadata>
             </ReviewContent>
           </ReviewContainer>

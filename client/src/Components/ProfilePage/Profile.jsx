@@ -17,6 +17,7 @@ import InnerPlan from "./Pages/InnerPages/InnerPlan";
 import { useNavigate } from "react-router-dom";
 import InnerReview from "./Pages/InnerPages/InnerReview";
 import InnerLikePlan from "./Pages/InnerPages/InnerLikePlan";
+import InnerLikeReview from "./Pages/InnerPages/InnerLikeReview";
 
 const Profile = () => {
   const navigate = useNavigate();
@@ -48,7 +49,8 @@ const Profile = () => {
         <TopPlanMenu
           setChangePost={setChangePost}
           NavigatePlanner={NavigatePlanner}
-        />
+        />,
+        setInnerContent(<InnerPlan myPlan={myPlan} />)
       );
       if (changePost === "완성") {
         setInnerContent(<InnerPlan myPlan={myPlan} />);
@@ -58,7 +60,12 @@ const Profile = () => {
       }
     }
     if (item === "리뷰") {
-      setContent(<TopReviewMenu NavigateReview={NavigateReview} />);
+      setContent(
+        <TopReviewMenu
+          NavigateReview={NavigateReview}
+          setChangePost={setChangePost}
+        />
+      );
       setInnerContent(<InnerReview myReview={myReview} />);
     }
   };
@@ -96,6 +103,16 @@ const Profile = () => {
             const my_review = response.data.reviews;
             setMyReview(my_review);
           });
+        axios
+          .get(
+            `${apiServer}/review/get_my_liked?userIdx=${localStorage.getItem(
+              "idx"
+            )}`
+          )
+          .then((response) => {
+            console.log("내가 좋아한 리뷰", response.data.reviewsWithImageUrl);
+            setMyReviewLike(response.data.reviewsWithImageUrl);
+          });
       });
   }, []);
   useEffect(() => {
@@ -110,6 +127,12 @@ const Profile = () => {
     }
     if (changePost === "좋아요") {
       setInnerContent(<InnerLikePlan myLike={myLike} />);
+    }
+    if (changePost === "좋아요 리뷰") {
+      setInnerContent(<InnerLikeReview myReviewLike={myReviewLike} />);
+    }
+    if (changePost === "완성 리뷰") {
+      setInnerContent(<InnerReview myReview={myReview} />);
     }
   }, [changePost]);
 

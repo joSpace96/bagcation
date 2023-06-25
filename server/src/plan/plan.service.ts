@@ -87,7 +87,7 @@ export class PlanService {
     await this.planRepository.save(plan);
   }
   async decrementLikeCount(plan: Plan): Promise<void> {
-    plan.likecount--; // 좋아요 수 증가
+    plan.likecount--; // 좋아요 수 감소
     await this.planRepository.save(plan);
   }
   async savePlanLike(like: Plan_like): Promise<void> {

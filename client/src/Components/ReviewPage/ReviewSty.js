@@ -1,13 +1,17 @@
 import { styled } from "styled-components";
 
 export const ReviewContainer = styled.span`
-  max-width: 350px;
+  max-width: max-content;
   margin: 14px;
   border: 1px solid #ccc;
   border-radius: 5px;
   padding: 10px;
   border: none;
   background-color: white;
+  &:hover {
+    transform: scale(1.05);
+    transition: transform 0.5s;
+  }
 `;
 
 export const UserInfo = styled.div`
@@ -29,8 +33,8 @@ export const UserName = styled.div`
 `;
 
 export const ReviewImg = styled.img`
-  width: 100%;
-  height: auto;
+  width: 350px;
+  height: 300px;
   margin-bottom: 10px;
 `;
 

@@ -9,7 +9,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.CreateReviewDto = void 0;
+exports.CommentDataDto = exports.LikeDataDto = exports.CreateReviewDto = void 0;
 const swagger_1 = require("@nestjs/swagger");
 class CreateReviewDto {
 }
@@ -34,4 +34,34 @@ __decorate([
     (0, swagger_1.ApiProperty)(),
     __metadata("design:type", String)
 ], CreateReviewDto.prototype, "images", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)(),
+    __metadata("design:type", Number)
+], CreateReviewDto.prototype, "likecount", void 0);
+class LikeDataDto {
+}
+exports.LikeDataDto = LikeDataDto;
+__decorate([
+    (0, swagger_1.ApiProperty)(),
+    __metadata("design:type", Number)
+], LikeDataDto.prototype, "user_id", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)(),
+    __metadata("design:type", Number)
+], LikeDataDto.prototype, "review_id", void 0);
+class CommentDataDto {
+}
+exports.CommentDataDto = CommentDataDto;
+__decorate([
+    (0, swagger_1.ApiProperty)(),
+    __metadata("design:type", Number)
+], CommentDataDto.prototype, "user_id", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)(),
+    __metadata("design:type", Number)
+], CommentDataDto.prototype, "review_id", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)(),
+    __metadata("design:type", String)
+], CommentDataDto.prototype, "comment", void 0);
 //# sourceMappingURL=create-review.dto.js.map

@@ -11,5 +11,22 @@ export class CreateReviewDto {
     content: string;
     @ApiProperty()
     images: string;
+    @ApiProperty()
+    likecount: number;
 
 }
+export class LikeDataDto {
+    @ApiProperty()
+    user_id: number;
+    @ApiProperty()
+    review_id: number;
+  }
+
+  export class CommentDataDto {
+    @ApiProperty()
+    user_id: number;
+    @ApiProperty()
+    review_id: number;
+    @ApiProperty()
+    comment: string;
+  }

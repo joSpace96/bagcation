@@ -135,6 +135,7 @@ const EditReviewContent = ({
     "user_nick",
     localStorage.getItem("nick") || localStorage.getItem("kakaonick")
   );
+  ReviewData.append("likecount", 0);
 
   console.log("폼데이터:", ReviewData);
 
@@ -147,6 +148,7 @@ const EditReviewContent = ({
       })
       .then((response) => {
         console.log(response.data);
+        alert("리뷰 등록 완료.");
         window.location.reload();
       })
       .catch((error) => {

@@ -1,13 +1,8 @@
-import axios from "axios";
-import React, { useEffect, useState } from "react";
-import apiServer from "../../../../api/api";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   Post,
   PostContainer,
-  PostContent,
-  PostDate,
-  PostDescription,
   PostTitle,
 } from "../../../PlannerPage/PlannerPost/PopularPostSty";
 import Paging from "../../../PlannerPage/Paging/Paging";
@@ -31,34 +26,21 @@ const InnerReview = ({ myReview }) => {
             style={{ cursor: "pointer", width: "200px", textAlign: "center" }}
             key={data.id}
           >
-            <PostContent>
+            <div
+              style={{
+                width: "max-content",
+                backgroundColor: "white",
+                margin: "10px auto",
+              }}
+            >
               <PostTitle>{data.title}</PostTitle>
-              <PostDescription>{data.user_nick}</PostDescription>
-              <PostDate>
-                {data.content}
-                {/* <span>
-                <span
-                  style={{
-                    color: "red",
-                    fontSize: "19px",
-                  }}
-                  class="material-symbols-outlined"
-                >
-                  favorite
-                </span>
-                <span
-                  style={{
-                    position: "relative",
-                    top: "-5px",
-                    left: "3px",
-                    fontSize: "14px",
-                  }}
-                >
-                  {data.likecount}
-                </span>
-              </span> */}
-              </PostDate>
-            </PostContent>
+              <div>
+                <img
+                  style={{ width: "300px", height: "300px" }}
+                  src={data.imageUrl[0]}
+                />
+              </div>
+            </div>
           </Post>
         ))}
       </PostContainer>

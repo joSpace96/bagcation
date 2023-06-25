@@ -1,7 +1,7 @@
 import { Routes, Route, BrowserRouter as Router } from "react-router-dom";
 import MainPage from "./Components/MainPage/MainPage";
 import NavBar from "./Components/NavBar/NavBar";
-import Post from "./Components/BoardPage/Post/Post";
+import Post from "./Components/ReviewPage/Post/Post";
 import GuidePage from "./Components/GuidePage/GuidePage";
 import Planner from "./Components/PlannerPage/Planner";
 import Ledger from "./Components/LedgerPage/Ledger";

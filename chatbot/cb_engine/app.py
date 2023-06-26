@@ -13,7 +13,7 @@ from models.ner.NerModel import NerModel
 from utils.FindAnswer import FindAnswer
 
 if __name__ == "__main__":
-    uvicorn.run("app:app", host="localhost", port=8000, reload=True)
+    uvicorn.run("app:app", host="0.0.0.0", port=8000, reload=True)
     
 app = FastAPI()
 
@@ -21,7 +21,7 @@ app = FastAPI()
 # CORS 정책 설정
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://iotsam.com/:3002"],  # 프론트 클라이언트 주소
+    allow_origins=["*"],  # 프론트 클라이언트 주소
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

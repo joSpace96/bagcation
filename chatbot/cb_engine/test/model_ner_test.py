@@ -1,5 +1,5 @@
-from utils.preprocessing import Preprocessing
-from models.ner.NerModel import NerModel
+from cb_engine.utils.preprocessing import Preprocessing
+from cb_engine.models.ner.NerModel import NerModel
 from konlpy.tag import Komoran
 
 
@@ -17,9 +17,9 @@ while True:
     print(komoran.pos(query))
     predict = ner.predict(query)
     tag = ner.predict_tag(query)
-    # hotel = ner.search_hotel(query)
+    hotel = ner.search_hotel(query)
     # rest = ner.search_rest(query)
     print(predict)
     print(tag)
-    # print(hotel)
+    print(hotel)
     # print(rest)

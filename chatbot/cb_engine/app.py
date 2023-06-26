@@ -3,6 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 import asyncio
 import uvicorn
 import time
+import random
 
 from configs.DatabaseConfig import *
 from utils.Database import Database
@@ -20,7 +21,7 @@ app = FastAPI()
 # CORS 정책 설정
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://iotsam.com/:3002"],  # 클라이언트 주소
+    allow_origins=["http://iotsam.com/:3002"],  # 프론트 클라이언트 주소
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -29,7 +30,7 @@ app.add_middleware(
 
 @app.get("/chat_query")
 async def chat_query(query: str):
-    # start = time.time()
+    start = time.time()
     p = Preprocessing(
         word2index_dic="C:/Users/oem/Desktop/bagcation/chatbot/cb_engine/train_tools/dict/chatbot_dict.bin",
         userdic="C:/Users/oem/Desktop/bagcation/chatbot/cb_engine/utils/user_dic.tsv",
@@ -51,7 +52,7 @@ async def chat_query(query: str):
 
     # 개체명 인식
     ner = NerModel(
-        model_name="C:/Users/oem/Desktop/project/chat-bot/cb_engine/models/ner/ner_model.h5",
+        model_name="C:/Users/oem/Desktop/bagcation/chatbot/cb_engine/models/ner/ner_model.h5",
         preprocess=p,
     )
     ner_predict = ner.predict(query)
@@ -65,15 +66,15 @@ async def chat_query(query: str):
         answer = f.tag_to_word(ner_predict, answer_text)
         answer_sub_url = f.tag_to_word(ner_predict, answer_sub_url)
         if intent_name == "정보":  # 의도가 "정보"일때만 result 값을 설정
-            result = ner.search_hotel(query)
+            result = random.sample(list(ner.search_hotel(query)), k=3)
         elif intent_name == "맛집":
-            result = ner.search_rest(query)
+            result = random.sample(list(ner.search_rest(query)), k=3)
     except:
-        answer = "무슨 말인지 모르겠어요"
+        answer = "데이터가 없습니다"
 
     db.close()
-    # end = time.time()
-    # print(f"{end - start:.5f} sec")
+    end = time.time()
+    print(f"{end - start:.5f} sec")
     return {
         "질문": query,
         "의도": intent_name,

@@ -80,20 +80,21 @@ class NerModel:
         keywords = "+".join(city_name)
 
         # Redis에서 캐시된 데이터 확인
-        cache_key = f"keywords_hotel:{keywords}"
-        cached_data = redis_client.get(cache_key)
-        if cached_data:
-            # 캐시된 데이터가 존재하는 경우, 해당 데이터 반환
-            decoded_data = cached_data.decode("utf-8")
-            decoded_data = json.loads(decoded_data)
-            return decoded_data
+        # cache_key = f"keywords_hotel:{keywords}"
+        # cached_data = redis_client.get(cache_key)
+        
+        # if cached_data:
+        #     # 캐시된 데이터가 존재하는 경우, 해당 데이터 반환
+        #     decoded_data = cached_data.decode("utf-8")
+        #     decoded_data = json.loads(decoded_data)
+        #     return decoded_data
 
         url = f"https://www.airbnb.co.kr/s/{keywords}/homes?tab_id=home_tab"
-        headers = {
-            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.61 Safari/537.36",
-        }
+        # headers = {
+        #     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.61 Safari/537.36",
+        # }
 
-        response = requests.get(url, headers=headers)
+        response = requests.get(url)
         soup = BeautifulSoup(response.content, "html.parser")
 
         tags = soup.find_all(attrs={"data-testid": "listing-card-title"})
@@ -109,9 +110,10 @@ class NerModel:
             results.append(
                 {"숙소": title, "평점": score, "링크": "https://www.airbnb.co.kr" + link_href}
             )
+        
         # 결과를 Redis에 캐시 저장
-        redis_client.set(cache_key, json.dumps(results, ensure_ascii=False))
-
+        # redis_client.set(cache_key, json.dumps(results, ensure_ascii=False))
+    
         return results
 
     # 맛집 검색
@@ -124,13 +126,13 @@ class NerModel:
         keywords = "+".join(city_name)
 
         # Redis에서 캐시된 데이터 확인
-        cache_key = f"keywords_rest:{keywords}"
-        cached_data = redis_client.get(cache_key)
-        if cached_data:
-            # 캐시된 데이터가 존재하는 경우, 해당 데이터 반환
-            decoded_data = cached_data.decode("utf-8")
-            decoded_data = json.loads(decoded_data)
-            return decoded_data
+        # cache_key = f"keywords_rest:{keywords}"
+        # cached_data = redis_client.get(cache_key)
+        # if cached_data:
+        #     # 캐시된 데이터가 존재하는 경우, 해당 데이터 반환
+        #     decoded_data = cached_data.decode("utf-8")
+        #     decoded_data = json.loads(decoded_data)
+        #     return decoded_data
 
         url = f"https://www.siksinhot.com/search?keywords={keywords}"
 
@@ -154,34 +156,5 @@ class NerModel:
 
             results.append({"식당": title, "평점": score, "링크": link})
 
-        redis_client.set(cache_key, json.dumps(results, ensure_ascii=False))
+        # redis_client.set(cache_key, json.dumps(results, ensure_ascii=False))
         return results
-
-    # 환율 정보
-    # def search_exchange(self, query):
-    #     entities = self.predict(query)
-    #     country_lc = [entity for entity in entities if entity[1] == "B_LC"]
-    #     country_name = [entity[0] for entity in country_lc]
-    #     country = "+".join(country_name)
-
-    #     url = "https://finance.naver.com/marketindex/?tabSel=exchange#tab_section"
-
-    #     response = requests.get(url)
-    #     soup = BeautifulSoup(response.text, "html.parser")
-
-    #     option_elements = soup.find_all("option")
-    #     exchange_rates = {}
-
-    #     for option_element in option_elements:
-    #         country_unit = option_element.get_text(strip=True)
-    #         value = option_element["value"]
-    #         country, unit = country_unit.split(" ", 1)
-    #         exchange_rates[country] = {"value": value, "unit": unit}
-
-    #     if country in exchange_rates:
-    #         data = exchange_rates[country]
-    #         value = data["value"]
-    #         unit = data["unit"]
-    #         return f"{country}: 1{unit} = {value}원 "
-    #     else:
-    #         return "해당 나라의 환율 정보를 찾을 수 없습니다."

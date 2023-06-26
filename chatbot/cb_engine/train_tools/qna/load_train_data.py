@@ -1,6 +1,6 @@
 import pymysql
 import openpyxl
-from configs.DatabaseConfig import *
+from cb_engine.configs.DatabaseConfig import *
 
 
 # 학습데이터 초기화

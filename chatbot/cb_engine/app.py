@@ -5,6 +5,7 @@ import uvicorn
 import time
 import random
 
+
 from configs.DatabaseConfig import *
 from utils.Database import Database
 from utils.preprocessing import Preprocessing
@@ -28,7 +29,7 @@ app.add_middleware(
 )
 
 
-@app.get("/chat_query")
+@app.get("/chatbot")
 async def chat_query(query: str):
     start = time.time()
     p = Preprocessing(

@@ -53,6 +53,7 @@ EMB_SIZE = 128  # 임베딩 벡터 길이
 EPOCH = 10
 VOCA_SIZE = len(p.word_index) + 1  # 전체 단어 개수
 
+# C
 input_layer = Input(shape=(15,))
 embedding_layer = Embedding(VOCA_SIZE, EMB_SIZE, input_length=15)(input_layer)
 dropout_emb = Dropout(rate=0.5)(embedding_layer)

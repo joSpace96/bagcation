@@ -1,10 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { CommentDataDto, CreateReviewDto } from './dto/create-review.dto';
-import { UpdateReviewDto } from './dto/update-review.dto';
+import { CommentDataDto } from './dto/create-review.dto';
 import { Review, Review_comment } from 'src/domain/review.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'src/domain/user.entity';
-import { Repository, getRepository } from 'typeorm';
+import { Repository } from 'typeorm';
 import { Review_like } from 'src/domain/like.entity';
 
 @Injectable()

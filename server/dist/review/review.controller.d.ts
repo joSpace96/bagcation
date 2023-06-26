@@ -1,5 +1,5 @@
 import { Repository } from 'typeorm';
-import { Review, Review_comment } from 'src/domain/review.entity';
+import { Review } from 'src/domain/review.entity';
 import { CommentDataDto, CreateReviewDto, LikeDataDto } from './dto/create-review.dto';
 import * as multer from 'multer';
 import { UserService } from 'src/user/user.service';
@@ -26,7 +26,7 @@ export declare class ReviewController {
             images: string;
             likecount: number;
             likes: Review_like[];
-            comments: Review_comment[];
+            comments: import("src/domain/review.entity").Review_comment[];
         }[];
     }>;
     getReviewById(id: number): Promise<{
@@ -41,7 +41,7 @@ export declare class ReviewController {
             images: string;
             likecount: number;
             likes: Review_like[];
-            comments: Review_comment[];
+            comments: import("src/domain/review.entity").Review_comment[];
         };
     }>;
     getReviewByuserId(user_idx: number): Promise<{
@@ -56,7 +56,7 @@ export declare class ReviewController {
             images: string;
             likecount: number;
             likes: Review_like[];
-            comments: Review_comment[];
+            comments: import("src/domain/review.entity").Review_comment[];
         }[];
     }>;
     likeReview(likeData: LikeDataDto): Promise<{
@@ -68,7 +68,7 @@ export declare class ReviewController {
     }>;
     createReviewComment(comments: CommentDataDto): Promise<{
         message: string;
-        comment: Review_comment;
+        comment: import("src/domain/review.entity").Review_comment;
         error?: undefined;
     } | {
         error: any;
@@ -80,7 +80,7 @@ export declare class ReviewController {
         Comment?: undefined;
     } | {
         message: string;
-        Comment: Review_comment[];
+        Comment: import("src/domain/review.entity").Review_comment[];
     }>;
     DeleteComment(id: number): Promise<{
         message: string;
@@ -101,7 +101,7 @@ export declare class ReviewController {
             images: string;
             likecount: number;
             likes: Review_like[];
-            comments: Review_comment[];
+            comments: import("src/domain/review.entity").Review_comment[];
         }[];
     }>;
 }

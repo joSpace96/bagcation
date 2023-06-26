@@ -3,17 +3,18 @@ import { FilesInterceptor } from '@nestjs/platform-express';
 import * as path from 'path';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Review, Review_comment } from 'src/domain/review.entity';
+import { Review } from 'src/domain/review.entity';
 import { CommentDataDto, CreateReviewDto, LikeDataDto } from './dto/create-review.dto';
 import * as multer from 'multer';
-import { ApiConsumes, ApiBody, ApiTags } from '@nestjs/swagger';
+import { ApiConsumes, ApiTags } from '@nestjs/swagger';
 import { extname } from 'path';
-import * as moment from 'moment';
 import { diskStorage } from 'multer';
 import * as fs from 'fs';
 import { UserService } from 'src/user/user.service';
 import { ReviewService } from './review.service';
 import { Review_like } from 'src/domain/like.entity';
+import apiServer from 'src/api/api';
+
 
 
 @Controller('review')
@@ -78,7 +79,7 @@ export class ReviewController {
 
       const imageUrls = imagePaths.map((imagePath) => {
         const imageName = path.basename(imagePath);
-        const imageUrl = `http://192.168.35.29:4000/upload/images/${imageName}`;
+        const imageUrl = `${apiServer}/upload/images/${imageName}`;
         return imageUrl;
       });
 
@@ -103,7 +104,7 @@ export class ReviewController {
     const imageUrls = imagePaths.map((imagePath) => {
       const imageName = path.basename(imagePath);
       // const imageUrl = `http://192.168.0.42:4000/upload/images/${imageName}`;
-      const imageUrl = `http://192.168.35.29:4000/upload/images/${imageName}`;
+      const imageUrl = `${apiServer}/upload/images/${imageName}`;
       return imageUrl;
     });
 
@@ -127,7 +128,7 @@ export class ReviewController {
   
       const imageUrls = imagePaths.map((imagePath) => {
         const imageName = path.basename(imagePath);
-        const imageUrl = `http://192.168.35.29:4000/upload/images/${imageName}`;
+        const imageUrl = `${apiServer}/upload/images/${imageName}`;
         return imageUrl;
       });
   
@@ -207,7 +208,7 @@ export class ReviewController {
   
       const imageUrls = imagePaths.map((imagePath) => {
         const imageName = path.basename(imagePath);
-        const imageUrl = `http://192.168.35.29:4000/upload/images/${imageName}`;
+        const imageUrl = `${apiServer}/upload/images/${imageName}`;
         return imageUrl;
       });
   

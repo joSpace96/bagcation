@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   BagContents,
   ContentsCounter,
@@ -12,8 +12,11 @@ import {
 } from "./ProfileNavSty";
 import NonProfile from "./images/free-icon-profile-4675250.png";
 import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
+import apiServer from "../../../api/api";
 
 const ProfileNavBar = ({ planPost }) => {
+  const [myReview, setMyReview] = useState([]);
   const email = localStorage.getItem("email");
   const nick = localStorage.getItem("nick");
   const kakaonick = localStorage.getItem("kakaonick");
@@ -25,6 +28,18 @@ const ProfileNavBar = ({ planPost }) => {
   const handleMyPlan = () => {
     navigate(`/mypage/${Myidx}`);
   };
+
+  useEffect(() => {
+    try {
+      axios.get(`${apiServer}/review/get_all`).then((response) => {
+        console.log(response.data.reviews);
+        const data = response.data.reviews;
+        setMyReview(data.filter((data) => data.user_idx === Myidx).length);
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }, []);
 
   const myPost = planPost.filter((data) => data.user_idx === Myidx).length;
   if (!email && !kakaonick) {
@@ -45,7 +60,7 @@ const ProfileNavBar = ({ planPost }) => {
         </div>
         <div style={{ display: "inline-block" }}>
           <ContentsName>리뷰</ContentsName>
-          <ContentsCounter>0</ContentsCounter>
+          <ContentsCounter>{myReview}</ContentsCounter>
         </div>
         <div style={{ display: "inline-block" }}>
           <ContentsName>Q&A</ContentsName>

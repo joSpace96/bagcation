@@ -27,6 +27,7 @@ const fs = require("fs");
 const user_service_1 = require("../user/user.service");
 const review_service_1 = require("./review.service");
 const like_entity_1 = require("../domain/like.entity");
+const api_1 = require("../api/api");
 let ReviewController = exports.ReviewController = class ReviewController {
     constructor(reviewRepository, userService, reviewService) {
         this.reviewRepository = reviewRepository;
@@ -58,7 +59,7 @@ let ReviewController = exports.ReviewController = class ReviewController {
             const imagePaths = review.images.split(',');
             const imageUrls = imagePaths.map((imagePath) => {
                 const imageName = path.basename(imagePath);
-                const imageUrl = `http://192.168.35.29:4000/upload/images/${imageName}`;
+                const imageUrl = `${api_1.default}/upload/images/${imageName}`;
                 return imageUrl;
             });
             return Object.assign(Object.assign({}, review), { imageUrl: imageUrls });
@@ -73,7 +74,7 @@ let ReviewController = exports.ReviewController = class ReviewController {
         const imagePaths = review.images.split(',');
         const imageUrls = imagePaths.map((imagePath) => {
             const imageName = path.basename(imagePath);
-            const imageUrl = `http://192.168.35.29:4000/upload/images/${imageName}`;
+            const imageUrl = `${api_1.default}/upload/images/${imageName}`;
             return imageUrl;
         });
         const reviewWithImageUrl = Object.assign(Object.assign({}, review), { imageUrl: imageUrls });
@@ -88,7 +89,7 @@ let ReviewController = exports.ReviewController = class ReviewController {
             const imagePaths = review.images.split(',');
             const imageUrls = imagePaths.map((imagePath) => {
                 const imageName = path.basename(imagePath);
-                const imageUrl = `http://192.168.35.29:4000/upload/images/${imageName}`;
+                const imageUrl = `${api_1.default}/upload/images/${imageName}`;
                 return imageUrl;
             });
             return Object.assign(Object.assign({}, review), { imageUrl: imageUrls });
@@ -140,7 +141,7 @@ let ReviewController = exports.ReviewController = class ReviewController {
             const imagePaths = review.images.split(',');
             const imageUrls = imagePaths.map((imagePath) => {
                 const imageName = path.basename(imagePath);
-                const imageUrl = `http://192.168.35.29:4000/upload/images/${imageName}`;
+                const imageUrl = `${api_1.default}/upload/images/${imageName}`;
                 return imageUrl;
             });
             return Object.assign(Object.assign({}, review), { imageUrl: imageUrls });

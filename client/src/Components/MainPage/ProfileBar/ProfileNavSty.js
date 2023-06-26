@@ -53,6 +53,9 @@ export const ContentsCounter = styled.div`
 
   padding-top: 5px;
   width: 50px;
+  &:hover {
+    color: lightblue;
+  }
 `;
 
 export const ContentsIcon1 = styled.div`

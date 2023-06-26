@@ -23,7 +23,7 @@ const InnerLikeReview = ({ myReviewLike }) => {
         {myReviewLike.slice(offset, offset + limit).map((data) => (
           <Post
             onClick={() => ClickMyReview(data.id)}
-            style={{ cursor: "pointer", width: "200px", textAlign: "center" }}
+            style={{ cursor: "pointer", width: "300px", textAlign: "center" }}
             key={data.id}
           >
             <div

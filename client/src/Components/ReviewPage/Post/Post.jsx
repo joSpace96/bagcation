@@ -164,7 +164,7 @@ const Post = () => {
                   {comment.writer}&nbsp; &nbsp;
                   {comment.comment}
                   {comment.writer === localStorage.getItem("nick") ||
-                  localStorage.getItem("kakaonick") ? (
+                  comment.writer === localStorage.getItem("kakaonick") ? (
                     <span
                       onClick={() => deleteComment(comment.idx)}
                       style={{ float: "right", cursor: "pointer" }}

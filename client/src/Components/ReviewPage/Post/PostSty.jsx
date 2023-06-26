@@ -48,6 +48,7 @@ export const ReviewNickContent = styled.div`
   height: 450px;
   background-color: whitesmoke;
   padding: 10px;
+  overflow-y: scroll;
 `;
 
 export const ReviewComment = styled.div`

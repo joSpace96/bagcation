@@ -1,0 +1,13 @@
+.chatbox::-webkit-scrollbar {
+  width: 5px; /* 스크롤바의 너비 */
+}
+
+.chatbox::-webkit-scrollbar-thumb {
+  height: 30%; /* 스크롤바의 길이 */
+  background: #dfdfdf; /* 스크롤바의 색상 */
+  border-radius: 15px;
+}
+
+.chatbox::-webkit-scrollbar-track {
+  background: transparent; /*스크롤바 뒷 배경 색상*/
+}

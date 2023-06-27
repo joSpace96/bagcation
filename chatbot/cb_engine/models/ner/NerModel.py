@@ -111,7 +111,7 @@ class NerModel:
             link_href = link["href"]
 
             results.append(
-                {"숙소": title, "평점": score, "링크": "https://www.airbnb.co.kr" + link_href}
+                {"제목": title, "평점": score, "링크": "https://www.airbnb.co.kr" + link_href}
             )
         
         # 결과를 Redis에 캐시 저장
@@ -157,7 +157,7 @@ class NerModel:
 
             link = element["href"] if "href" in element.attrs else None
 
-            results.append({"식당": title, "평점": score, "링크": link})
+            results.append({"제목": title, "평점": score, "링크": link})
 
         # redis_client.set(cache_key, json.dumps(results, ensure_ascii=False))
         return results

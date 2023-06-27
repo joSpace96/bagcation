@@ -15,7 +15,7 @@ from utils.preprocessing import Preprocessing
 
 train_file = "chatbot/cb_engine/models/intent/intent_data.csv"
 data = pd.read_csv(train_file, delimiter=",")
-data.to_csv("d.csv", encoding="utf8")
+# data.to_csv("d.csv", encoding="utf8")
 query = data["query"].tolist()
 intent = data["intent"].tolist()
 
@@ -53,7 +53,7 @@ EMB_SIZE = 128  # 임베딩 벡터 길이
 EPOCH = 10
 VOCA_SIZE = len(p.word_index) + 1  # 전체 단어 개수
 
-# C
+# 모델 구성
 input_layer = Input(shape=(15,))
 embedding_layer = Embedding(VOCA_SIZE, EMB_SIZE, input_length=15)(input_layer)
 dropout_emb = Dropout(rate=0.5)(embedding_layer)

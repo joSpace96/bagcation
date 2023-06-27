@@ -1,5 +1,5 @@
-from cb_engine.utils.preprocessing import Preprocessing
-from cb_engine.models.ner.NerModel import NerModel
+from utils.preprocessing import Preprocessing
+from models.ner.NerModel import NerModel
 from konlpy.tag import Komoran
 
 

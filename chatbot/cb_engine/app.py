@@ -70,7 +70,7 @@ async def chat_query(query: str):
         elif intent_name == "맛집":
             result = random.sample(list(ner.search_rest(query)), k=3)
     except:
-        answer = "데이터가 없습니다"
+        answer = "다시 질문해 주세요. ex) oo 맛집, oo 숙소 목록"
 
     end = time.time()
     print(f"{end - start:.5f} sec")

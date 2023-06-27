@@ -4,10 +4,13 @@ from tensorflow.keras import preprocessing
 import numpy as np
 import requests
 from bs4 import BeautifulSoup
-from redis_data import create_redis_client
+# from redis_data import create_redis_clientㄴ
 import json
 
-redis_client = create_redis_client()
+from multiprocessing import Pool
+
+
+# redis_client = create_redis_client()
 
 
 class NerModel:
@@ -158,3 +161,4 @@ class NerModel:
 
         # redis_client.set(cache_key, json.dumps(results, ensure_ascii=False))
         return results
+    

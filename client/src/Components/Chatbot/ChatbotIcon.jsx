@@ -31,30 +31,39 @@ const ChatbotIcon = () => {
   const ChatbotData = async () => {
     console.log(chatData);
     try {
-      const response = await axios.get(`http://192.168.0.84:8000/chat_query`, {
+      const response = await axios.get(`http://192.168.0.42:4000/chatbot`, {
         params: {
           query: chatData,
         },
       });
       console.log(response.data);
-      // if (response.data.intent === "검색") {
-      //   console.log(response.data.search_results);
-      // }
-      // // Add the input and chatbot response to the chat history
-      // const chatbotResponse = [
-      //   { type: "chatbot", message: response.data.answer },
-      // ];
-      // if (response.data.search_results) {
-      //   chatbotResponse.push({
-      //     type: "chatbot",
-      //     message: response.data.search_results,
-      //   });
-      // }
-      // setChatHistory([
-      //   ...chatHistory,
-      //   { type: "user", message: chatData },
-      //   ...chatbotResponse,
-      // ]);
+
+      // Add the input and chatbot response to the chat history
+      const chatbotResponse = [
+        { type: "chatbot", message: response.data.answer },
+      ];
+      if (response.data.result) {
+        chatbotResponse.push({
+          type: "chatbot",
+          message: response.data.result.map(
+            (result) => result.제목 + "," // + result.링크 + "," + result.평점
+          ),
+        });
+      }
+
+      if (response.data.link) {
+        if (response.data.link !== "null") {
+          chatbotResponse.push({
+            type: "chatbot",
+            message: <a href={response.data.link}>{response.data.link}</a>,
+          });
+        }
+      }
+      setChatHistory([
+        ...chatHistory,
+        { type: "user", message: chatData },
+        ...chatbotResponse,
+      ]);
     } catch (error) {
       console.log(`Error: ${error}`);
     }
@@ -78,7 +87,7 @@ const ChatbotIcon = () => {
           !isModalOpen ? OpenModal() : CloseModal();
         }}
       >
-        <span class="material-icons-outlined">smart_toy</span>
+        <span class="material-symbols-outlined">your_trips</span>
       </IconDiv>
       {isModalOpen && ( // 모달 컴포넌트
         <>
@@ -86,10 +95,9 @@ const ChatbotIcon = () => {
             <Header>
               <Profile>
                 <img
-                  src="https://d3udu241ivsax2.cloudfront.net/v3/images/brand/simple-logo.41a05d959a43fde14438769b6afa3f19.png"
+                  src="https://as1.ftcdn.net/v2/jpg/05/03/91/42/1000_F_503914260_YzwWd7xCT0EEvoLI5FXYwlbJn0l4A6Ll.jpg"
                   alt="프로필사진"
                 />
-                <div className="name">밀리</div>
               </Profile>
               <span onClick={CloseModal} class="material-symbols-outlined">
                 close

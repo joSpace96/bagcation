@@ -16,6 +16,7 @@ const plan_module_1 = require("./plan/plan.module");
 const review_module_1 = require("./review/review.module");
 const serve_static_1 = require("@nestjs/serve-static");
 const path_1 = require("path");
+const chatbot_module_1 = require("./chatbot/chatbot.module");
 let AppModule = exports.AppModule = class AppModule {
 };
 exports.AppModule = AppModule = __decorate([
@@ -26,6 +27,7 @@ exports.AppModule = AppModule = __decorate([
             map_module_1.MapModule,
             plan_module_1.PlanModule,
             review_module_1.ReviewModule,
+            chatbot_module_1.ChatbotModule,
             serve_static_1.ServeStaticModule.forRoot({
                 rootPath: (0, path_1.join)(__dirname, '..', 'upload', 'images'),
             }),

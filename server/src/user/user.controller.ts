@@ -12,18 +12,15 @@ import * as fs from 'fs';
 
 @Controller('user')
 export class UserController {
-  private s3 = new S3(); // AWS SDK의 S3 객체 생성
+
 
   constructor(private readonly userService: UserService) {}
 
   @Post('signup')
   @ApiTags('User')
   async signUp(@Body() createUserDto: CreateUserDto) {
-    // 이미지 업로드 처리
-    const uploadedImage = await this.uploadImageToS3(createUserDto.profile);
+  
 
-    // createUserDto와 업로드된 이미지 URL을 사용하여 회원가입 처리
-    createUserDto.profile = uploadedImage;
     const createdUser = await this.userService.create(createUserDto);
 
     // 회원가입이 완료된 후, 반환할 응답 데이터를 구성합니다.
@@ -36,25 +33,7 @@ export class UserController {
     return response;
   }
 
-  private async uploadImageToS3(filePath: string): Promise<string> {
-    const bucketName = 'your-s3-bucket-name';
-    const fileKey = `profile/${uuid()}-profile.jpg`;
 
-    const fileBuffer = fs.readFileSync(filePath);
-
-    const params: S3.PutObjectRequest = {
-      Bucket: bucketName,
-      Key: fileKey,
-      Body: fileBuffer,
-      ACL: 'public-read', // 이미지에 대한 공개 읽기 권한 설정
-      ContentType: 'image/jpeg', // 이미지 파일의 Content-Type 지정
-    };
-
-    await this.s3.putObject(params).promise();
-
-    const imageUrl = `https://${bucketName}.s3.amazonaws.com/${fileKey}`;
-    return imageUrl;
-  }
   // 로그인
   @Get('/login')
   @ApiTags('User')

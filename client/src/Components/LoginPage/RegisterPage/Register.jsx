@@ -52,10 +52,9 @@ const Register = () => {
 
     try {
       const response = await axios.post(`${apiServer}/user/signup`, {
-        email,
-        password,
-        nick,
-        profile,
+        email: email,
+        password: password,
+        nick: nick,
       });
       alert("회원가입 성공");
       navigate("/login");

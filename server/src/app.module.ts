@@ -7,6 +7,7 @@ import { PlanModule } from './plan/plan.module';
 import { ReviewModule } from './review/review.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
+import { ChatbotModule } from './chatbot/chatbot.module';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { join } from 'path';
     MapModule,
     PlanModule,
     ReviewModule,
+    ChatbotModule,
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', 'upload', 'images'), // 정적 파일의 루트 경로를 지정합니다
     }),

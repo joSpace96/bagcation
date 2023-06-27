@@ -20,38 +20,17 @@ const swagger_1 = require("@nestjs/swagger");
 const axios_1 = require("axios");
 const jsonwebtoken_1 = require("jsonwebtoken");
 const config_1 = require("@nestjs/config");
-const aws_sdk_1 = require("aws-sdk");
-const uuid_1 = require("uuid");
-const fs = require("fs");
 let UserController = exports.UserController = class UserController {
     constructor(userService) {
         this.userService = userService;
-        this.s3 = new aws_sdk_1.S3();
     }
     async signUp(createUserDto) {
-        const uploadedImage = await this.uploadImageToS3(createUserDto.profile);
-        createUserDto.profile = uploadedImage;
         const createdUser = await this.userService.create(createUserDto);
         const response = {
             message: '회원가입이 완료되었습니다.',
             user: createdUser,
         };
         return response;
-    }
-    async uploadImageToS3(filePath) {
-        const bucketName = 'your-s3-bucket-name';
-        const fileKey = `profile/${(0, uuid_1.v4)()}-profile.jpg`;
-        const fileBuffer = fs.readFileSync(filePath);
-        const params = {
-            Bucket: bucketName,
-            Key: fileKey,
-            Body: fileBuffer,
-            ACL: 'public-read',
-            ContentType: 'image/jpeg',
-        };
-        await this.s3.putObject(params).promise();
-        const imageUrl = `https://${bucketName}.s3.amazonaws.com/${fileKey}`;
-        return imageUrl;
     }
     async login(email, password) {
         const user = await this.userService.findByEmailAndPassword(email, password);

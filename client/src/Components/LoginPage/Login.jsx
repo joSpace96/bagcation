@@ -36,11 +36,11 @@ const Login = () => {
       return;
     } else {
       try {
-        const response = await axios.get(`${apiServer}/user/login`, {
-          email,
-          password,
-        });
+        const response = await axios.get(
+          `${apiServer}/user/login?email=${email}&password=${password}`
+        );
         const userData = response.data;
+        console.log(userData);
         alert("로그인 성공");
         localStorage.setItem("idx", userData.user.idx);
         localStorage.setItem("email", userData.user.email);

@@ -3,7 +3,7 @@ import { styled } from "styled-components";
 export const IconDiv = styled.div`
   width: 40px;
   height: 40px;
-  background-color: #ffeb60;
+  background-color: #0055ff;
   padding: 10px;
   border-radius: 35px;
   cursor: pointer;
@@ -12,13 +12,13 @@ export const IconDiv = styled.div`
   right: 20px;
   transition: all ease 0.5s;
   z-index: 9;
-  .material-icons-outlined {
+  .material-symbols-outlined {
     font-size: 40px;
-    color: #333333;
+    color: white;
   }
   &:hover {
-    /* transform: rotate(180deg); */
-    transform: scale(1.2);
+    transform: rotate(360deg);
+    /* transform: scale(1.2); */
   }
 `;
 
@@ -127,7 +127,8 @@ export const ChatBox = styled.div`
     background: lightblue;
     border-radius: 0.4em;
     width: max-content;
-    max-width: 70%;
+    max-width: 80%;
+    flex-wrap: wrap;
     padding: 5px;
     right: 0;
     margin: 10px;
@@ -171,12 +172,12 @@ export const InputBox = styled.div`
     border: 1px solid #dfdfdf;
   }
   button {
-    background: #ffeb60;
+    background: #0055ff;
     border: none;
     border-radius: 5px;
     font-size: 13px;
     font-weight: bold;
-    color: #333333;
+    color: white;
     padding: 0 8px;
     cursor: pointer;
   }

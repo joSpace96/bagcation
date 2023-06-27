@@ -20,6 +20,7 @@ import PlannerPost from "./Components/PlannerPage/PlannerPost/PlannerPost";
 import Profile from "./Components/ProfilePage/Profile";
 import Review from "./Components/ReviewPage/Review";
 import EditReview from "./Components/ReviewPage/EditReview";
+import ChatbotIcon from "./Components/Chatbot/ChatbotIcon";
 
 function App() {
   return (
@@ -45,9 +46,10 @@ function App() {
           <Route path="/info/america" element={<America />} />
           <Route path="/info/asia" element={<Asia />} />
           <Route path="/info/europe" element={<Europe />} />
-          <Route path="/test" element={<PlannerTest />} />
+          <Route path="/test" element={<ChatbotIcon />} />
           <Route path="/" element={<MainPage />} />
         </Routes>
+        <ChatbotIcon />
       </Router>
     </>
   );

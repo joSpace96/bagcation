@@ -31,30 +31,30 @@ const ChatbotIcon = () => {
   const ChatbotData = async () => {
     console.log(chatData);
     try {
-      const response = await axios.get("http://192.168.0.157:8000/chatbot", {
+      const response = await axios.get(`http://192.168.0.84:8000/chat_query`, {
         params: {
           query: chatData,
         },
       });
-      console.log(response.data["answer"]);
-      if (response.data.intent === "검색") {
-        console.log(response.data.search_results);
-      }
-      // Add the input and chatbot response to the chat history
-      const chatbotResponse = [
-        { type: "chatbot", message: response.data.answer },
-      ];
-      if (response.data.search_results) {
-        chatbotResponse.push({
-          type: "chatbot",
-          message: response.data.search_results,
-        });
-      }
-      setChatHistory([
-        ...chatHistory,
-        { type: "user", message: chatData },
-        ...chatbotResponse,
-      ]);
+      console.log(response.data);
+      // if (response.data.intent === "검색") {
+      //   console.log(response.data.search_results);
+      // }
+      // // Add the input and chatbot response to the chat history
+      // const chatbotResponse = [
+      //   { type: "chatbot", message: response.data.answer },
+      // ];
+      // if (response.data.search_results) {
+      //   chatbotResponse.push({
+      //     type: "chatbot",
+      //     message: response.data.search_results,
+      //   });
+      // }
+      // setChatHistory([
+      //   ...chatHistory,
+      //   { type: "user", message: chatData },
+      //   ...chatbotResponse,
+      // ]);
     } catch (error) {
       console.log(`Error: ${error}`);
     }

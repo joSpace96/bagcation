@@ -31,8 +31,8 @@ app.add_middleware(
 
 # 객체 초기화 및 데이터베이스 연결
 p = Preprocessing(
-    word2index_dic="C:/Users/oem/Desktop/bagcation/chatbot/cb_engine/train_tools/dict/chatbot_dict.bin",
-    userdic="C:/Users/oem/Desktop/bagcation/chatbot/cb_engine/utils/user_dic.tsv",
+    word2index_dic="chatbot/cb_engine/train_tools/dict/chatbot_dict.bin",
+    userdic="chatbot/cb_engine/utils/user_dic.tsv",
 )
 db = Database(
     host=DB_HOST, user=DB_USER, password=DB_PASSWORD, db_name=DB_NAME, port=DB_PORT
@@ -42,13 +42,13 @@ f = FindAnswer(db)
 
 # IntentModel 초기화
 intent = IntentModel(
-    model_name="C:/Users/oem/Desktop/bagcation/chatbot/cb_engine/models/intent/intent_model.h5",
+    model_name="chatbot/cb_engine/models/intent/intent_model.h5",
     preprocess=p,
 )
 
 # NerModel 초기화
 ner = NerModel(
-    model_name="C:/Users/oem/Desktop/bagcation/chatbot/cb_engine/models/ner/ner_model.h5",
+    model_name="chatbot/cb_engine/models/ner/ner_model.h5",
     preprocess=p,
 )
 

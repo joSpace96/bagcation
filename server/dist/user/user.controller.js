@@ -32,6 +32,13 @@ let UserController = exports.UserController = class UserController {
         };
         return response;
     }
+    async login(email, password) {
+        const user = await this.userService.findByEmailAndPassword(email, password);
+        if (!user) {
+            return { message: "유저를 찾을 수 없습니다." };
+        }
+        return { message: "로그인 성공", user };
+    }
     async findByKakaoId(kakaoUserId) {
         const user = await this.userService.findByKakaoUserId(kakaoUserId);
         if (user) {
@@ -39,6 +46,15 @@ let UserController = exports.UserController = class UserController {
         }
         else {
             return false;
+        }
+    }
+    async findById(idx) {
+        const user = await this.userService.findById(idx);
+        if (user) {
+            return user;
+        }
+        else {
+            return { message: "유저를 찾을 수 없습니다." };
         }
     }
 };
@@ -51,6 +67,15 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "signUp", null);
 __decorate([
+    (0, common_1.Get)('/login'),
+    (0, swagger_1.ApiTags)('User'),
+    __param(0, (0, common_1.Query)('email')),
+    __param(1, (0, common_1.Query)('password')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, String]),
+    __metadata("design:returntype", Promise)
+], UserController.prototype, "login", null);
+__decorate([
     (0, common_1.Get)('find-by-kakao-id'),
     (0, swagger_1.ApiTags)('User'),
     __param(0, (0, common_1.Query)('kakaoUserId')),
@@ -58,6 +83,14 @@ __decorate([
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "findByKakaoId", null);
+__decorate([
+    (0, common_1.Get)('find-by-id'),
+    (0, swagger_1.ApiTags)('User'),
+    __param(0, (0, common_1.Query)('idx')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number]),
+    __metadata("design:returntype", Promise)
+], UserController.prototype, "findById", null);
 exports.UserController = UserController = __decorate([
     (0, common_1.Controller)('user'),
     __metadata("design:paramtypes", [user_service_1.UserService])
@@ -72,7 +105,7 @@ let LoginController = exports.LoginController = class LoginController {
             const params = new URLSearchParams();
             params.append('grant_type', 'authorization_code');
             params.append('client_id', 'c6acf344a39dd6fa0033f505215fd2a3');
-            params.append('redirect_uri', 'http://localhost:3000/kakao-callback');
+            params.append('redirect_uri', 'http://192.168.0.42:3001/kakao-callback');
             params.append('code', code);
             params.append('client_secret', '0BpAH3VnLFgTiyt9zmUuz5b2j3jfyCDN');
             const { data } = await axios_1.default.post('https://kauth.kakao.com/oauth/token', params.toString(), {
@@ -122,7 +155,7 @@ let LoginController = exports.LoginController = class LoginController {
                 httpOnly: true,
                 expires: expiresAt,
             });
-            res.json({ user, localToken, accessToken, refreshToken });
+            res.json({ user, localToken });
         }
         catch (error) {
             console.error(error);

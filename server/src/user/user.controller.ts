@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Get, Query, Res } from '@nestjs/common';
+import { Controller, Post, Body, Get, Query, Res, UseInterceptors, UploadedFile } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { ApiTags } from '@nestjs/swagger';
@@ -6,18 +6,21 @@ import axios from 'axios';
 import { Response } from 'express';
 import { sign } from 'jsonwebtoken';
 import { ConfigService } from '@nestjs/config';
+import { S3 } from 'aws-sdk';
+import { v4 as uuid } from 'uuid';
+import * as fs from 'fs';
 
 @Controller('user')
 export class UserController {
+
+
   constructor(private readonly userService: UserService) {}
 
-  // 회원가입 API 엔드포인트
   @Post('signup')
-  @ApiTags('User') // 'User' 태그를 추가합니다.
+  @ApiTags('User')
   async signUp(@Body() createUserDto: CreateUserDto) {
-    // 클라이언트에서 전달된 회원가입 정보가 userData에 담깁니다.
+  
 
-    // UserService를 사용하여 회원가입 로직을 처리합니다.
     const createdUser = await this.userService.create(createUserDto);
 
     // 회원가입이 완료된 후, 반환할 응답 데이터를 구성합니다.
@@ -30,6 +33,18 @@ export class UserController {
     return response;
   }
 
+
+  // 로그인
+  @Get('/login')
+  @ApiTags('User')
+  async login(@Query('email') email: string, @Query('password') password: string) {
+    const user = await this.userService.findByEmailAndPassword(email,password);
+    if(!user) {
+      return {message : "유저를 찾을 수 없습니다."}
+    }
+    return {message : "로그인 성공", user}
+  }
+
   // kakao Id로 회원정보 조회
   @Get('find-by-kakao-id')
   @ApiTags('User')
@@ -40,6 +55,18 @@ export class UserController {
       return true;
     } else {
       return false;
+    }
+  }
+
+  @Get('find-by-id')
+  @ApiTags('User')
+  async findById(@Query('idx') idx: number) {
+    const user = await this.userService.findById(idx);
+
+    if (user) {
+      return user;
+    } else {
+      return {message:"유저를 찾을 수 없습니다."};
     }
   }
 }
@@ -59,7 +86,7 @@ export class LoginController {
       const params = new URLSearchParams();
       params.append('grant_type', 'authorization_code');
       params.append('client_id', 'c6acf344a39dd6fa0033f505215fd2a3'); // 여기에 카카오 앱의 클라이언트 ID를 입력
-      params.append('redirect_uri', 'http://localhost:3000/kakao-callback'); // 여기에 리다이렉트 URI를 입력
+      params.append('redirect_uri', 'http://192.168.0.42:3001/kakao-callback'); // 여기에 리다이렉트 URI를 입력
       params.append('code', code);
       params.append('client_secret', '0BpAH3VnLFgTiyt9zmUuz5b2j3jfyCDN');
       // params.append('scope', 'profile,account_email'); // 필수 동의 항목을 추가
@@ -134,7 +161,7 @@ export class LoginController {
         expires: expiresAt,
       });
 
-      res.json({ user, localToken, accessToken, refreshToken });
+      res.json({ user, localToken});
     } catch (error) {
       console.error(error);
       throw new Error('카카오 코드를 액세스 토큰으로 교환하는데 실패했습니다.');

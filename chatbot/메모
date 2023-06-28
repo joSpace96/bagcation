@@ -1,0 +1,14 @@
+1. NER 
+여행: 지역, 항공사, 호텔, 맛집
+
+2. intent_data.csv
+3. corpus.txt  
+4. user_dic.tsv
+
+
+다른 컴퓨터에서 돌리려면
+jdk 설치 , 환경변수 설정 
+
+java_home -> C:\Program Files\Java\jdk-11.0.16.1
+path -> %JAVA_HOME%\bin\
+

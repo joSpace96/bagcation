@@ -17,12 +17,14 @@ export const LedgerAddContainer = styled.div`
 export const LedgerAddSubmit = styled.button`
   height: 30px;
   width: 80px;
+  margin-right: 10px;
   position: absolute;
   bottom: 10px;
-  right: 214px;
+  left: 43%;
   border: none;
   border-radius: 10px;
   background-color: lightgray;
+  cursor: pointer;
   &:hover {
     background-color: gray;
     color: white;

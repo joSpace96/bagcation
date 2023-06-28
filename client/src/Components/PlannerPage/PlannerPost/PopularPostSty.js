@@ -6,24 +6,17 @@ export const PopularContainer = styled.div`
   padding: 5rem;
   padding-top: 2rem;
   height: max-content;
-  margin: auto;
+  margin: 0 auto;
   justify-content: center;
-  span {
-    font-family: "nanum_b";
-    font-weight: bold;
-    font-size: 18px;
-    cursor: pointer;
-    &:hover {
-      color: #7bc0f9;
-    }
-  }
 `;
 export const PopularList = styled.div`
-  padding: 1rem;
+  display: flex;
+  width: 80%;
+  margin: auto;
 `;
 
 export const BestPlanContainer = styled.div`
-  width: 100%;
+  width: max-content;
   height: max-content;
   margin: auto;
 `;
@@ -33,15 +26,12 @@ export const PostContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
   height: max-content;
-  justify-content: center;
 `;
 
 export const Post = styled.div`
-  width: 380px;
+  width: 320px;
   height: max-content;
-  margin: auto;
-  margin-top: 10px;
-  margin-bottom: 10px;
+  margin: 10px auto;
   &:hover {
     transform: scale(1.05);
     transition: transform 0.5s;
@@ -58,8 +48,8 @@ export const PostImage = styled.img`
 `;
 
 export const PostContent = styled.div`
-  width: 100%;
-  height: 78px;
+  /* width: 100%; */
+  height: max-content;
   border: 1px solid #dbdbdb;
   margin-top: 5px;
   border-radius: 10px;

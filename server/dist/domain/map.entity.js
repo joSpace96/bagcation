@@ -15,7 +15,7 @@ let Nation = exports.Nation = class Nation {
 };
 __decorate([
     (0, typeorm_1.PrimaryGeneratedColumn)(),
-    __metadata("design:type", Number)
+    __metadata("design:type", typeof BigInt === "function" ? BigInt : Object)
 ], Nation.prototype, "idx", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
@@ -40,7 +40,7 @@ let City = exports.City = class City {
 };
 __decorate([
     (0, typeorm_1.PrimaryGeneratedColumn)(),
-    __metadata("design:type", Number)
+    __metadata("design:type", typeof BigInt === "function" ? BigInt : Object)
 ], City.prototype, "idx", void 0);
 __decorate([
     (0, typeorm_1.Column)(),

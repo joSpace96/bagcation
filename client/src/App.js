@@ -1,7 +1,7 @@
 import { Routes, Route, BrowserRouter as Router } from "react-router-dom";
 import MainPage from "./Components/MainPage/MainPage";
 import NavBar from "./Components/NavBar/NavBar";
-import Post from "./Components/BoardPage/Post/Post";
+import Post from "./Components/ReviewPage/Post/Post";
 import GuidePage from "./Components/GuidePage/GuidePage";
 import Planner from "./Components/PlannerPage/Planner";
 import Ledger from "./Components/LedgerPage/Ledger";
@@ -12,6 +12,15 @@ import America from "./Components/MainPage/ImageGrid/InfoPage/America/America";
 import Asia from "./Components/MainPage/ImageGrid/InfoPage/Asia/Asia";
 import Europe from "./Components/MainPage/ImageGrid/InfoPage/Europe/Europe";
 import PlannerBoard from "./Components/PlannerPage/PlannerBoard";
+import RedirectPage from "./Components/LoginPage/RedirectPage";
+import Register from "./Components/LoginPage/RegisterPage/Register";
+import PlannerDetail from "./Components/PlannerPage/PlannerDetail/PlannerDetail";
+import PlannerTest from "./Components/PlannerPage/PlannerDetail/PlannerTest";
+import PlannerPost from "./Components/PlannerPage/PlannerPost/PlannerPost";
+import Profile from "./Components/ProfilePage/Profile";
+import Review from "./Components/ReviewPage/Review";
+import EditReview from "./Components/ReviewPage/EditReview";
+import ChatbotIcon from "./Components/Chatbot/ChatbotIcon";
 
 function App() {
   return (
@@ -20,18 +29,27 @@ function App() {
         <NavBar />
         <Routes>
           <Route path="/ledger" element={<Ledger />} />
-          <Route path="/planner/detail" element={<Planner />} />
+          <Route path="/planner/map/detail" element={<PlannerDetail />} />
+          <Route path="/planner/map" element={<Planner />} />
+          <Route path="/planner/post/:idx" element={<PlannerPost />} />
           <Route path="/planner" element={<PlannerBoard />} />
+          <Route path="/mypage/:idx" element={<Profile />} />
           <Route path="/guide" element={<GuidePage />} />
-          <Route path="/gallery/detail" element={<Post />} />
+          <Route path="/reivew/detail/:idx" element={<Post />} />
+          <Route path="/review/edit" element={<EditReview />} />
+          <Route path="/review" element={<Review />} />
+          <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/kakao-callback" element={<RedirectPage />} />
           <Route path="/info/africa" element={<Africa />} />
           <Route path="/info/oceania" element={<Oceania />} />
           <Route path="/info/america" element={<America />} />
           <Route path="/info/asia" element={<Asia />} />
           <Route path="/info/europe" element={<Europe />} />
+          <Route path="/test" element={<ChatbotIcon />} />
           <Route path="/" element={<MainPage />} />
         </Routes>
+        <ChatbotIcon />
       </Router>
     </>
   );

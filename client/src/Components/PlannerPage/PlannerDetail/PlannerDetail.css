@@ -1,0 +1,21 @@
+.scroll-container {
+    overflow: hidden;
+  }
+  
+  .scroll-content {
+    overflow-y: scroll;
+    overflow-x: scroll;
+    scrollbar-width: thin; /* Firefox */
+    -ms-overflow-style: none; /* IE and Edge */
+  }
+  
+  /* 숨김 스타일 적용 */
+  .scroll-content::-webkit-scrollbar {
+    width: 0; /* 스크롤바 너비 */
+  }
+  .task.selected {
+    background-color: #0055ff;
+    color: white;
+    font-weight: bold;
+  }
+ 

@@ -57,18 +57,18 @@ export const Overlay = styled.div`
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.7);
-  z-index: 9999;
+  z-index: 8999;
 `;
 
 export const OverlayContent = styled.div`
-  position: fixed;
-  top: 50%;
+  position: absolute;
+  top: 350px;
   left: 50%;
   transform: translate(-50%, -50%);
   width: 500px;
-  height: 700px;
+  height: 650px;
   background-color: white;
-  z-index: 10000;
+  z-index: 9998;
   border: none;
   border-radius: 30px;
 `;

@@ -2,7 +2,7 @@ import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 @Entity()
 export class Nation {
   @PrimaryGeneratedColumn()
-  idx: number;
+  idx: bigint;
 
   @Column()
   continent: string;
@@ -20,7 +20,7 @@ export class Nation {
 @Entity()
 export class City {
   @PrimaryGeneratedColumn()
-  idx: number;
+  idx: bigint;
 
   @Column()
   nation: string;

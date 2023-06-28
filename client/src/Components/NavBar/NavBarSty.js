@@ -35,6 +35,7 @@ export const NavItem = styled.div`
 
 export const Brand = styled.img`
   width: 100px;
+  margin-left: 50px;
 `;
 
 export const Search = styled.input`
@@ -44,8 +45,8 @@ export const Search = styled.input`
 
 export const NavProfileMenu = styled.div`
   position: relative;
-  left: 120px;
-  top: -40px;
+  left: 150px;
+  top: -50px;
   background-color: white;
   border-radius: 20px;
   width: 60%;

@@ -9,7 +9,17 @@ export declare class UserController {
         message: string;
         user: CreateUserDto & import("../domain/user.entity").User;
     }>;
+    login(email: string, password: string): Promise<{
+        message: string;
+        user?: undefined;
+    } | {
+        message: string;
+        user: import("../domain/user.entity").User;
+    }>;
     findByKakaoId(kakaoUserId: string): Promise<boolean>;
+    findById(idx: number): Promise<import("../domain/user.entity").User | {
+        message: string;
+    }>;
 }
 export declare class LoginController {
     private readonly userService;

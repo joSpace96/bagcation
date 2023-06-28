@@ -4,9 +4,8 @@ import ExpandBoardAsia from "./ExpandBoard/ExpandBoardAsia";
 import ExpandBoardEurope from "./ExpandBoard/ExpandBoardEurope";
 import ExpandBoardAmerica from "./ExpandBoard/ExpandBoardAmerica";
 import ExpandBoardOceania from "./ExpandBoard/ExpandBoardOceania";
-import ExpandBoardAfrica from "./ExpandBoard/ExpandBoardAfrica";
 
-const ExpandBoardIndex = ({ expand }) => {
+const ExpandBoardIndex = ({ expand, setSelectedDestination }) => {
   const [content, setContent] = useState(<ExpandBoardAsia />);
 
   const handleContentChange = (newContent) => {
@@ -23,7 +22,13 @@ const ExpandBoardIndex = ({ expand }) => {
               content.type === ExpandBoardAsia ? "3px solid #7bc0f9" : "none",
             cursor: "pointer",
           }}
-          onClick={() => handleContentChange(<ExpandBoardAsia />)}
+          onClick={() =>
+            handleContentChange(
+              <ExpandBoardAsia
+                setSelectedDestination={setSelectedDestination}
+              />
+            )
+          }
         >
           아시아
         </span>
@@ -34,7 +39,13 @@ const ExpandBoardIndex = ({ expand }) => {
               content.type === ExpandBoardEurope ? "3px solid #7bc0f9" : "none",
             cursor: "pointer",
           }}
-          onClick={() => handleContentChange(<ExpandBoardEurope />)}
+          onClick={() =>
+            handleContentChange(
+              <ExpandBoardEurope
+                setSelectedDestination={setSelectedDestination}
+              />
+            )
+          }
         >
           유럽
         </span>
@@ -47,7 +58,13 @@ const ExpandBoardIndex = ({ expand }) => {
                 : "none",
             cursor: "pointer",
           }}
-          onClick={() => handleContentChange(<ExpandBoardAmerica />)}
+          onClick={() =>
+            handleContentChange(
+              <ExpandBoardAmerica
+                setSelectedDestination={setSelectedDestination}
+              />
+            )
+          }
         >
           아메리카
         </span>
@@ -60,21 +77,15 @@ const ExpandBoardIndex = ({ expand }) => {
                 : "none",
             cursor: "pointer",
           }}
-          onClick={() => handleContentChange(<ExpandBoardOceania />)}
+          onClick={() =>
+            handleContentChange(
+              <ExpandBoardOceania
+                setSelectedDestination={setSelectedDestination}
+              />
+            )
+          }
         >
-          오세아니아
-        </span>
-
-        <span
-          style={{
-            color: content.type === ExpandBoardAfrica ? "#7bc0f9" : "black",
-            borderBottom:
-              content.type === ExpandBoardAfrica ? "3px solid #7bc0f9" : "none",
-            cursor: "pointer",
-          }}
-          onClick={() => handleContentChange(<ExpandBoardAfrica />)}
-        >
-          아프리카
+          남태평양
         </span>
       </ExpendIndex>
       {content}

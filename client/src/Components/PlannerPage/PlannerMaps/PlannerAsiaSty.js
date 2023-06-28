@@ -1,16 +1,40 @@
 import { styled } from "styled-components";
-
+import europe from "../images/europe.png";
+import europeHover from "../images/europehover.png";
+import asia from "../images/asia.png";
+import asiaHover from "../images/asiahover.png";
+import america from "../images/north-america.png";
+import americaHover from "../images/north-america_hover.png";
+import oceaniaHover from "../images/australia.png";
+import oceania from "../images/australia_hover.png";
+import DatePicker from "react-datepicker";
 export const PlannerDiary = styled.div`
   border-radius: 5px;
   position: absolute;
-  right: 100px;
-  top: 70px;
-  width: 15%;
-  height: 90vh;
-  overflow-y: scroll;
-  overflow-x: hidden;
+  right: 0px;
+  top: 60.5px;
+  width: 20%;
+  height: 91vh;
   background-color: whitesmoke;
   padding-bottom: 10px;
+  /* button {
+    border-radius: 10px;
+    width: 150px;
+    height: 40px;
+    position: absolute;
+    bottom: 0;
+    right: -20%;
+    left: 0;
+    margin: auto;
+    cursor: pointer;
+    background-color: #7bc0f9;
+    color: gray;
+    font-weight: bold;
+    &:hover {
+      background-color: #0055ff;
+      color: white;
+    } */
+  /* } */
 `;
 export const PlannerHeader = styled.div`
   display: flex;
@@ -19,26 +43,27 @@ export const PlannerHeader = styled.div`
   justify-content: space-between;
   margin-bottom: 10px;
   padding: 10px;
+  width: 77%;
+  position: absolute;
+  right: 0;
   font-weight: bold;
   color: wheat;
   div {
     margin: auto;
   }
+  button {
+    z-index: 1000;
+  }
   span {
     cursor: pointer;
-    z-index: 1;
-    &:hover {
-      color: aquamarine;
-    }
   }
 `;
 
 export const PlannerInput = styled.div`
   border: 1px solid #ccc;
-  width: 80%;
+  width: 70%;
   height: 20px;
   margin: auto;
-  padding-left: 20px;
   margin-bottom: 0px;
   border-radius: 20px;
   cursor: pointer;
@@ -56,13 +81,22 @@ export const PlannerInput = styled.div`
     background-color: #ebebeb;
     color: black;
   }
+  button {
+    border: none;
+    cursor: pointer;
+    background-color: transparent;
+    font-size: 15px;
+    &:hover {
+      color: orange;
+    }
+  }
 `;
 export const PlannerDistance = styled.div`
   width: 200px;
   height: 50px;
   margin-top: -10px;
   margin-bottom: -10px;
-  margin-left: 40px;
+  margin-left: 20%;
   background-color: transparent;
   color: #333;
   font-family: "Segoe UI", sans-serif;
@@ -70,4 +104,149 @@ export const PlannerDistance = styled.div`
   display: flex;
   justify-content: left;
   align-items: center;
+`;
+
+export const ContinentButton = styled.div`
+  border: none;
+  float: left;
+  display: flex;
+  width: 80px;
+  flex-direction: column;
+  height: 91vh;
+  border-radius: 5px;
+  background-color: #0055ff;
+  z-index: -1;
+`;
+
+export const AsiaButton = styled.div`
+  margin-top: -3px;
+  width: 80px;
+  height: 80px;
+  cursor: pointer;
+  background-image: url(${asia});
+  background-color: #0055ff;
+  background-size: cover;
+  font-weight: bold;
+  color: white;
+  &:hover {
+    background-image: url(${asiaHover}) !important;
+    background-color: #7bc0f9;
+    color: gray;
+    div {
+      background-color: #7bc0f9;
+    }
+  }
+  div {
+    text-align: center;
+    font-size: 15px;
+    margin-top: 80px;
+    background-color: #0055ff;
+  }
+`;
+
+export const EuropeButton = styled.div`
+  width: 80px;
+  height: 80px;
+  cursor: pointer;
+  font-weight: bold;
+  background-image: url(${europe});
+  background-color: #0055ff;
+  background-size: cover;
+  margin-top: 20px;
+  color: white;
+  &:hover {
+    background-image: url(${europeHover}) !important;
+    background-color: #7bc0f9;
+    color: gray;
+    div {
+      background-color: #7bc0f9;
+    }
+  }
+  div {
+    text-align: center;
+    font-size: 15px;
+    margin-top: 80px;
+    background-color: #0055ff;
+  }
+`;
+
+export const AmericaButton = styled.div`
+  width: 80px;
+  height: 80px;
+  cursor: pointer;
+  font-weight: bold;
+  background-image: url(${america});
+  background-color: #0055ff;
+  background-size: cover;
+  margin-top: 20px;
+  color: white;
+  &:hover {
+    background-image: url(${americaHover}) !important;
+    background-color: #7bc0f9;
+    color: gray;
+    div {
+      background-color: #7bc0f9;
+    }
+  }
+  div {
+    text-align: center;
+    font-size: 15px;
+    margin-top: 80px;
+    background-color: #0055ff;
+  }
+`;
+export const OceaniaButton = styled.div`
+  width: 80px;
+  height: 80px;
+  cursor: pointer;
+  font-weight: bold;
+  color: white;
+  background-image: url(${oceania});
+  background-color: #0055ff;
+  background-size: cover;
+  margin-top: 20px;
+  &:hover {
+    background-image: url(${oceaniaHover}) !important;
+    color: gray;
+    background-color: #7bc0f9;
+    div {
+      background-color: #7bc0f9;
+    }
+  }
+  div {
+    text-align: center;
+    font-size: 15px;
+    margin-top: 80px;
+    background-color: #0055ff;
+  }
+`;
+export const DateButton = styled.div``;
+
+export const DetailButton = styled.button`
+  border-radius: 10px;
+  width: 150px;
+  height: 40px;
+  position: absolute;
+  bottom: 0;
+  right: -20%;
+  left: 0;
+  margin: auto;
+  cursor: pointer;
+  background-color: #7bc0f9;
+  color: gray;
+  font-weight: bold;
+  &:hover {
+    background-color: #0055ff;
+    color: white;
+  }
+`;
+export const DatePickerWrapper = styled(DatePicker)`
+  /* 다른 스타일 추가 */
+  /* .react-datepicker-wrapper 스타일 제거 */
+  .react-datepicker-wrapper {
+    height: 1000px;
+  }
+  input {
+    display: none;
+  }
 `;

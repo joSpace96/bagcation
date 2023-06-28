@@ -27,8 +27,9 @@ const RedirectPage = () => {
         setLocalToken(response.data.localToken);
         setKakaoId(response.data.user.kakaoUserId);
         // 쿠키에 토큰과 kakaoId 저장
-        document.cookie = `accessToken=${response.data.accessToken}; path=/`;
-        document.cookie = `refreshToken=${response.data.refreshToken}; path=/`;
+        localStorage.setItem("idx", response.data.user.idx);
+        localStorage.setItem("kakaonick", response.data.user.nickname);
+        localStorage.setItem("kakaoprofile", response.data.user.profileImage);
         document.cookie = `localToken=${response.data.localToken}; path=/`;
 
         // DB에서 kakaoId 조회

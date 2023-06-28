@@ -45,12 +45,7 @@ const ImageGrid = () => {
   const handleOceaniaLeave = () => {
     setOceaniaHover(false);
   };
-  const handleAfricaEnter = () => {
-    setAfricaHover(true);
-  };
-  const handleAfricaLeave = () => {
-    setAfricaHover(false);
-  };
+
   return (
     <>
       <GridSubject>
@@ -98,15 +93,6 @@ const ImageGrid = () => {
             <ImageItem src={Oceania} alt="Oceania" />
 
             <TextOverlay showText={oceaniahover}>Oceania</TextOverlay>
-          </Link>
-        </ImageContainerHover>
-        <ImageContainerHover
-          onMouseEnter={handleAfricaEnter}
-          onMouseLeave={handleAfricaLeave}
-        >
-          <Link to="/info/africa">
-            <ImageItem src={Africa} alt="Africa" />
-            <TextOverlay showText={africahover}>Africa</TextOverlay>
           </Link>
         </ImageContainerHover>
       </ImageGridContainer>

@@ -18,6 +18,7 @@ export const ProfilePicture = styled.img`
 
 export const UserName = styled.div`
   position: absolute;
+  padding-left: 10px;
   left: 10%;
   bottom: 65%;
   font-family: "나눔바른고딕", NanumBarunGothic, "nanum", "돋움", Dotum,
@@ -36,6 +37,7 @@ export const BagContents = styled.div`
   font-family: "나눔바른고딕", NanumBarunGothic, "nanum", "돋움", Dotum,
     "맑은고딕", "Malgun Gothic", "굴림", Gulim, Helvetica, sans-serif;
   font-weight: bold;
+  cursor: pointer;
 `;
 
 export const ContentsName = styled.div`
@@ -51,6 +53,9 @@ export const ContentsCounter = styled.div`
 
   padding-top: 5px;
   width: 50px;
+  &:hover {
+    color: lightblue;
+  }
 `;
 
 export const ContentsIcon1 = styled.div`
@@ -67,8 +72,10 @@ export const ContentsIcon1 = styled.div`
     font-size: 45px;
     margin-top: 2px;
     padding-top: 5px;
+    padding-left: 2.5px;
+    padding-right: 2.5px;
     border: none;
-    border-radius: 50px;
+    border-radius: 32.5px;
     background-color: gray;
     color: white;
     cursor: pointer;
@@ -94,8 +101,10 @@ export const ContentsIcon2 = styled.div`
     font-size: 45px;
     margin-top: 2px;
     padding-top: 5px;
+    padding-left: 2.5px;
+    padding-right: 2.5px;
     border: none;
-    border-radius: 50px;
+    border-radius: 32.5px;
     background-color: gray;
     color: white;
     cursor: pointer;
@@ -122,8 +131,10 @@ export const ContentsIcon3 = styled.div`
     font-size: 45px;
     margin-top: 2px;
     padding-top: 5px;
+    padding-left: 2.5px;
+    padding-right: 2.5px;
     border: none;
-    border-radius: 50px;
+    border-radius: 32.5px;
     background-color: gray;
     color: white;
     cursor: pointer;

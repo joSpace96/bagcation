@@ -11,10 +11,16 @@ import { ConfigService } from '@nestjs/config';
 export class UserService {
   constructor(
     @InjectRepository(User) // User 엔티티를 주입받을 수 있도록 설정
-    private userRepository: Repository<User>, // UserRepository를 주입
+    private userRepository: Repository<User>,// UserRepository를 주입
   ) {}
   async findById(idx: number): Promise<User> {
     return this.userRepository.findOne({ where: { idx } });
+  }
+  async getUserByIdx(idx: number): Promise<User> {
+    return this.userRepository.findOne({where:{idx}});
+  }
+  async findByEmailAndPassword(email: string, password:string): Promise<User> {
+    return this.userRepository.findOne({where: {email,password}});
   }
 
   async findByKakaoUserId(kakaoUserId: string): Promise<User> {
@@ -42,6 +48,7 @@ export class UserService {
     // 새로운 사용자를 생성
     return await this.userRepository.save(createUserDto);
   }
+
 }
 
 @Injectable()

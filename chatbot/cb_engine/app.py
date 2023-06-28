@@ -89,5 +89,5 @@ async def chat_query(query: str):
         "답변": answer,
         "답변링크": answer_sub_url,
         "검색결과": result,
-}
+    }
 

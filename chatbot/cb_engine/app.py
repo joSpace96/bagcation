@@ -56,7 +56,7 @@ ner = NerModel(
 
 @app.get("/chatbot")
 async def chat_query(query: str):
-    start = time.time()
+    # start = time.time()
 
     # 의도 파악
     predict = intent.predict_class(query)
@@ -79,8 +79,8 @@ async def chat_query(query: str):
     except:
         answer = "다시 질문해 주세요. ex) oo 맛집, oo 숙소 목록"
 
-    end = time.time()
-    print(f"{end - start:.5f} sec")
+    # end = time.time()
+    # print(f"{end - start:.5f} sec")
     return {
         "질문": query,
         "의도": intent_name,

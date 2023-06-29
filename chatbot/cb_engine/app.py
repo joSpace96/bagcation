@@ -11,11 +11,11 @@ from models.intent.intentModel import IntentModel
 from models.ner.NerModel import NerModel
 from utils.FindAnswer import FindAnswer
 
-# from multiprocessing import Pool
+from multiprocessing import Pool
 
 app = FastAPI()
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     uvicorn.run("app:app", host="0.0.0.0", port=8001, reload=True)
     # pool = Pool(processes=4)
     # pool.map(chat_query)
@@ -52,11 +52,9 @@ ner = NerModel(
     preprocess=p,
 )
 
-
-
 @app.get("/chatbot")
 async def chat_query(query: str):
-    # start = time.time()
+    start = time.time()
 
     # 의도 파악
     predict = intent.predict_class(query)
@@ -73,14 +71,14 @@ async def chat_query(query: str):
         answer = f.tag_to_word(ner_predict, answer_text)
         answer_sub_url = f.tag_to_word(ner_predict, answer_sub_url)
         if intent_name == "정보":
-            result = random.sample(list(ner.search_hotel(query)), k=3)
+            result = random.sample(list(f.search_hotel(ner_predict)), k=3)
         elif intent_name == "맛집":
-            result = random.sample(list(ner.search_rest(query)), k=3)
+            result = random.sample(list(f.search_rest(ner_predict)), k=3)
     except:
-        answer = "다시 질문해 주세요. ex) oo 맛집, oo 숙소 목록"
+        answer = "데이터가 없습니다"
 
-    # end = time.time()
-    # print(f"{end - start:.5f} sec")
+    end = time.time()
+    print(f"{end - start:.5f} sec")
     return {
         "질문": query,
         "의도": intent_name,
@@ -90,4 +88,3 @@ async def chat_query(query: str):
         "답변링크": answer_sub_url,
         "검색결과": result,
     }
-
